@@ -62,18 +62,29 @@
     <script src="./dist/js/tabler.min.js?1695847769" defer></script>
     <script src="./dist/js/demo.min.js?1695847769" defer></script>
     <script>
-         function togglePassword() {
-        var passwordInput = document.getElementById('password');
+  function togglePassword(inputId) {
+        var passwordInput = document.getElementById(inputId);
         var eyeIcon = document.getElementById('eye-icon');
+        var eyeIconConfirm = document.getElementById('eye-icon-confirm');
 
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            eyeIcon.classList.remove('fa-eye');
-            eyeIcon.classList.add('fa-eye-slash');
+            if (inputId === 'password') {
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else if (inputId === 'confirmPassword') {
+                eyeIconConfirm.classList.remove('fa-eye');
+                eyeIconConfirm.classList.add('fa-eye-slash');
+            }
         } else {
             passwordInput.type = 'password';
-            eyeIcon.classList.remove('fa-eye-slash');
-            eyeIcon.classList.add('fa-eye');
+            if (inputId === 'password') {
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else if (inputId === 'confirmPassword') {
+                eyeIconConfirm.classList.remove('fa-eye-slash');
+                eyeIconConfirm.classList.add('fa-eye');
+            }
         }
     }
     </script>

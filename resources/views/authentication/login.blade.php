@@ -10,7 +10,7 @@
               @csrf
               <div class="mb-3">
                 <label class="form-label">Email address</label>
-                <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off">
+                <input type="email @error('email')is-invalid @enderror" class="form-control" placeholder="your@email.com" autocomplete="off">
               </div>
               
               <div class="mb-2">
@@ -51,7 +51,7 @@
           </div> --}}
         </div>
         <div class="text-center text-secondary mt-3">
-          Don't have account yet? <a href="/register" tabindex="-1">Sign up</a>
+          Don't have account yet? <a href="{{route('register')}}" tabindex="-1">Sign up</a>
         </div>
       </div>
     </div>
