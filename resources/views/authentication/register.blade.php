@@ -3,12 +3,13 @@
 <script src="./dist/js/demo-theme.min.js?1695847769"></script>
 <div class="page page-center">
   <div class="container container-tight py-4">
-    <form class="card card-md" action="./" method="get" autocomplete="off" novalidate>
+    <form class="card card-md" action="{{ route('register-proses') }}" method="post" autocomplete="off" novalidate>
+      @csrf
       <div class="card-body">
         <h2 class="card-title text-center mb-4">Create new account</h2>
         <div class="mb-3">
-          <label class="form-label">Full Name</label>
-          <input type="text" name="fullname" class="form-control" placeholder="Enter Full name">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" placeholder="Enter name">
         </div>
         <div class="mb-3">
           <label class="form-label">Email address</label>

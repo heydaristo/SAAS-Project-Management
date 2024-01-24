@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('profession');
-            $table->int('experience_level');
+            $table->integer('experience_level');
             $table->string('organization');
             $table->string('photo_profile');
             $table->rememberToken();
