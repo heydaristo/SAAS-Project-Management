@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -13,7 +14,7 @@ class UserController extends Controller
 
     public function login_proses(Request $request){
        $request->validate([
-        'email' => 'required',
+        'email' => 'required|email:dns',
         'password' => 'required'
        ]);
     
@@ -25,6 +26,7 @@ class UserController extends Controller
 
         if(Auth::attempt($data)){
             return redirect()->route('workspace.dashboard');
+            $request->session()->regenerate();
         }else{
             return redirect()->route('login')->with('failed','Email atau Password Salah');
         }
@@ -38,13 +40,17 @@ class UserController extends Controller
     public function register_proses(Request $request)
     {
         $request->validate([
-            'name'  => 'required',
-            'email' => 'required|email|unique:users,email',
+            'fullname'  => 'required|regex:/^[A-Z][a-z]*$/',
+            'email' => 'required|email|unique:users,email,dns',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password'
+        ], [
+            'fullname.regex' => 'Name must start with a capital letter',
+            'password.min' => 'Password must be at least 8 characters long',
+            'confirmPassword.same' => 'Passwords do not match',
         ]);
 
-        dd($request->all());
+       
 
         // $data['fullname']   = $request->fullname;
         // $data['email']      = $request->email;
@@ -70,6 +76,7 @@ class UserController extends Controller
         //         return redirect()->route('login')->with('failed', 'Email atau Password Salah');
         //     }
         // }
+
     }
 
 

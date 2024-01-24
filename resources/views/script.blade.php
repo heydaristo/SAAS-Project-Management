@@ -62,11 +62,12 @@
     <script src="./dist/js/tabler.min.js?1695847769" defer></script>
     <script src="./dist/js/demo.min.js?1695847769" defer></script>
     <script>
+
   function togglePassword(inputId) {
         var passwordInput = document.getElementById(inputId);
         var eyeIcon = document.getElementById('eye-icon');
         var eyeIconConfirm = document.getElementById('eye-icon-confirm');
-
+    
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             if (inputId === 'password') {
@@ -87,6 +88,7 @@
             }
         }
     }
+
     </script>
   </body>
 </html>
