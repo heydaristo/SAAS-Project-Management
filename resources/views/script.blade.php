@@ -61,5 +61,21 @@
     <!-- Tabler Core -->
     <script src="./dist/js/tabler.min.js?1695847769" defer></script>
     <script src="./dist/js/demo.min.js?1695847769" defer></script>
+    <script>
+         function togglePassword() {
+        var passwordInput = document.getElementById('password');
+        var eyeIcon = document.getElementById('eye-icon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        }
+    }
+    </script>
   </body>
 </html>
