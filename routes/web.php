@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +19,19 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/', function () {
-    return view('workspace.dashboard');
+    echo "Selamat Datang";
 });
-Route::get('/login', function () {
-    return view('authentication.login');
-});
-Route::get('/register', function () {
-    return view('authentication.register');
+
+Route::get('/login', [UserController::class, 'login'])->name('login');
+Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
+
+Route::get('/register', [UserController::class, 'register'])->name('register');
+Route::post('/register-proses', [UserController::class, 'register_proses'])->name('register-proses');
+
+
+Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'workspace.'], function(){
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
 });
