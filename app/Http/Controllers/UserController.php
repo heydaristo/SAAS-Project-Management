@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 class UserController extends Controller
 {
     public function login(){
@@ -40,8 +40,8 @@ class UserController extends Controller
     public function register_proses(Request $request)
     {
         $request->validate([
-            'fullname'  => 'required|regex:/^[A-Z][a-z]*$/',
-            'email' => 'required|email|unique:users,email,dns',
+            'name'  => 'required',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password'
         ], [
@@ -50,7 +50,7 @@ class UserController extends Controller
             'confirmPassword.same' => 'Passwords do not match',
         ]);
 
-       
+        dd($request->all());
 
         // $data['fullname']   = $request->fullname;
         // $data['email']      = $request->email;
@@ -60,15 +60,15 @@ class UserController extends Controller
         // $data['organization'] = null;
         // $data['photo_profile'] = null;
         
-        // if(!$data){
-        //     dd('error');
-        // }else{
-        //     User::create($data);
+        if(!$data){
+            dd('error');
+        }else{
+            User::create($data);
 
-        //     $login = [
-        //         'email'     => $request->email,
-        //         'password'  => $request->password
-        //     ];
+            $login = [
+                'email'     => $request->email,
+                'password'  => $request->password
+            ];
 
         //     if (Auth::attempt($login)) {
         //         return redirect()->route('workspace.dashboard');
@@ -76,7 +76,6 @@ class UserController extends Controller
         //         return redirect()->route('login')->with('failed', 'Email atau Password Salah');
         //     }
         // }
-
     }
 
 
