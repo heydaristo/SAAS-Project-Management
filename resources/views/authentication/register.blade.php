@@ -7,8 +7,8 @@
       <div class="card-body">
         <h2 class="card-title text-center mb-4">Create new account</h2>
         <div class="mb-3">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-control" placeholder="Enter name">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="fullname" class="form-control" placeholder="Enter Full name">
         </div>
         <div class="mb-3">
           <label class="form-label">Email address</label>
