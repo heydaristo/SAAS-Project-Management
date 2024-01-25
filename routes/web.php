@@ -30,12 +30,11 @@ Route::post('/register-proses', [UserController::class, 'register_proses'])->nam
 
 
 Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'workspace.'], function(){
-<<<<<<< HEAD
     Route::get('/', function () {
         return view('dashboard');
-=======
+    });
     Route::get('/dashboard', function () {
         return view('workspace.dashboard');
->>>>>>> 3d8a7ede17c524d976e9850008eb30a29607b9e3
     })->name('dashboard');
+
 });
