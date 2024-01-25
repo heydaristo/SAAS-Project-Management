@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,8 @@ Route::get('/', function () {
     echo "Selamat Datang";
 });
 
+// login
+
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
 
@@ -36,5 +39,19 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/dashboard', function () {
         return view('workspace.dashboard');
     })->name('dashboard');
+
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+
+    Route::get('/clients/create', [ClientController::class, 'create'])->name('clients.create');
+
+    Route::get('/clients/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
+
+    Route::get('/clients/update/{id}', [ClientController::class, 'update'])->name('clients.update');
+
+    Route::get('/clients/delete/{id}', [ClientController::class, 'delete'])->name('clients.delete');
+
+    // Route::get('/projects', function () {
+    //     return view('workspace.projects');
+    // })->name('projects');
 
 });
