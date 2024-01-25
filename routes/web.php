@@ -21,6 +21,9 @@ Route::get('/welcome', function () {
 Route::get('/', function () {
     echo "Selamat Datang";
 });
+Route::get('/client', function () {
+    return view('workspace.page.client');
+});
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
