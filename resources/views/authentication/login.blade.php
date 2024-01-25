@@ -31,7 +31,6 @@
                       {{ $message }}
                   </div>
                   @enderror
-                <input type="email" class="form-control" name="email" placeholder="your@email.com" autocomplete="off">
               </div>
               <div class="mb-2">
                 <label class="form-label">
