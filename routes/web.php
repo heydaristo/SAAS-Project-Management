@@ -32,5 +32,9 @@ Route::post('/register-proses', [UserController::class, 'register_proses'])->nam
 Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'workspace.'], function(){
     Route::get('/', function () {
         return view('dashboard');
+    });
+    Route::get('/dashboard', function () {
+        return view('workspace.dashboard');
     })->name('dashboard');
+
 });
