@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
 use App\Models\User;
+
+
+
 class UserController extends Controller
 {
     public function login(){
@@ -13,11 +18,19 @@ class UserController extends Controller
     } 
 
     public function login_proses(Request $request){
-       $request->validate([
-        'email' => 'required|email:dns',
-        'password' => 'required'
-       ]);
-    
+
+
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email:dns', 'unique:users,email'],
+            'password' => ['required', 'min:6', 'confirmed'],
+            
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('login')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         $data = [
             'email' => $request->email,
@@ -39,16 +52,19 @@ class UserController extends Controller
 
     public function register_proses(Request $request)
     {
-        $request->validate([
-            'fullname'  => 'required|regex:/^[A-Z][a-z]*$/',
-            'email' => 'required|email|unique:users,email,dns',
-            'password' => 'required|min:6',
-            'confirm_password' => 'required|same:password'
-        ], [
-            'fullname.regex' => 'Name must start with a capital letter',
-            'password.min' => 'Password must be at least 8 characters long',
-            'confirmPassword.same' => 'Passwords do not match',
+        $validator = Validator::make($request->all(), [
+            'fullname' => ['required', 'string', 'max:10'],
+            'email' => ['required', 'email:dns', 'unique:users,email'],
+            'password' => ['required', 'min:6', 'confirmed'],
+            'confirmPassword' => ['required', 'same:password'],
         ]);
+
+        if ($validator->fails()) {
+            // dd($validator);
+            return redirect()->route('register')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         $data['fullname']   = $request->fullname;
         $data['email']      = $request->email;
@@ -61,18 +77,13 @@ class UserController extends Controller
         if(!$data){
             dd('error');
         }else{
-            User::create($data);
-
-            $login = [
-                'email'     => $request->email,
-                'password'  => $request->password
-            ];
-
-            if (Auth::attempt($login)) {
-                return redirect()->route('workspace.dashboard');
-            } else {
-                return redirect()->route('login')->with('failed', 'Email atau Password Salah');
+            $result = User::create($data);
+            if($result){
+                return redirect()->route('login')->with('success','Register Success');
+            }else{
+                return redirect()->route('register')->with('failed','Register Failed');
             }
+            
         }
     }
 }
