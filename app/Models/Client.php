@@ -25,4 +25,9 @@ class Client extends Model
     {
         return $this->hasMany(ProjectModel::class);
     }
+
+    public function quotation() : HasMany
+    {
+        return $this->hasMany(Quotation::class);
+    }
 }
