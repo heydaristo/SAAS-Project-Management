@@ -53,9 +53,9 @@ class UserController extends Controller
     public function register_proses(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'fullname' => ['required', 'string', 'max:10'],
+            'fullname' => ['required'],
             'email' => ['required', 'email:dns', 'unique:users,email'],
-            'password' => ['required', 'min:6', 'confirmed'],
+            'password' => ['required', 'min:6'],
             'confirmPassword' => ['required', 'same:password'],
         ]);
 
