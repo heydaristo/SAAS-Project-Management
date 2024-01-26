@@ -22,9 +22,6 @@ Route::get('/welcome', function () {
 Route::get('/', function () {
     echo "Selamat Datang";
 });
-Route::get('/client', function () {
-    return view('workspace.page.client');
-});
 
 // login
 
