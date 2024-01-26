@@ -18,8 +18,6 @@ class UserController extends Controller
     } 
 
     public function login_proses(Request $request){
-
-
         $validator = Validator::make($request->all(), [
             'email' => ['required'],
             'password' => ['required'],
@@ -60,7 +58,6 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // dd($validator);
             return redirect()->route('register')
                         ->withErrors($validator)
                         ->withInput();

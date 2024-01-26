@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 class ClientController extends Controller
 {
     public function index(){
-        $client = Client::get();
+        $client = Client::where('user_id', auth()->user()->id)->get();
+        dd($client);
         return view('workspace.clients', compact('client'));
     }
 
@@ -21,6 +22,7 @@ class ClientController extends Controller
             'name' => $request->name,
             'address' => $request->address,
             'no_telp' => $request->no_telp,
+            'user_id' => auth()->user()->id,
         ];
 
         Client::create($data);
