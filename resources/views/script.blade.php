@@ -40,11 +40,11 @@
     <meta property="og:url" content="https://tabler.io/demo/static/og.png">
     <meta property="og:description" content="Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!">
     <!-- CSS files -->
-    <link href="./dist/css/tabler.min.css?1695847769" rel="stylesheet"/>
-    <link href="./dist/css/tabler-flags.min.css?1695847769" rel="stylesheet"/>
-    <link href="./dist/css/tabler-payments.min.css?1695847769" rel="stylesheet"/>
-    <link href="./dist/css/tabler-vendors.min.css?1695847769" rel="stylesheet"/>
-    <link href="./dist/css/demo.min.css?1695847769" rel="stylesheet"/>
+    <link href="{{ asset('dist/css/tabler.min.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('dist/css/tabler-flags.min.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('dist/css/tabler-payments.min.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('dist/css/tabler-vendors.min.css')}}" rel="stylesheet"/>
+    <link href="{{ asset('dist/css/demo.min.css')}}" rel="stylesheet"/>
     <style>
       @import url('https://rsms.me/inter/inter.css');
       :root {
@@ -59,36 +59,24 @@
     @yield('body')
     <!-- Libs JS -->
     <!-- Tabler Core -->
-    <script src="./dist/js/tabler.min.js?1695847769" defer></script>
-    <script src="./dist/js/demo.min.js?1695847769" defer></script>
+    <script src="{{ asset('dist/js/tabler.min.js?1695847769')}}" defer></script>
+    <script src="{{ asset('dist/js/demo.min.js?1695847769')}}" defer></script>
     <script>
 
-  function togglePassword(inputId) {
+    function togglePassword(inputId) {
         var passwordInput = document.getElementById(inputId);
-        var eyeIcon = document.getElementById('eye-icon');
-        var eyeIconConfirm = document.getElementById('eye-icon-confirm');
-    
+        var eyeIcon = document.querySelector('#' + inputId + '-icon');
+
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
-            if (inputId === 'password') {
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else if (inputId === 'confirmPassword') {
-                eyeIconConfirm.classList.remove('fa-eye');
-                eyeIconConfirm.classList.add('fa-eye-slash');
-            }
+            eyeIcon.classList.remove('icon-eye');
+            eyeIcon.classList.add('icon-eye-off');
         } else {
             passwordInput.type = 'password';
-            if (inputId === 'password') {
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
-            } else if (inputId === 'confirmPassword') {
-                eyeIconConfirm.classList.remove('fa-eye-slash');
-                eyeIconConfirm.classList.add('fa-eye');
-            }
+            eyeIcon.classList.remove('icon-eye-off');
+            eyeIcon.classList.add('icon-eye');
         }
     }
-
     </script>
   </body>
 </html>
