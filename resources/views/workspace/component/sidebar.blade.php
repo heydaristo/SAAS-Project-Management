@@ -107,7 +107,8 @@
       </div>
       <div class="nav-item dropdown">
         <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-          <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+          <span class="avatar avatar-sm" style="background-image: url({('static/avatars/000m.jpg')}})"></span>
+          {{-- <img class="avatar avatar-sm" src="background-image: url({('static/avatars/000m.jpg')}})" alt=""> --}}
           <div class="d-none d-xl-block ps-2">
             <div>Paweł Kuna</div>
             <div class="mt-1 small text-muted">UI Designer</div>
@@ -125,7 +126,7 @@
     </div>
     <div class="collapse navbar-collapse" id="sidebar-menu">
       <ul class="navbar-nav pt-lg-3">
-        <li class="nav-item {{ request()->is('workspace.dashboard') ? 'active' : '' }}">
+        <li class="nav-item nav-item {{ request()->routeIs('workspace.dashboard') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('workspace.dashboard') }}">
             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
@@ -135,7 +136,7 @@
             </span>
           </a>
         </li>
-        <li class="nav-item {{ request()->is('workspace.clients') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('workspace.clients') ? 'active' : '' }}">
           <a class="nav-link" href="{{ route('workspace.clients') }}">
             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -151,8 +152,20 @@
             </span>
           </a>
         </li>
-        <li class="nav-item {{ request()->is('workspace.quotation') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('workspace.quotation') }}">
+        <li class="nav-item  {{ request()->routeIs('workspace.project') ? 'active' : '' }}">
+          <a class="nav-link" href="#">
+          {{-- <a class="nav-link" href="{{ route('workspace.projects') }}"> --}}
+            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-folder" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" /></svg>
+            </span>
+            <span class="nav-link-title">
+              Project
+            </span>
+          </a>
+        </li>
+        <li class="nav-item  {{ request()->routeIs('workspace.quotation') ? 'active' : '' }}">
+          <a class="nav-link" href="#">
+          {{-- <a class="nav-link" href="{{ route('workspace.quotation') }}"> --}}
             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-align-box-center-stretch" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 19v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M11 17h2" /><path d="M9 12h6" /><path d="M10 7h4" /></svg>
             </span>
@@ -161,8 +174,9 @@
             </span>
           </a>
         </li>
-        <li class="nav-item {{ request()->is('workspace.invoice') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('workspace.invoice') }}">
+        <li class="nav-item  {{ request()->routeIs('workspace.invoice') ? 'active' : '' }}">
+          <a class="nav-link" href="#">
+          {{-- <a class="nav-link" href="{{ route('workspace.invoice') }}"> --}}
             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-dollar" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" /><path d="M14.8 8a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 6v10" /></svg>
             </span>
@@ -171,8 +185,9 @@
             </span>
           </a>
         </li>
-        <li class="nav-item {{ request()->is('workspace.payment') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('workspace.payment') }}">
+        <li class="nav-item {{ request()->routeIs('workspace.payment') ? 'active' : '' }}">
+          {{-- <a class="nav-link" href="{{ route('workspace.payment') }}"> --}}
+          <a class="nav-link" href="#">
             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" /><path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" /></svg>
             </span>
