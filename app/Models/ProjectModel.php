@@ -27,4 +27,9 @@ class ProjectModel extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    Public function quotation(): HasOne
+    {
+        return $this->hasOne(Quotation::class);
+    }
 }
