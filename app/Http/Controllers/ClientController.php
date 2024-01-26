@@ -9,8 +9,7 @@ class ClientController extends Controller
 {
     public function index(){
         $client = Client::where('user_id', auth()->user()->id)->get();
-        dd($client);
-        return view('workspace.clients', compact('client'));
+        return view('workspace.clients.index', compact('client'));
     }
 
     public function create(){
