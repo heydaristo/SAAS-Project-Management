@@ -31,6 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        /**
+         * Drop the 'quotations' table if it exists.
+         */
         Schema::dropIfExists('quotations');
     }
 };
