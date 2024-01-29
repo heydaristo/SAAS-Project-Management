@@ -38,8 +38,11 @@ class UserController extends Controller
         if(Auth::attempt($data)){
             $request->session()->regenerate();
             if(Auth::user()->id_role == 1){
+                return redirect()->route('superadmin.dashboard');
+            }else if(Auth::user()->id_role == 2){
                 return redirect()->route('admin.dashboard');
-            }else{
+            }
+            else{
                 return redirect()->route('workspace.dashboard');
             }
         }else{
@@ -69,7 +72,7 @@ class UserController extends Controller
 
 
 
-        $data['id_role'] = 2;
+        $data['id_role'] = 3;
         $data['fullname']   = $request->fullname;
         $data['email']      = $request->email;
         $data['password']   = Hash::make($request->password);
@@ -95,5 +98,10 @@ class UserController extends Controller
     public function logout(){
         Auth::logout();
         return redirect()->route('login');
+    }
+
+    public function index(){
+        $users = User::where('id_role', 3)->get();
+        return view('superadmin.user.index', compact('users'));
     }
 }

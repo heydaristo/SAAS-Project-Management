@@ -1,6 +1,6 @@
-@extends('template')
+@extends('admintemplate')
 
-@section('body')
+@section('adminbody')
 
 <div class="row row-deck row-cards">
     @include('workspace.header')
