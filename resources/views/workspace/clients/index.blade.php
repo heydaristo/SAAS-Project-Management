@@ -7,6 +7,8 @@
 
 @section('body')
 
+
+
 <div class="row row-deck row-cards">
 @include('workspace.header')
 <div class="col-12">
@@ -58,7 +60,7 @@
             <th>Alamat</th>
             <th>Nomor HP</th>
             {{-- <th>Status</th> --}}
-            <th></th>
+            <th class="w-1"></th>
           </tr>
         </thead>
         <tbody>
@@ -68,6 +70,23 @@
             <td>{{ $clients->name }}</td>
             <td>{{ $clients->address }}</td>
             <td>{{ $clients->no_telp }}</td>
+            <td class="text-end">
+              <span class="dropdown">
+                <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
+                <div class="dropdown-menu dropdown-menu-end" style="">
+                  <a class="dropdown-item" href="#">
+                    Action
+                  </a>
+                  <form action="{{ route('admin.destroy', $sekolah->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                  <a class="dropdown-item" href="#">
+                    <button>Delete</button>
+                  </a>
+                  </form>
+                </div>
+              </span>
+            </td>
           </tr>
           @endforeach
 
@@ -100,7 +119,6 @@
   </div>
 </div>
 </div>
-
 
 {{-- Modal Dialog --}}
 <div class="modal fade" id="tambah_client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

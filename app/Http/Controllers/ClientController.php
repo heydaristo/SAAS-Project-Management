@@ -20,10 +20,12 @@ class ClientController extends Controller
             'no_telp' => $request->no_telp,
             'user_id' => auth()->user()->id,
         ];
-
+        if(!data) {
+        return redirect()->route('workspace.clients')->with('failed','Gagal menambahkan Client!');
+        }
         Client::create($data);
 
-        return redirect()->route('workspace.clients');
+        return redirect()->route('workspace.clients')->with('success','Berhasil menambahkan Client!');
     }
 
     public function edit($id){
