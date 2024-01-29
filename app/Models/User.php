@@ -57,4 +57,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProjectModel::class);
     }
+
+    public function quotation() : HasMany
+    {
+        return $this->hasMany(Quotation::class);
+    }
+
+    public function contract() : HasMany
+    {
+        return $this->hasMany(Contract::class);
+    }
+
+    public function subscription() : HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
 }

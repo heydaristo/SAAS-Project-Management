@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained('contracts');
-            $table->foreignId('quotation_id')->constrained('quotations');
-            $table->foreignId('project_id')->constrained('project_models');
+            $table->unsignedBigInteger('id_contract');
+            $table->foreign('id_contract')->references('id')->on('contracts');
+            $table->unsignedBigInteger('id_quotation');
+            $table->foreign('id_quotation')->references('id')->on('quotations');
+            $table->unsignedBigInteger('id_project');
+            $table->foreign('id_project')->references('id')->on('project_models');
             $table->timestamps();
         });
     }

@@ -18,9 +18,12 @@ return new class extends Migration
             $table->date('end_date');
             $table->string('status');
             $table->string('contract_pdf');
-            $table->foreignId('id_client')->constrained('clients');
-            $table->foreignId('id_project')->constrained('project_models');
-            $table->foreignId('id_user')->constrained('users');
+            $table->unsignedBigInteger('id_client');
+            $table->foreign('id_client')->references('id')->on('clients');
+            $table->unsignedBigInteger('id_project');
+            $table->foreign('id_project')->references('id')->on('project_models');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }
