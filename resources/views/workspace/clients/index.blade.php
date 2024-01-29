@@ -77,7 +77,7 @@
                   <a class="dropdown-item" href="#">
                     Action
                   </a>
-                  <form action="{{ route('admin.destroy', $sekolah->id) }}" method="POST">
+                  <form action="{{ route('workspace.clients.delete', $clients->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                   <a class="dropdown-item" href="#">
