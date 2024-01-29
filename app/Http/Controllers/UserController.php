@@ -36,8 +36,12 @@ class UserController extends Controller
         ];
 
         if(Auth::attempt($data)){
-            return redirect()->route('workspace.dashboard');
             $request->session()->regenerate();
+            if(Auth::user()->id_role == 1){
+                return redirect()->route('admin.dashboard');
+            }else{
+                return redirect()->route('workspace.dashboard');
+            }
         }else{
             return redirect()->route('login')->with('failed','Email atau Password Salah');
         }
@@ -63,6 +67,9 @@ class UserController extends Controller
                         ->withInput();
         }
 
+
+
+        $data['id_role'] = 2;
         $data['fullname']   = $request->fullname;
         $data['email']      = $request->email;
         $data['password']   = Hash::make($request->password);
@@ -70,6 +77,7 @@ class UserController extends Controller
         $data['experience_level'] = 0;
         $data['organization'] = "notset";
         $data['photo_profile'] = "notset";
+        
 
         if(!$data){
             dd('error');
