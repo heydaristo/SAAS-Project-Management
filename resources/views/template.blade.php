@@ -39,7 +39,7 @@
       @include('workspace.component.navbar')
       <div class="page-wrapper">
         <!-- Page header -->
-      @include('workspace.component.header')
+      {{-- @include('workspace.component.header') --}}
         <!-- Page body -->
       @include('workspace.component.body')
         {{-- Page Footer --}}

@@ -1,10 +1,12 @@
 @extends('template')
 
 @php
-  $title= "Workspace - Client";
+  $title= "Client List";
 @endphp
 
+
 @section('body')
+
 <div class="row row-deck row-cards">
 @include('workspace.header')
 <div class="col-12">
@@ -30,12 +32,19 @@
             <option value="3">Three</option>
           </select>
         </div>
-        <div class="ms-auto text-muted">
-          Search:
-          <div class="ms-2 d-inline-block">
-            <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-          </div>
-        </div>
+        <div class="ms-auto me-3">
+          <select class="form-select" id="select">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <!-- Tambahkan opsi lain sesuai kebutuhan -->
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
+      data-bs-target="#tambah_client">
+      New Client
+      </button>
       </div>
     </div>
     <div class="table-responsive">
@@ -90,6 +99,64 @@
     </div>
   </div>
 </div>
+</div>
+
+
+{{-- Modal Dialog --}}
+<div class="modal fade" id="tambah_client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambah Client</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="{{ route('workspace.clients.create') }}" method="POST" enctype="multipart/form-data">
+              @csrf
+              <div class="modal-body">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-12 mt-2">
+                              <div class="form-group">
+                                  <label for="nama_cabang">Nama Client</label>
+                                  <input type="text" class="form-control mt-1" name="name" placeholder="Masukkan nama client" required />
+                                  @error('name')
+                                  <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                              </div>
+                          </div>
+                          <div class="col-md-12 mt-2">
+                              <div class="form-group">
+                                  <label for="address">Address</label>
+                                  <input type="text" class="form-control mt-1" id="address" name="address" placeholder="Masukkan alamat" required />
+                                  @error('address')
+                                  <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                              </div>
+                          <div class="col-md-12 mt-2">
+                              <div class="form-group">
+                                  <label for="no_telp">Nomor HP</label>
+                                  <input type="text" class="form-control mt-1" id="no_telp" name="no_telp" placeholder="Masukkan Nomor HP" required />
+                                  @error('no_telp')
+                                  <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                  <button type="submit" class="btn btn-primary mr-2">Tambah</button>
+              </div>
+          </form>
+      </div>
+  </div>
 </div>
 
 @endsection
