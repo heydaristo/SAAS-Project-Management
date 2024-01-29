@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('service_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_service');
+            $table->foreign('id_service')->references('id')->on('services');
+            $table->string('service_name');
+            $table->decimal('price');
+            $table->string('pay_method');
             $table->timestamps();
         });
     }
