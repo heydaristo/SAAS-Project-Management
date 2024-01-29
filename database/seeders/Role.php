@@ -13,8 +13,13 @@ class Role extends Seeder
     public function run(): void
     {
         \App\Models\Role::create([
+            'role_name' => 'superadmin',
+        ]);
+
+        \App\Models\Role::create([
             'role_name' => 'admin',
         ]);
+        
         \App\Models\Role::create([
             'role_name' => 'user',
         ]);

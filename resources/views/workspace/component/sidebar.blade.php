@@ -1,14 +1,13 @@
-<aside class="navbar navbar-vertical navbar-expand-lg navbar-transparent">
-  <div class="container-fluid sidebar-divider">
+<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+  <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <h1 class="navbar-brand navbar-brand-autodark">
-      <a href="." class="text-center">
-        SAAS <br class="fs-4"> Workspace
-      </a>
+    <h1 class="fs-2 navbar-brand navbar-brand-autodark text-center">
+      <a href=".">
+       SAAS <br class="fs-4"> Workspace
     </h1>
-
+  </a>
     <div class="navbar-nav flex-row d-lg-none">
       <div class="nav-item d-none d-lg-flex me-3">
        
@@ -121,7 +120,7 @@
           <a href="#" class="dropdown-item">Feedback</a>
           <div class="dropdown-divider"></div>
           <a href="./settings.html" class="dropdown-item">Settings</a>
-          <a href="{{route('workspace.logout')}}" class="dropdown-item">Logout</a>
+          <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
         </div>
       </div>
     </div>
@@ -160,7 +159,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-folder" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" /></svg>
             </span>
             <span class="nav-link-title">
-              Admin
+              Project
             </span>
           </a>
         </li>
@@ -171,7 +170,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-align-box-center-stretch" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 19v-14a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M11 17h2" /><path d="M9 12h6" /><path d="M10 7h4" /></svg>
             </span>
             <span class="nav-link-title">
-              Subscription
+              Quotation
             </span>
           </a>
         </li>
@@ -182,18 +181,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-dollar" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2" /><path d="M14.8 8a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 6v10" /></svg>
             </span>
             <span class="nav-link-title">
-              Laporan
-            </span>
-          </a>
-        </li>
-        <li class="nav-item {{ request()->routeIs('workspace.payment') ? 'active' : '' }}">
-          {{-- <a class="nav-link" href="{{ route('workspace.payment') }}"> --}}
-          <a class="nav-link" href="#">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" /><path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" /></svg>
-            </span>
-            <span class="nav-link-title">
-              Plan
+              Invoice
             </span>
           </a>
         </li>
