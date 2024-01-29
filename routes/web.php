@@ -22,7 +22,7 @@ Route::get('/', [UserController::class, 'login'])->name('/ ');
 
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
-
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/loginadmin', [UserController::class, 'loginadmin'])->name('forgot-password');
 
 Route::get('/register', [UserController::class, 'register'])->name('register');
@@ -63,8 +63,6 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
 
-    Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-
     Route::get('/quotation', [QuotationController::class, 'index'])->name('quotation');
 
     Route::get('/quotation/create', [QuotationController::class, 'create'])->name('quotation.create');
@@ -84,12 +82,14 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function(){
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
+Route::group(['prefix' => 'superadmin', 'middleware' => ['auth'], 'as' => 'superadmin.'], function(){
+    Route::get('/', function () {
+        return view('superadmin.dashboard');
     });
-    Route::get('/admindashboard', function () {
-        return view('admin.dashboard');
+    Route::get('/superadmindashboard', function () {
+        return view('superadmin.dashboard');
     })->name('dashboard');
+
+    Route::get('/clients', [UserController::class, 'index'])->name('user.show');
 }
 );
