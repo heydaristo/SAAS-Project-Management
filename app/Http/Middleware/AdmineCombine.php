@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-
-class Admin
+class AdmineCombine
 {
     /**
      * Handle an incoming request.
@@ -17,19 +16,16 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            return redirect()->route('/login');
         }
 
-        if (Auth::user()->id_role == 1) {
-            return redirect()->route('login');
-        }
-
-        if (Auth::user()->id_role == 2) {
+        if (Auth::user()->id_role == 1 || Auth::user()->id_role == 2){
             return $next($request);
         }
-
+        
+        
         if (Auth::user()->id_role == 3) {
-            return redirect()->route('login');
+            return redirect()->route('/login');
         }
     }
 }

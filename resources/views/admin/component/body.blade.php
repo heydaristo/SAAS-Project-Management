@@ -1,5 +1,5 @@
 <div class="page-body">
     <div class="container-xl">
-    @yield('superadminbody')
+    @yield('adminbody')
     </div>
   </div>

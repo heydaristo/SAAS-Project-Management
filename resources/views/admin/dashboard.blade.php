@@ -1,6 +1,6 @@
-@extends('superadmintemplate')
+@extends('admintemplate')
 
-@section('superadminbody')
+@section('adminbody')
 
 <div class="row row-deck row-cards">
     @include('workspace.header')

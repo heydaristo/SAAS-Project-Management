@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
@@ -84,14 +85,25 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
 });
 
-Route::group(['prefix' => 'superadmin', 'middleware' => ['auth'], 'as' => 'superadmin.'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
     Route::get('/', function () {
-        return view('superadmin.dashboard');
+        return view('admin.dashboard');
     });
-    Route::get('/superadmindashboard', function () {
-        return view('superadmin.dashboard');
+    Route::get('/admindashboard', function () {
+        return view('admin.dashboard');
     })->name('dashboard');
 
     Route::get('/clients', [UserController::class, 'index'])->name('user.show');
+});
+
+Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 'superadmin.'], function(){
+    Route::get('/', function () {
+        return view('superadmin.dashboard');
+    });
+
+    Route::get('/dashboard', function () {
+        return view('superadmin.dashboard');
+    })->name('dashboard');
+    Route::get('/admins', [AdminController::class, 'index'])->name('admin.show');
 }
 );
