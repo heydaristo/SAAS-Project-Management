@@ -17,3 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# hide admin seed user
+database/seeders/AdminUser.php

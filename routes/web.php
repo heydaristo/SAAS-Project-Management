@@ -23,6 +23,8 @@ Route::get('/', [UserController::class, 'login'])->name('/ ');
 Route::get('/login', [UserController::class, 'login'])->name('login');
 Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
 
+Route::get('/loginadmin', [UserController::class, 'loginadmin'])->name('forgot-password');
+
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register-proses', [UserController::class, 'register_proses'])->name('register-proses');
 
@@ -83,3 +85,13 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
 });
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth'], 'as' => 'admin.'], function(){
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    });
+    Route::get('/admindashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+}
+);
