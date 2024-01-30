@@ -79,7 +79,7 @@ class UserController extends Controller
         $data['profession'] = "notset";
         $data['experience_level'] = 0;
         $data['organization'] = "notset";
-        $data['photo_profile'] = "notset";
+        $data['photo_profile'] = "https://png.pngtree.com/png-vector/20220628/ourmid/pngtree-user-profile-avatar-vector-admin-png-image_5289693.png";
         
 
         if(!$data){
