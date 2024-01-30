@@ -70,23 +70,19 @@
             <td>{{ $clients->name }}</td>
             <td>{{ $clients->address }}</td>
             <td>{{ $clients->no_telp }}</td>
-            <td class="text-end">
-              <span class="dropdown">
-                <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
-                <div class="dropdown-menu dropdown-menu-end" style="">
-                  <a class="dropdown-item" href="#">
-                    Action
-                  </a>
-                  <form action="{{ route('workspace.clients.delete', $clients->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                  <a class="dropdown-item" href="#">
-                    <button>Delete</button>
-                  </a>
-                  </form>
+            <td><div class="btn-group mb-1 dropleft ">
+              <div class="dropdown dropleft">
+                <button class="btn btn-primary dropdown-toggle me-1" type="button" id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Aksi
+                </button>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEdit-{{$clients->id}}">
+                    Edit
+                  </button>
+                  <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalDelete">Delete</button>
                 </div>
-              </span>
-            </td>
+              </div>
+          </div></td>
           </tr>
           @endforeach
 
@@ -121,60 +117,92 @@
 </div>
 
 {{-- Modal Dialog --}}
-<div class="modal fade" id="tambah_client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tambah_client" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Tambah Client</h5>
+              <h5 class="modal-title" id="modal2Label">Modal 2 Title</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <form action="{{ route('workspace.clients.create') }}" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+            <form action="{{ route('workspace.clients.store') }}" method="POST" enctype="multipart/form-data">
               @csrf
-              <div class="modal-body">
-                  <div class="card-body">
-                      <div class="row">
-                          <div class="col-md-12 mt-2">
-                              <div class="form-group">
-                                  <label for="nama_cabang">Nama Client</label>
-                                  <input type="text" class="form-control mt-1" name="name" placeholder="Masukkan nama client" required />
-                                  @error('name')
-                                  <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                              </div>
-                          </div>
-                          <div class="col-md-12 mt-2">
-                              <div class="form-group">
-                                  <label for="address">Address</label>
-                                  <input type="text" class="form-control mt-1" id="address" name="address" placeholder="Masukkan alamat" required />
-                                  @error('address')
-                                  <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                              </div>
-                          <div class="col-md-12 mt-2">
-                              <div class="form-group">
-                                  <label for="no_telp">Nomor HP</label>
-                                  <input type="text" class="form-control mt-1" id="no_telp" name="no_telp" placeholder="Masukkan Nomor HP" required />
-                                  @error('no_telp')
-                                  <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                              </div>
-                          </div>
+              <div class="row">
+                <div class="col-md-12 mt-2">
+                    <div class="form-group">
+                        <label for="nama_cabang">Nama Client</label>
+                        <input type="text" class="form-control mt-1" name="name" placeholder="Masukkan nama client" required />
+                        @error('name')
+                        <div class="invalid-feedback">
+                          {{ $message }}
                       </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
-                  <button type="submit" class="btn btn-primary mr-2">Tambah</button>
-              </div>
-          </form>
+                      @enderror
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control mt-1" id="address" name="address" placeholder="Masukkan alamat" required />
+                        @error('address')
+                        <div class="invalid-feedback">
+                          {{ $message }}
+                      </div>
+                      @enderror
+                    </div>
+                <div class="col-md-12 mt-2">
+                    <div class="form-group">
+                        <label for="no_telp">Nomor HP</label>
+                        <input type="text" class="form-control mt-1" id="no_telp" name="no_telp" placeholder="Masukkan Nomor HP" required />
+                        @error('no_telp')
+                        <div class="invalid-feedback">
+                          {{ $message }}
+                      </div>
+                      @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+        <button type="submit" class="btn btn-primary mr-2">Tambah</button>
+    </div>
       </div>
   </div>
 </div>
+
+{{-- Modal Edit --}}
+@foreach ($client as $clients)
+  
+<div class="modal fade" id="modalEdit-{{$clients->id}}" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="modal2Label">Edit Client</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="{{ route('workspace.clients.update', $clients->id) }}" method="post">
+              @csrf
+          <div class="mb-3">
+              <label class="form-label">Nama Client</label>
+              <input type="text" name="nama_sekolah" class="form-control" placeholder="Masukkan Nama" value="{{ $clients->name }}" >
+            </div>
+          <div class="mb-3">
+              <label class="form-label">Alamat</label>
+              <input type="text" name="alamat" class="form-control" placeholder="Masukkan Alamat" value="{{ $clients->address }}">
+            </div>
+          <div class="mb-3">
+              <label class="form-label">No Telp</label>
+              <input type="text" name="jurusan" class="form-control" placeholder="Masukan Jurusan" value="{{ $clients->no_telp }}">
+            </div>
+          <div class="mb-3">
+              <input type="submit" value="Simpan" class="btn btn-primary">
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+@endforeach
 
 @endsection
