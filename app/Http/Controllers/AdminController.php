@@ -29,9 +29,6 @@ class AdminController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
-
-
-
         $data['id_role'] = 2;
         $data['fullname']   = $request->fullname;
         $data['email']      = $request->email;
@@ -55,5 +52,79 @@ class AdminController extends Controller
             }
             
         }
+    }
+
+    public function destroy(Request $request,$id){
+        // delete data
+        $user = User::find($id);
+        if($user->id_role == 1){
+            Alert::error('Failed Message', 'You have failed delete super admin.');
+            return redirect()->route('superadmin.admin.show')->with('failed','Gagal menghapus Super Admin!');
+        }
+
+        $user->delete();
+        Alert::success('Success Message', 'You have successfully delete admin.');
+        return redirect()->route('superadmin.admin.show');
+    }
+
+    public function update(Request $request, $id){
+        // update data
+        $validator = null;
+        if($request->password != null){
+            $validator = Validator::make($request->all(), [
+                'fullname' => ['required'],
+                'email' => ['required', 'email:dns'],
+                'password' => ['required', 'min:6'],
+                'profession' => ['required'],
+                'experience_level' => ['required'],
+                'organization' => ['required'],
+            ]);
+
+            if($validator->fails()){
+                return redirect()->route('superadmin.admin.show')
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+
+            $data = [
+                'fullname' => $request->fullname,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'profession' => $request->profession,
+                'experience_level' => $request->experience_level,
+                'organization' => $request->organization,
+            ];
+
+            User::find($id)->update($data);
+            Alert::success('Success Message', 'You have successfully update admin.');
+            return redirect()->route('superadmin.admin.show');
+        }else{
+            $validator = Validator::make($request->all(), [
+                'fullname' => ['required'],
+                'email' => ['required', 'email:dns'],
+                'profession' => ['required'],
+                'experience_level' => ['required'],
+                'organization' => ['required'],
+            ]);
+
+            if($validator->fails()){
+                return redirect()->route('superadmin.admin.show')
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+
+            $data = [
+                'fullname' => $request->fullname,
+                'email' => $request->email,
+                'profession' => $request->profession,
+                'experience_level' => $request->experience_level,
+                'organization' => $request->organization,
+            ];
+
+            User::find($id)->update($data);
+            Alert::success('Success Message', 'You have successfully update admin.');
+            return redirect()->route('superadmin.admin.show');
+        }    
+
     }
 }
