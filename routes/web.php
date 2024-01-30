@@ -105,5 +105,7 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 
     Route::get('/admins', [AdminController::class, 'index'])->name('admin.show');
 
     Route::post('/admins/create', [AdminController::class, 'store'])->name('admin.create');
+    Route::delete('/admins/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
+    Route::put('/admins/update/{id}', [AdminController::class, 'update'])->name('admin.update');
 }
 );
