@@ -224,7 +224,6 @@
 @endsection
 
 
-
 @section('sweetalert')
 <script>
     // Auto-close the alert messages after 3 seconds (3000 milliseconds)

@@ -20,8 +20,10 @@
     <link href="{{ asset('dist/css/tabler-payments.min.css?1684106062')}}" rel="stylesheet"/>
     <link href="{{ asset('dist/css/tabler-vendors.min.css?1684106062')}}" rel="stylesheet"/>
     <link href="{{ asset('dist/css/demo.min.css?1684106062')}}" rel="stylesheet"/>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       @import url('https://rsms.me/inter/inter.css');
+
       :root {
       	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
       }
@@ -44,6 +46,8 @@
       @include('workspace.component.body')
         {{-- Page Footer --}}
       @include('workspace.component.footer')
+	  {{-- sweet alert --}}
+	  @include('sweetalert::alert')
       </div>
     </div>
     <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
@@ -744,5 +748,6 @@
       });
       // @formatter:on
     </script>
+	@yield('sweetalert')
   </body>
 </html>
