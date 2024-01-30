@@ -34,16 +34,16 @@
     <script src="{{asset('dist/js/demo-theme.min.js?1684106062')}}"></script>
     <div class="page">
       <!-- Sidebar -->
-      @include('admin.component.sidebar')
+      @include('superadmin.component.sidebar')
       <!-- Navbar -->
-      @include('admin.component.navbar')
+      @include('superadmin.component.navbar')
       <div class="page-wrapper">
         <!-- Page header -->
-      {{-- @include('admin.component.header') --}}
+      {{-- @include('superadmin.component.header') --}}
         <!-- Page body -->
-      @include('admin.component.body')
+      @include('superadmin.component.body')
         {{-- Page Footer --}}
-      @include('admin.component.footer')
+      @include('superadmin.component.footer')
       </div>
     </div>
     <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">

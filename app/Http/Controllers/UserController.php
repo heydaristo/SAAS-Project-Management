@@ -100,8 +100,8 @@ class UserController extends Controller
         return redirect()->route('login');
     }
 
-    public function index(){
+    public function index($role_id){
         $users = User::where('id_role', 3)->get();
-        return view('superadmin.user.index', compact('users'));
+        return view('admin.user.index', compact('users'));
     }
 }
