@@ -103,5 +103,7 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 
         return view('superadmin.dashboard');
     })->name('dashboard');
     Route::get('/admins', [AdminController::class, 'index'])->name('admin.show');
+
+    Route::post('/admins/create', [AdminController::class, 'store'])->name('admin.create');
 }
 );
