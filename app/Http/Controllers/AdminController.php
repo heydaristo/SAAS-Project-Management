@@ -25,6 +25,8 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $error = "You have failed add new admin.\n".strval($validator->errors());
+            Alert::error('Failed Message', $error);
             return redirect()->route('superadmin.admin.show')
                         ->withErrors($validator)
                         ->withInput();

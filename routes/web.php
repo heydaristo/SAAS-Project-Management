@@ -91,7 +91,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
         return view('admin.dashboard');
     })->name('dashboard');
 
-    Route::get('/clients', [UserController::class, 'index'])->name('user.show');
+    Route::get('/users', [UserController::class, 'index'])->name('user.show');
+    Route::post('/users/create', [UserController::class, 'store'])->name('user.create');
+    Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('user.delete');
+    Route::put('/users/update/{id}', [UserController::class, 'update'])->name('user.update');
+    
 });
 
 Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 'superadmin.'], function(){

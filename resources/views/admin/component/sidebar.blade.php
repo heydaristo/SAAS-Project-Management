@@ -149,7 +149,7 @@
                 </svg>
             </span>
             <span class="nav-link-title">
-              Client
+              User
             </span>
           </a>
         </li>
