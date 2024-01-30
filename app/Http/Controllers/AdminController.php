@@ -18,7 +18,6 @@ class AdminController extends Controller
     }
 
     public function store(Request $request){
-
         // store data
         $validator = Validator::make($request->all(), [
             'fullname' => ['required'],
@@ -30,7 +29,6 @@ class AdminController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
-
         $data['id_role'] = 2;
         $data['fullname']   = $request->fullname;
         $data['email']      = $request->email;
@@ -127,5 +125,6 @@ class AdminController extends Controller
             Alert::success('Success Message', 'You have successfully update admin.');
             return redirect()->route('superadmin.admin.show');
         }    
+
     }
 }

@@ -40,7 +40,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 
-    Route::post('/clients/create', [ClientController::class, 'store'])->name('clients.create');
+    Route::post('/clients/create', [ClientController::class, 'store'])->name('clients.store');
 
     Route::get('/clients/edit/{id}', [ClientController::class, 'edit'])->name('clients.edit');
 
