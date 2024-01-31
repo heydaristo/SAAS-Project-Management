@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
 
 use App\Models\User;
 
@@ -121,13 +122,13 @@ class UserController extends Controller
                         ->withInput();
         }
 
-        $data['id_role'] = 2;
+        $data['id_role'] = 3;
         $data['fullname']   = $request->fullname;
         $data['email']      = $request->email;
         $data['password']   = Hash::make('12345');
-        $data['profession'] = "Admin";
-        $data['experience_level'] = 1;
-        $data['organization'] = "Admin";
+        $data['profession'] = "notset";
+        $data['experience_level'] = 0;
+        $data['organization'] = "notset";
         $data['photo_profile'] = "https://png.pngtree.com/png-vector/20220628/ourmid/pngtree-user-profile-avatar-vector-admin-png-image_5289693.png";
         
 
@@ -136,11 +137,11 @@ class UserController extends Controller
         }else{
             $result = User::create($data);
             if($result){
-                Alert::success('Success Message', 'You have successfully add new admin.');
-                return redirect()->route('superadmin.admin.show')->with('success','Berhasil menambahkan Admin!');
+                Alert::success('Success Message', 'You have successfully add new freelance.');
+                return redirect()->route('admin.user.show');
             }else{
-                Alert::error('Failed Message', 'You have failed add new admin.');
-                return redirect()->route('superadmin.admin.show')->with('failed','Gagal menambahkan Admin!');
+                Alert::error('Failed Message', 'You have failed add new freelance.');
+                return redirect()->route('admin.user.show');
             }
             
         }

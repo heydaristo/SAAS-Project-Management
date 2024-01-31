@@ -104,8 +104,19 @@
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
             <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
             <div class="d-none d-xl-block ps-2">
-              <div>Paweł Kuna</div>
-              <div class="mt-1 small text-muted">UI Designer</div>
+              <div>{{ Auth::user()->fullname }}</div>
+              <div class="mt-1 small text-muted">
+                @if(Auth::user()->id_role == 1)
+                    Superadmin
+                @elseif(Auth::user()->id_role == 2)
+                    Admin
+                @elseif(Auth::user()->id_role == 3)
+                    Freelance
+                @else
+                    Peran tidak dikenali
+                @endif
+            </div>
+            
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
