@@ -11,6 +11,7 @@ class ClientController extends Controller
     public function index(){
         $i = 1;
         $client = Client::where('user_id', auth()->user()->id)->get();
+        $client = Client::paginate(10);
         return view('workspace.clients.index', compact('client', 'i'));
     }
 
