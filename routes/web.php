@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
     Route::post('/plans/create', [PlanController::class, 'store'])->name('plan.create');
     Route::delete('/plans/delete/{id}', [PlanController::class, 'destroy'])->name('plan.delete');
     Route::put('/plans/update/{id}', [PlanController::class, 'update'])->name('plan.update');
+
+    // subscription management
+    Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscription.show');
+    Route::post('/subscriptions/create', [SubscriptionController::class, 'store'])->name('subscription.create');
+    Route::delete('/subscriptions/delete/{id}', [SubscriptionController::class, 'destroy'])->name('subscription.delete');
+    Route::put('/subscriptions/update/{id}', [SubscriptionController::class, 'update'])->name('subscription.update');
 });
 
 Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 'superadmin.'], function(){
