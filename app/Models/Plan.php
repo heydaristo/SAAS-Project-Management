@@ -12,7 +12,7 @@ class Plan extends Model
 
     protected $fillable=[
         'plan_name',
-        'benefit',
+        'benefits',
         'price',
     ];
 

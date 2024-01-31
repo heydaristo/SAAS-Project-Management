@@ -44,6 +44,8 @@
       @include('admin.component.body')
         {{-- Page Footer --}}
       @include('admin.component.footer')
+	  {{-- sweet alert --}}
+	  @include('sweetalert::alert')
       </div>
     </div>
     <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
@@ -744,5 +746,6 @@
       });
       // @formatter:on
     </script>
+	@yield('sweetalert')
   </body>
 </html>

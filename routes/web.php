@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,11 +92,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
         return view('admin.dashboard');
     })->name('dashboard');
 
+    // user(freelance) management
     Route::get('/users', [UserController::class, 'index'])->name('user.show');
     Route::post('/users/create', [UserController::class, 'store'])->name('user.create');
     Route::delete('/users/delete/{id}', [UserController::class, 'destroy'])->name('user.delete');
     Route::put('/users/update/{id}', [UserController::class, 'update'])->name('user.update');
     
+    // plan management
+    Route::get('/plans', [PlanController::class, 'index'])->name('plan.show');
+    Route::post('/plans/create', [PlanController::class, 'store'])->name('plan.create');
+    Route::delete('/plans/delete/{id}', [PlanController::class, 'destroy'])->name('plan.delete');
+    Route::put('/plans/update/{id}', [PlanController::class, 'update'])->name('plan.update');
 });
 
 Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 'superadmin.'], function(){
