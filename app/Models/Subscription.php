@@ -16,7 +16,9 @@ class Subscription extends Model
     protected $fillable=[
         'id_user',
         'id_plan',
-        'how_long'
+        'duration',
+        'start_date',
+        'end_date',
     ];
 
     public function user() : BelongsTo
