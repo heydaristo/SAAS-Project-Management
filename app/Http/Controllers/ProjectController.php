@@ -3,11 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ProjectModel;
+use App\Models\User;
+use App\Models\Client;
+use Illuminate\Support\Facades\DB;
+
 
 class ProjectController extends Controller
 {
     public function index(){
-        return view('workspace.projects');
+        $projectmodels = DB::table('project_models')
+        ->join('users', 'project_models.user_id', '=', 'users.id')
+        ->join('clients', 'project_models.id_client', '=', 'clients.id')
+        ->select('project_models.*', 'users.fullname as fullname', 'clients.name as name')
+        ->get();
+        $freelances = User::where('id_role', 3)->get();
+        $clients = Client::all();
+        return view('workspace.projects.index', compact('projectmodels', 'freelances', 'clients'));
     }
 
     public function create(){
@@ -16,10 +28,12 @@ class ProjectController extends Controller
 
     public function store(Request $request){
         $data = [
-            'name' => $request->name,
-            'address' => $request->address,
-            'no_telp' => $request->no_telp,
-            'user_id' => auth()->user()->id,
+            'project_name' => $request->project_name,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'end_date' => $request->end_date,
+            'end_date' => $request->end_date,
+
         ];
 
         Client::create($data);
