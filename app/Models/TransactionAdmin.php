@@ -13,9 +13,10 @@ class TransactionAdmin extends Model
 
     protected $fillable=[
         'id_subscription',
-        'id_admin',
+        'id_user',
         'amount',
         'date',
+        'status'
     ];
 
     public function subscription() : BelongsTo
@@ -23,8 +24,8 @@ class TransactionAdmin extends Model
         return $this->belongsTo(Subscription::class);
     }
 
-    public function admin() : BelongsTo
+    public function user() : BelongsTo
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsTo(User::class);
     }
 }

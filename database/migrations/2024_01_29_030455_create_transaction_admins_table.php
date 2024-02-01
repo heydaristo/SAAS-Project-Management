@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_subscription');
             $table->foreign('id_subscription')->references('id')->on('subscriptions');
-            $table->unsignedBigInteger('id_admin');
-            $table->foreign('id_admin')->references('id')->on('admins');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->decimal('amount');
             $table->date('date');
             $table->timestamps();

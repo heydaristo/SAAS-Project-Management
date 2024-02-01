@@ -74,6 +74,15 @@ class SubscriptionController extends Controller
         }else{
             $result = Subscription::create($data);
             if($result){
+                // tambah ke table transaction
+                $dataTransaction['id_subscription'] = $result->id;
+                $dataTransaction['id_user'] = $request->id_user;
+                $plan = Plan::find($request->id_plan);
+                $dataTransaction['amount'] = $plan->price;
+                $dataTransaction['date'] = date('Y-m-d');
+                $dataTransaction['status'] = 'PAID';
+                DB::table('transaction_admins')->insert($dataTransaction);
+
                 Alert::success('Success Message', 'You have successfully add new subscription.');
                 return redirect()->route('admin.subscription.show');
             }else{
@@ -81,6 +90,8 @@ class SubscriptionController extends Controller
                 return redirect()->route('admin.subscription.show');
             }
         }
+
+        
 
     }
 
@@ -137,6 +148,9 @@ class SubscriptionController extends Controller
 
         $result = $subscription->update($data);
         if($result){
+
+
+            
             Alert::success('Success Message', 'You have successfully update subscription.');
             return redirect()->route('admin.subscription.show');
         }else{
