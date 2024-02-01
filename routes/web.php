@@ -8,6 +8,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\AdminTranscationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +111,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
     Route::post('/subscriptions/create', [SubscriptionController::class, 'store'])->name('subscription.create');
     Route::delete('/subscriptions/delete/{id}', [SubscriptionController::class, 'destroy'])->name('subscription.delete');
     Route::put('/subscriptions/update/{id}', [SubscriptionController::class, 'update'])->name('subscription.update');
+
+    // admin transaction management
+    Route::get('/transactions', [AdminTranscationController::class, 'index'])->name('transaction.show');
+    Route::post('/transactions/create', [AdminTranscationController::class, 'store'])->name('transaction.create');
+    Route::delete('/transactions/delete/{id}', [AdminTranscationController::class, 'destroy'])->name('transaction.delete');
+    Route::put('/transactions/update/{id}', [AdminTranscationController::class, 'update'])->name('transaction.update');
+    
 });
 
 Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 'superadmin.'], function(){
@@ -120,8 +128,9 @@ Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 
     Route::get('/dashboard', function () {
         return view('superadmin.dashboard');
     })->name('dashboard');
-    Route::get('/admins', [AdminController::class, 'index'])->name('admin.show');
 
+    // admin management
+    Route::get('/admins', [AdminController::class, 'index'])->name('admin.show');
     Route::post('/admins/create', [AdminController::class, 'store'])->name('admin.create');
     Route::delete('/admins/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
     Route::put('/admins/update/{id}', [AdminController::class, 'update'])->name('admin.update');
