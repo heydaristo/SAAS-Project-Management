@@ -203,7 +203,7 @@
             <div class="modal-body">
               <div class="mb-3">
                 <label class="form-label">Freelance</label>
-                <select class="form-control form-select" name="id_user">
+                <select class="form-control form-select" name="id_user" id="id_user">
                   <option value="">Select Freelance</option>
                   @foreach($freelances as $freelance)
                     <option value="{{ $freelance->id }}">{{ $freelance->fullname }}</option>
@@ -212,12 +212,9 @@
               </div>
               <div class="mb-3">
                 <label class="form-label">Id Subscription</label>
-                <select class="form-control form-select" name="id_subscription">
+                <select class="form-control form-select" name="id_subscription" id="id_subscription">
                   {{-- show based on the freelance --}}
                   <option value="">Select Id Subscription</option>
-                  @foreach($subscriptions as $subscription)
-                    <option value="{{ $subscription->id }}">{{ $subscription->id }}</option>
-                  @endforeach
                 </select>
               </div>
               <div class="mb-3">
@@ -255,6 +252,28 @@
       </div>
     </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+    $('#id_user').change(function(){
+        var id = $(this).val();
+        console.log(id);
+        $.ajax({
+          url: "{{ route('admin.transaction.listsubscriptions',['id' => "+id+"]) }}",
+          type: 'GET',
+          data: {
+              id: id
+          },
+          success: function (data) {
+            $.each(data, function (key, value) {
+                $('#id_subscription').append('<option value="' + value.id + '">' + value.id + '</option>');
+            });
+          }
+        });
+    });
+});
+
+</script>
 @endsection
 
 @section('sweetalert')
@@ -265,3 +284,4 @@
     }, 3000);
 </script>
 @endsection
+
