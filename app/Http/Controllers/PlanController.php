@@ -11,6 +11,7 @@ class PlanController extends Controller
     public function index()
     {
         $plans = Plan::all(); 
+        $plans = Plan::paginate(5); 
         return view('admin.plan.index', compact('plans'));
     }
 
