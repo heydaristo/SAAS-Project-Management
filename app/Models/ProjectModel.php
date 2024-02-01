@@ -19,6 +19,7 @@ class ProjectModel extends Model
         'end_date',
         'status',
         'id_client',
+        'user_id'
     ];
 
     Public function client(): BelongsTo

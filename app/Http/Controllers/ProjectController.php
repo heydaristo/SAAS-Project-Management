@@ -7,6 +7,9 @@ use App\Models\ProjectModel;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 
 class ProjectController extends Controller
@@ -27,18 +30,42 @@ class ProjectController extends Controller
     }
 
     public function store(Request $request){
-        $data = [
-            'project_name' => $request->project_name,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'end_date' => $request->end_date,
-            'end_date' => $request->end_date,
+        $validator = Validator::make($request->all(), [
+            'project_name' => ['required'],
+            'start_date' => ['required'],
+            'end_date' => ['required'],
+            'status' => ['required'],
+            'id_client' => ['required'],
+            'user_id' => ['required'],
+        ]);
+        if ($validator->fails()) {
+            $error = "You have failed add new projeect.\n".strval($validator->errors());
+            Alert::error('Failed Message', $error);
+            return redirect()->route('workspace.projects');
+        }
 
-        ];
+        $data['project_name'] = $request->project_name;
+        $data['start_date'] = $request->start_date;
+        $data['end_date'] = $request->end_date;
+        $data['status'] = $request->status;
+        $data['id_client'] = $request->id_client;
+        $data['user_id'] = $request->user_id;
 
-        Client::create($data);
-
-        return redirect()->route('workspace.clients');
+        if(!$data){
+            $error = "You have failed add new projeect.\n".strval($validator->errors());
+            Alert::error('Failed Message', $error);
+            return redirect()->route('workspace.projects');
+        }else{
+            // dd($data);
+            $result = ProjectModel::create($data);
+            if($result){
+                Alert::success('Success Message', 'You have successfully add new project.');
+                return redirect()->route('workspace.projects');
+            }else{
+                Alert::error('Failed Message', 'You have failed add new project.');
+                return redirect()->route('workspace.projects');
+            }
+        }
     }
 
     public function edit($id){
@@ -48,15 +75,28 @@ class ProjectController extends Controller
     }
 
     public function update(Request $request, $id){
+        $request->validate([
+            'project_name' => ['required'],
+          'start_date' => ['required'],
+           'end_date' => ['required'],
+         'status' => ['required'],
+           'id_client' => ['required'],
+           'user_id' => ['required'],
+        ]);
+
         $data = [
-            'name' => $request->name,
-            'address' => $request->address,
-            'no_telp' => $request->no_telp,
+            'project_name' => $request->project_name,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'status' => $request->status,
+            'id_client' => $request->id_client,
+            'user_id' => $request->user_id,
         ];
 
-        Client::find($id)->update($data);
 
-        return redirect()->route('workspace.clients');
+        ProjectModels::find($id)->update($data);
+        return redirect()->route('workspace.projects');
+
     }
 
     public function show($id){
