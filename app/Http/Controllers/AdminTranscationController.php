@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Database\Query\Builder;
 
 class AdminTranscationController extends Controller
 {
@@ -105,5 +106,19 @@ class AdminTranscationController extends Controller
                 return redirect()->route('admin.transaction.show');
             }
         }
+    }
+
+    public function listSubscriptions(Request $request){
+        $id = $request->id;
+        $subscriptions = DB::table('subscriptions')
+        ->where('subscriptions.id_user', $id)
+        ->whereNotExists(function (Builder $query) {
+            $query->select(DB::raw(1))
+                  ->from('transaction_admins')
+                  ->whereColumn('transaction_admins.id_subscription', 'subscriptions.id');
+        })
+        ->get();
+
+        return $subscriptions;
     }
 }

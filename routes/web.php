@@ -117,6 +117,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
     Route::post('/transactions/create', [AdminTranscationController::class, 'store'])->name('transaction.create');
     Route::delete('/transactions/delete/{id}', [AdminTranscationController::class, 'destroy'])->name('transaction.delete');
     Route::put('/transactions/update/{id}', [AdminTranscationController::class, 'update'])->name('transaction.update');
+
+    Route::get('/transactions/listsubscriptions/{id}', [AdminTranscationController::class, 'listSubscriptions'])->name('transaction.listsubscriptions');
     
 });
 
