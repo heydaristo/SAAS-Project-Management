@@ -19,10 +19,13 @@ class ProjectController extends Controller
         ->join('users', 'project_models.user_id', '=', 'users.id')
         ->join('clients', 'project_models.id_client', '=', 'clients.id')
         ->select('project_models.*', 'users.fullname as fullname', 'clients.name as name')
-        ->get();
+        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
+    
         $freelances = User::where('id_role', 3)->get();
         $clients = Client::all();
+    
         return view('workspace.projects.index', compact('projectmodels', 'freelances', 'clients'));
+    
     }
 
     public function create(){
@@ -92,23 +95,22 @@ class ProjectController extends Controller
             'id_client' => $request->id_client,
             'user_id' => $request->user_id,
         ];
+        if(!$data) {
+            Alert::error('Failed Message', 'You have failed to edit project.');
+            return redirect()->route('workspace.projects');
+        } else {
+            Alert::success('Success Message', 'You have successfully to edit project.');
+            ProjectModel::find($id)->update($data);
+            return redirect()->route('workspace.projects');
 
-
-        ProjectModels::find($id)->update($data);
-        return redirect()->route('workspace.projects');
-
-    }
-
-    public function show($id){
-        $client = Client::find($id);
-
-        return view('workspace.clients.show', compact('client'));
+        }
     }
 
 
     public function destroy($id){
-        Client::find($id)->delete();
+        ProjectModel::find($id)->delete();
 
-        return redirect()->route('workspace.clients');
+        Alert::success('Success Message', 'You have successfully to delete project.');
+        return redirect()->route('workspace.projects');
     }
 }
