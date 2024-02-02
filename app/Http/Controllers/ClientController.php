@@ -2,17 +2,36 @@
 
 namespace App\Http\Controllers;
 use App\Models\Client;
-
+use App\Models\User;
+use Carbon\Carbon;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
     public function index(){
-        $i = 1;
+        // Hitung jumlah pengguna yang mendaftar dalam satu minggu terakhir
+        $userCountLastWeek = User::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        
+        // Hitung jumlah total pengguna
+        $userCount = User::count();
+        
+        // Hitung jumlah klien yang didaftarkan dalam satu minggu terakhir
+        $clientCountLastWeek = Client::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        
+        // Hitung jumlah total klien
+        $clientCount = Client::count();
+        
+        // Mengirimkan data ke tampilan Blade
         $client = Client::where('user_id', auth()->user()->id)->get();
-        $client = Client::paginate(10);
-        return view('workspace.clients.index', compact('client', 'i'));
+        $client = Client::paginate(5);
+        return view('workspace.clients.index', [
+            'userCountLastWeek' => $userCountLastWeek,
+            'userCount' => $userCount,
+            'clientCountLastWeek' => $clientCountLastWeek,
+            'clientCount' => $clientCount,
+            'client' => $client
+        ]);
     }
 
     public function store(Request $request){

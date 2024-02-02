@@ -61,6 +61,9 @@
           </tr>
         </thead>
         <tbody>
+          @php
+          $i = 1 + (($client->currentPage()-1) * $client->perPage());
+          @endphp
           @foreach($client as $clients)
           <tr>
             <td>{{ $i++ }}</td>
