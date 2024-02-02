@@ -58,15 +58,15 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
 
-    Route::get('/projects/edit/{id}', [ProjectController::class, 'edit'])->name('projects.edit');
+    // Route::get('/projects/edit/{id}', [ProjectController::class, 'edit'])->name('projects.edit');
 
-    Route::get('/projects/update/{id}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::put('/projects/update/{id}', [ProjectController::class, 'update'])->name('projects.update');
 
-    Route::get('/projects/delete/{id}', [ProjectController::class, 'delete'])->name('projects.delete');
+    Route::delete('/projects/delete/{id}', [ProjectController::class, 'destroy'])->name('projects.delete');
 
     Route::get('/projects/show/{id}', [ProjectController::class, 'show'])->name('projects.show');
 
-    Route::get('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
+    Route::post('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
 
     Route::get('/quotation', [QuotationController::class, 'index'])->name('quotation');
 
