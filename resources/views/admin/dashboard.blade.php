@@ -9,14 +9,11 @@
         <div class="d-flex align-items-center">
           <div class="subheader">Sales</div>
           <div class="ms-auto lh-1">
-            <div class="dropdown">
-              <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-              <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item active" href="#">Last 7 days</a>
-                <a class="dropdown-item" href="#">Last 30 days</a>
-                <a class="dropdown-item" href="#">Last 3 months</a>
-              </div>
-            </div>
+            <select class="form-select">
+              <option value="3months">Last 3 Months</option>
+              <option value="30days">Last 30 days</option>
+              <option value="7days">Last 7 days</option>
+            </select>
           </div>
         </div>
         <div class="h1 mb-3">75%</div>
@@ -43,21 +40,18 @@
         <div class="d-flex align-items-center">
           <div class="subheader">Revenue</div>
           <div class="ms-auto lh-1">
-            <div class="dropdown">
-              <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-              <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item active" href="#">Last 7 days</a>
-                <a class="dropdown-item" href="#">Last 30 days</a>
-                <a class="dropdown-item" href="#">Last 3 months</a>
-              </div>
-            </div>
+            <select class="form-select" id="revenue-chart" onchange="myFunction()">
+              <option value="3months">Last 3 Months</option>
+              <option value="30days">Last 30 days</option>
+              <option value="7days">Last 7 days</option>
+            </select>
           </div>
         </div>
-        <div class="d-flex align-items-baseline">
-          <div class="h1 mb-3 me-2">RP6,782</div>
+        <div class="d-flex align-items-baseline" id="chart-rev-sum">
+          <div class="h1 mb-3 me-2">@currency($revenueSummaryThreeMonths)</div>
         </div>
-        <div class="rounded text-light">
-          {!! $revenueChart->container() !!}
+        <div class="rounded text-light" id="chart-position">
+          {!! $revenueChartThreeMonths->container() !!}
         </div>
       </div>
       
@@ -535,8 +529,53 @@
       </div>
     </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    function myFunction() {
+      var id = 1;
+        $.ajax({
+          url: "{{ route('admin.transaction.listsubscriptions',['id' => "+id+"]) }}",
+          type: 'GET',
+          data: {
+              id: id
+          },
+          success: function (data) {
+            var x = document.getElementById("revenue-chart").value;
+            if(x == '3months'){
+              var z = document.getElementById("chart-rev-sum");
+              z.innerHTML = '<div class="h1 mb-3 me-2">@currency($revenueSummaryThreeMonths)</div>';
+              var y = document.getElementById("chart-position");
+              y.innerHTML = '{!! $revenueChartThreeMonths->container() !!}';
+            }
+            if(x == '30days'){
+              var z = document.getElementById("chart-rev-sum");
+              z.innerHTML = '<div class="h1 mb-3 me-2">@currency($revenueSummaryThirtyDays)</div>';
+              var y = document.getElementById("chart-position");
+              y.innerHTML = '{!! $revenueChartThirtyDays->container() !!}';
+            }
+            if(x == '7days'){
+              var z = document.getElementById("chart-rev-sum");
+              z.innerHTML = '<div class="h1 mb-3 me-2">@currency($revenueSummarySevenDays)</div>';
+              var y = document.getElementById("chart-position");
+              y.innerHTML = '{!! $revenueChartSevenDays->container() !!}';
+            }
+          }
+        });
+      
+    }
 
-  <script src="{{ $revenueChart->cdn()}}"></script>
-	{{ $revenueChart->script() }}
+  </script>
+
+  <script src="{{ $revenueChartThreeMonths->cdn()}}"></script>
+	{{ $revenueChartThreeMonths->script() }}
+
+  <script src="{{ $revenueChartThirtyDays->cdn()}}"></script>
+  {{ $revenueChartThirtyDays->script() }}
+
+  <script src="{{ $revenueChartSevenDays->cdn()}}"></script>
+  {{ $revenueChartSevenDays->script() }}
+
+  
+
 
 @endsection

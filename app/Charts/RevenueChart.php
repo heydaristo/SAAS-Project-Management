@@ -17,29 +17,107 @@ class RevenueChart
         $this->chart = $chart;
     }
 
-    public function build(): \ArielMejiaDev\LarapexCharts\LineChart
+    public function ThreeMonths(): \ArielMejiaDev\LarapexCharts\LineChart
     {
-        $revenue = TransactionAdmin::get();
-
-        // get revenue from three month before and group by month
-
-        $revenue = $revenue->groupBy(function($date) {
-            return Carbon::parse($date->created_at)->format('Y-m');
-        });
+        // get data from 3 months ago
+        $revenue = TransactionAdmin::where('status', 'PAID')
+            ->where('date', '>=', Carbon::now()->subMonth(3))
+            ->orderBy('date', 'asc')
+            ->get();
+        
+            
+            // group by month
+            $revenue = $revenue->groupBy(function($date) {
+                return Carbon::parse($date->date)->format('Y-m');
+            });    
+            
+            // get total revenue
+            $revenue = $revenue->map(function($item, $key){
+                return $item->sum('amount');
+            });
+            
 
         $data = [];
         $label = [];
-
         foreach($revenue as $key => $value){
-            $data[] = $value->sum('total');
-            $label[] = Carbon::parse($key)->format('F Y');
+            $data[] = $value;
+            $label[] = $key;
         }
-        // dd($data, $label);
 
         
 
         return $this->chart->lineChart()
-            ->setHeight(300)
+            ->setHeight(200)
+            ->addData('Revenue',$data)
+            ->setLabels($label);
+    }
+
+    public function ThirtyDays(): \ArielMejiaDev\LarapexCharts\LineChart
+    {
+        // get data from 30 days ago
+        $revenue = TransactionAdmin::where('status', 'PAID')
+            ->where('date', '>=', Carbon::now()->subDays(30))
+            ->orderBy('date', 'asc')
+            ->get();
+        
+            
+            // group by month
+            $revenue = $revenue->groupBy(function($date) {
+                return Carbon::parse($date->date)->format('Y-m-d');
+            });    
+            
+            // get total revenue
+            $revenue = $revenue->map(function($item, $key){
+                return $item->sum('amount');
+            });
+            
+
+        $data = [];
+        $label = [];
+        foreach($revenue as $key => $value){
+            $data[] = $value;
+            $label[] = $key;
+        }
+
+        
+
+        return $this->chart->lineChart()
+            ->setHeight(200)
+            ->addData('Revenue',$data)
+            ->setLabels($label);
+    }
+
+    public function SevenDays(): \ArielMejiaDev\LarapexCharts\LineChart
+    {
+        // get data from 30 days ago
+        $revenue = TransactionAdmin::where('status', 'PAID')
+            ->where('date', '>=', Carbon::now()->subDays(7))
+            ->orderBy('date', 'asc')
+            ->get();
+        
+            
+            // group by month
+            $revenue = $revenue->groupBy(function($date) {
+                return Carbon::parse($date->date)->format('Y-m-d');
+            });    
+            
+            // get total revenue
+            $revenue = $revenue->map(function($item, $key){
+                return $item->sum('amount');
+            });
+            
+
+        $data = [];
+        $label = [];
+        foreach($revenue as $key => $value){
+            $data[] = $value;
+            $label[] = $key;
+        }
+
+        
+
+        return $this->chart->lineChart()
+            ->setHeight(200)
             ->addData('Revenue',$data)
             ->setLabels($label);
     }
