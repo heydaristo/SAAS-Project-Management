@@ -20,7 +20,7 @@ class AdminTranscationController extends Controller
         ->join('users', 'subscriptions.id_user', '=', 'users.id')
         ->join('plans', 'subscriptions.id_plan', '=', 'plans.id')
         ->select('transaction_admins.*', 'users.fullname as fullname', 'plans.plan_name as plan_name')
-        ->get();
+        ->paginate(5);
         $freelances = User::where('id_role', 3)->get();
         $subscriptions = Subscription::all();
         return view('admin.transaction.index', compact('transactions', 'freelances', 'subscriptions'));

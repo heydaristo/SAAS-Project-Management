@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use App\Models\Client;
+use Carbon\Carbon;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ClientController;
@@ -10,6 +13,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdminTranscationController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\workspace\WorkspaceDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,12 +39,8 @@ Route::post('/register-proses', [UserController::class, 'register_proses'])->nam
 
 
 Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'workspace.'], function(){
-    Route::get('/', function () {
-        return view('workspace.dashboard');
-    });
-    Route::get('/dashboard', function () {
-        return view('workspace.dashboard');
-    })->name('dashboard');
+
+    Route::get('/dashboard', [WorkspaceDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 
@@ -121,11 +121,48 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
 
 Route::group(['prefix' => 'superadmin', 'middleware' => ['superadmin'], 'as' => 'superadmin.'], function(){
     Route::get('/', function () {
-        return view('superadmin.dashboard');
+        // Hitung jumlah pengguna yang mendaftar dalam satu minggu terakhir
+        $userCountLastWeek = User::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        
+        // Hitung jumlah total pengguna
+        $userCount = User::count();
+        
+        // Hitung jumlah klien yang didaftarkan dalam satu minggu terakhir
+        $clientCountLastWeek = Client::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        
+        // Hitung jumlah total klien
+        $clientCount = Client::count();
+        
+        // Mengirimkan data ke tampilan Blade
+        return view('superadmin.dashboard', [
+            'userCountLastWeek' => $userCountLastWeek,
+            'userCount' => $userCount,
+            'clientCountLastWeek' => $clientCountLastWeek,
+            'clientCount' => $clientCount
+        ]);
+     
     });
 
     Route::get('/dashboard', function () {
-        return view('superadmin.dashboard');
+        // Hitung jumlah pengguna yang mendaftar dalam satu minggu terakhir
+        $userCountLastWeek = User::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        
+        // Hitung jumlah total pengguna
+        $userCount = User::count();
+        
+        // Hitung jumlah klien yang didaftarkan dalam satu minggu terakhir
+        $clientCountLastWeek = Client::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
+        
+        // Hitung jumlah total klien
+        $clientCount = Client::count();
+        
+        // Mengirimkan data ke tampilan Blade
+        return view('superadmin.dashboard', [
+            'userCountLastWeek' => $userCountLastWeek,
+            'userCount' => $userCount,
+            'clientCountLastWeek' => $clientCountLastWeek,
+            'clientCount' => $clientCount
+        ]);
     })->name('dashboard');
 
     // admin management

@@ -63,9 +63,12 @@
           </tr>
         </thead>
         <tbody>
+            @php
+            $i = 1 + (($projectmodels->currentPage()-1) * $projectmodels->perPage());
+            @endphp
             @foreach($projectmodels as $project)
             <tr>
-              <td><span class="text-muted">{{ $loop->iteration }}</span></td>
+              <td><span class="text-muted">{{ $i++ }}</span></td>
               <td>{{ $project->project_name}}</td>
               <td>{{ $project->start_date }}</td>
               <td>{{ $project->end_date }}</td>

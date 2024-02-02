@@ -9,7 +9,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
-use App\Models\plan;
+use App\Models\Plan;
 
 class SubscriptionController extends Controller
 {
@@ -19,7 +19,7 @@ class SubscriptionController extends Controller
         ->join('users', 'subscriptions.id_user', '=', 'users.id')
         ->join('plans', 'subscriptions.id_plan', '=', 'plans.id')
         ->select('subscriptions.*', 'users.fullname as fullname', 'plans.plan_name as plan_name')
-        ->get();
+        ->paginate(5);
         $freelances = User::where('id_role', 3)->get();
         $plans = Plan::all();
         return view('admin.subscription.index', compact('subscriptions', 'freelances', 'plans'));
