@@ -58,7 +58,7 @@
             <th>End Date</th>
             <th>Status</th>
             <th>Client</th>
-            <th>User</th>
+            <th>Freelancer</th>
             <th class="w-1"></th>
           </tr>
         </thead>
