@@ -9,6 +9,7 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdminTranscationController;
+use App\Http\Controllers\admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,12 +88,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    });
-    Route::get('/admindashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admindashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // user(freelance) management
     Route::get('/users', [UserController::class, 'index'])->name('user.show');
