@@ -58,14 +58,14 @@
           </div>
         </div>
       </div>
-      <div id="chart-revenue-bg" class="chart-sm"></div>
+      
     </div>
   </div>
   <div class="col-sm-6 col-lg-3">
     <div class="card">
       <div class="card-body">
         <div class="d-flex align-items-center">
-          <div class="subheader">New clients</div>
+          <div class="subheader">New Freelance</div>
           <div class="ms-auto lh-1">
             <div class="dropdown">
               <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
