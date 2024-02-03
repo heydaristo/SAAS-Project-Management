@@ -50,8 +50,16 @@
         <div class="d-flex align-items-baseline" id="chart-rev-sum">
           <div class="h1 mb-3 me-2">@currency($revenueSummaryThreeMonths)</div>
         </div>
-        <div class="rounded text-light" id="chart-position">
-          {!! $revenueChartThreeMonths->container() !!}
+        <div class="rounded" id="chart-position">
+          <div class="" id="3monthschart">
+            {!! $revenueChartThreeMonths->container() !!}
+          </div>
+          <div class="d-none" id="30dayschart">
+            {!! $revenueChartThirtyDays->container() !!}
+          </div>
+          <div class="d-none" id="7dayschart">
+            {!! $revenueChartSevenDays->container() !!}
+          </div>
         </div>
       </div>
       
@@ -544,20 +552,28 @@
             if(x == '3months'){
               var z = document.getElementById("chart-rev-sum");
               z.innerHTML = '<div class="h1 mb-3 me-2">@currency($revenueSummaryThreeMonths)</div>';
-              var y = document.getElementById("chart-position");
-              y.innerHTML = '{!! $revenueChartThreeMonths->container() !!}';
+              // hide chart 30 days and 7 days
+              document.getElementById("3monthschart").classList.remove('d-none');
+              document.getElementById("30dayschart").classList.add('d-none');
+              document.getElementById("7dayschart").classList.add('d-none');
+
             }
             if(x == '30days'){
               var z = document.getElementById("chart-rev-sum");
               z.innerHTML = '<div class="h1 mb-3 me-2">@currency($revenueSummaryThirtyDays)</div>';
-              var y = document.getElementById("chart-position");
-              y.innerHTML = '{!! $revenueChartThirtyDays->container() !!}';
+              // hide chart 3 months and 7 days
+              document.getElementById("30dayschart").classList.remove('d-none');
+              document.getElementById("3monthschart").classList.add('d-none');
+              document.getElementById("7dayschart").classList.add('d-none');
+
             }
             if(x == '7days'){
               var z = document.getElementById("chart-rev-sum");
               z.innerHTML = '<div class="h1 mb-3 me-2">@currency($revenueSummarySevenDays)</div>';
-              var y = document.getElementById("chart-position");
-              y.innerHTML = '{!! $revenueChartSevenDays->container() !!}';
+              // hide chart 3 months and 30 days
+              document.getElementById("7dayschart").classList.remove('d-none');
+              document.getElementById("3monthschart").classList.add('d-none');
+              document.getElementById("30dayschart").classList.add('d-none');
             }
           }
         });
