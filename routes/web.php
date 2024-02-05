@@ -85,6 +85,10 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/quotation/pdf/{id}', [QuotationController::class, 'pdf'])->name('quotation.pdf');
 
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
+
+    // settings
+
+    Route::get('/settings', [UserController::class, 'usersetting'])->name('settings');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
