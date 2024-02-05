@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
+use App\Models\Subscription;
+use App\Models\Plan;
 
 use App\Models\User;
 
@@ -88,6 +91,28 @@ class UserController extends Controller
         }else{
             $result = User::create($data);
             if($result){
+                // make subscription and transaction
+                $subscription = [
+                    'id_user' => $result->id,
+                    'id_plan' => 1,
+                    'status' => 'ACTIVE',
+                    'duration' => 12,
+                    'start_date' => now(),
+                    'end_date' => now()->addMonths(12),
+                ];
+
+                $resultSubscription = Subscription::create($subscription);
+                // make transaction
+                // tambah ke table transaction
+                $transaction = [
+                    'id_subscription' => $resultSubscription->id,
+                    'id_user' => $result->id,
+                    'amount' => 0,
+                    'status' => 'PAID',
+                    'date' => now(),
+                ];
+
+                DB::table('transaction_admins')->insert($transaction);
                 return redirect()->route('login')->with('success','Register Success');
             }else{
                 return redirect()->route('register')->with('failed','Register Failed');
@@ -216,5 +241,9 @@ class UserController extends Controller
             Alert::success('Success Message', 'You have successfully update admin.');
             return redirect()->route('admin.user.show');
         }    
+    }
+
+    public function usersetting(){
+        return view('workspace.settings');
     }
 }

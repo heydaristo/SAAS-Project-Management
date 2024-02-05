@@ -197,7 +197,17 @@
             </span>
           </a>
         </li>
+        {{-- upgrade to premium, make this button at button--}}
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            {{-- make button --}}
+            <button class="btn btn-primary btn-block">
+                Upgrade to Premium
+            </button>
+          </a>
       </ul>
     </div>
+    
+    
   </div>
 </aside>

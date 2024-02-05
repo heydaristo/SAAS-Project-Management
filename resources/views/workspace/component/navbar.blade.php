@@ -124,7 +124,7 @@
             <a href="./profile.html" class="dropdown-item">Profile</a>
             <a href="#" class="dropdown-item">Feedback</a>
             <div class="dropdown-divider"></div>
-            <a href="./settings.html" class="dropdown-item">Settings</a>
+            <a href="{{ route('workspace.settings') }}" class="dropdown-item">Settings</a>
             <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
           </div>
         </div>
