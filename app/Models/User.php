@@ -27,6 +27,7 @@ class User extends Authenticatable
         'experience_level',
         'organization',
         'photo_profile',
+        'last_activity'
     ];
 
     /**
