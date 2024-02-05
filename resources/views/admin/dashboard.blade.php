@@ -565,7 +565,6 @@
               document.getElementById("30dayschart").classList.remove('d-none');
               document.getElementById("3monthschart").classList.add('d-none');
               document.getElementById("7dayschart").classList.add('d-none');
-
             }
             if(x == '7days'){
               var z = document.getElementById("chart-rev-sum");
