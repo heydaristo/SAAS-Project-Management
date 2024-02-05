@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Charts\RevenueChart;
 use App\Charts\FreelanceChart;
 use App\Charts\ActiveUserChart;
+use App\Charts\ConversionRateChart;
 use App\Models\TransactionAdmin;
+use App\Models\Subscription;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -46,6 +48,31 @@ class DashboardController extends Controller
         $useractive7days = User::where('last_activity', '>=', now()->subDays(7))->count();
         $useractive15minutes = User::where('last_activity', '>=', now()->subMinutes(15))->count();
 
+        // formula for user conversion rate
+        $userRegister3Months = User::where('created_at', '>=', now()->subMonth(3))->count();
+        $userUpgradePremium3Months = Subscription::where('status', 'ACTIVE')
+            ->where('id_plan', '<>', 1)
+            ->where('created_at', '>=', Carbon::now()->subMonth(3))
+            ->count();
+        $conversionRate3Months = ($userUpgradePremium3Months / $userRegister3Months) * 100;
+
+        
+        $userRegister30Days = User::where('created_at', '>=', now()->subMonth(1))->count();
+        $userPremium30Days = Subscription::where('status', 'ACTIVE')
+            ->where('id_plan', '<>', 1)
+            ->where('created_at', '>=', Carbon::now()->subMonth(1))
+            ->count();
+        $conversionRate30Days = ($userPremium30Days / $userRegister30Days) * 100;
+        
+        $userRegister7Days = User::where('created_at', '>=', now()->subDays(7))->count();
+        $userPremium7Days = Subscription::where('status', 'ACTIVE')
+            ->where('id_plan', '<>', 1)
+            ->where('created_at', '>=', Carbon::now()->subDays(7))
+            ->count();
+        $conversionRate7Days = ($userPremium7Days / $userRegister7Days) * 100;
+
+        // dd($conversionRate7Days, $conversionRate30Days, $conversionRate3Months);
+
         return view('admin.dashboard', [
             'revenueSummaryThreeMonths' => $revenueSummaryThreeMonths,
             'revenueSummaryThirtyDays' => $revenueSummaryThirtyDays,
@@ -67,6 +94,9 @@ class DashboardController extends Controller
             'activeUserChartThirtyDays' => $activeUserChart->ThirtyDays(),
             'activeUserChartSevenDays' => $activeUserChart->SevenDays(),
             'activeUserChartFifteenMinutes' => $activeUserChart->FifteenMinutes(),
+            'conversionRate3Months' => $conversionRate3Months,
+            'conversionRate30Days' => $conversionRate30Days,
+            'conversionRate7Days' => $conversionRate7Days,
         ]);
     }
 }

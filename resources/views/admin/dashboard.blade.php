@@ -9,26 +9,26 @@
         <div class="d-flex align-items-center">
           <div class="subheader">Sales</div>
           <div class="ms-auto lh-1">
-            <select class="form-select">
+            <select class="form-select" id="sales-chart" onchange="myFunction4()">
               <option value="3months">Last 3 Months</option>
               <option value="30days">Last 30 days</option>
               <option value="7days">Last 7 days</option>
             </select>
           </div>
         </div>
-        <div class="h1 mb-3">75%</div>
+        <div class="h1 mb-3" id="conversionrate-number">{{round($conversionRate3Months)}}%</div>
         <div class="d-flex mb-2">
           <div>Conversion rate</div>
           <div class="ms-auto">
             <span class="text-green d-inline-flex align-items-center lh-1">
-              7% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
+              8% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
             </span>
           </div>
         </div>
         <div class="progress progress-sm">
-          <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-            <span class="visually-hidden">75% Complete</span>
+          <div class="progress-bar bg-primary" id="progress-bar-sales" style="width: {{$conversionRate3Months}}%" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
+            {{-- <span class="visually-hidden">{{$conversionRate3Months}}% Complete</span> --}}
           </div>
         </div>
       </div>
@@ -709,6 +709,42 @@
   {{ $activeUserChartSevenDays->script() }}
   <script src="{{ $activeUserChartFifteenMinutes->cdn()}}"></script>
   {{ $activeUserChartFifteenMinutes->script() }}
+
+  <script>
+    function myFunction4() {
+      var id = 1;
+        $.ajax({
+          url: "{{ route('admin.transaction.listsubscriptions',['id' => "+id+"]) }}",
+          type: 'GET',
+          data: {
+              id: id
+          },
+          success: function (data) {
+            var x = document.getElementById("sales-chart").value;
+            if(x == '3months'){
+              var z = document.getElementById("conversionrate-number");
+              z.innerHTML = '{{round($conversionRate3Months)}}%';
+              // hide chart 30 days and 7 days
+              document.getElementById("progress-bar-sales").style.width = '{{round($conversionRate3Months)}}%';
+            }
+            if(x == '30days'){
+              var z = document.getElementById("conversionrate-number");
+              z.innerHTML = '{{round($conversionRate30Days)}}%';
+              // hide chart 3 months and 7 days
+              document.getElementById("progress-bar-sales").style.width = '{{round($conversionRate30Days)}}%';
+            }
+            if(x == '7days'){
+              var z = document.getElementById("conversionrate-number");
+              z.innerHTML = '{{round($conversionRate7Days)}}%';
+              // hide chart 3 months and 30 days
+              document.getElementById("progress-bar-sales").style.width = '{{round($conversionRate7Days)}}%';
+            }
+          }
+        });
+      
+    }
+
+  </script>
 
 
   
