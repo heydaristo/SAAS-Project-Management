@@ -249,6 +249,38 @@ class UserController extends Controller
         return view('workspace.settings');
     }
 
+    public function uploadProfile(Request $request){
+        $validator = Validator::make($request->all(), [
+            'fullname' => ['required'],
+            'email' => ['required', 'email:dns'],
+            'profession' => ['required'],
+            'experience_level' => ['required'],
+            'organization' => ['required'],
+        ]);
+
+
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed update profile.'.strval($validator->errors()));
+            return redirect()->route('workspace.settings')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $data = [
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'profession' => $request->profession,
+            'experience_level' => $request->experience_level,
+            'organization' => $request->organization,
+        ];
+
+
+        Alert::success('Success Message', 'You have successfully update profile.');
+        $user = User::find(Auth::user()->id);
+        $user->update($data);
+        return redirect()->route('workspace.settings');
+    }
+
     public function uploadImage(Request $request)
     {
     // Validasi inputan jika diperlukan
