@@ -96,6 +96,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/settings', [UserController::class, 'usersetting'])->name('settings');
     // change photo profile
+    Route::post('/settings/update', [UserController::class, 'uploadProfile'])->name('settings.update');
     Route::post('/settings/upload', [UserController::class, 'uploadImage'])->name('settings.upload');
     // Delete profile
     Route::delete('/settings/delete', [UserController::class, 'deleteProfile'])->name('settings.deleteProfile');
