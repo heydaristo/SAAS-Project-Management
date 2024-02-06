@@ -49,26 +49,27 @@
                   <div class="col-auto">
                     <span class="avatar avatar-xl" id="previewAvatar">
                         @if(Auth::user()->photo_profile)
-                            <img src="{{ asset('storage/photo-user/' . Auth::user()->photo_profile) }}" alt="Preview Image" style="max-width: 100%; max-height: 100%; display: block;">
+                            <img src="{{ asset('photo-user/' . Auth::user()->photo_profile) }}" alt="Preview Image" style="max-width: 100%; max-height: 100%; display: block;">
                         @else
-                            <img src="{{ asset('path/ke/default_avatar.jpg') }}" alt="Default Avatar" style="max-width: 100%; max-height: 100%; display: block;">
+                            <img src="{{ asset('photo-user/defaultphoto.jpg') }}" alt="Default Avatar" style="max-width: 100%; max-height: 100%; display: block;">
                         @endif
                     </span>
                 </div>
                 
                 <div class="col-auto">
-                    <form enctype="multipart/form-data" id="profileForm" action="{{ route('workspace.settings.upload') }}" method="post">
-                        @csrf
-                        <input name="photo_profile" type="file" id="actual-btn" hidden accept="image/*" onchange="updatePreview()">
-                        <label for="actual-btn" class="btn btn-primary">Choose File</label>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </form>
+                  <form enctype="multipart/form-data" id="profileForm" action="{{ route('workspace.settings.upload') }}" method="post">
+                    @csrf
+                    <input name="photo_profile" type="file" id="actual-btn" hidden accept="image/*">
+                    <label for="actual-btn" class="btn btn-primary">Change</label>
+                </form>                
                 </div>
                 
                 <div class="col-auto">
-                    @if(isset($base64Image) || isset(Auth::user()->photo_profile))
-                        <button type="button" class="btn btn-ghost-danger" onclick="deleteAvatar()">Delete Avatar</button>
-                    @endif
+                  <form action="{{ route('workspace.settings.deleteProfile') }}" method="POST" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" id="deleteButton" class="btn btn-ghost-danger" onclick="deleteAvatar()">Delete Avatar</button>
+                </form>
                 </div>                
                 </div>
                 <div class="row g-3 mt-3">
@@ -120,6 +121,10 @@
   {{-- add ajax --}}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+       document.getElementById('actual-btn').addEventListener('change', function() {
+        document.getElementById('profileForm').submit(); // Menyubmit formulir saat gambar dipilih
+        });
+
         $(document).ready(function(){
             $('#actual-btn').change(function(){
                 // ajax
@@ -170,12 +175,23 @@
         }
     }
     function deleteAvatar() {
-        var preview = document.getElementById('previewAvatar');
-        while (preview.firstChild) {
-            preview.removeChild(preview.firstChild);
-        }
-        document.getElementById('actual-btn').value = ''; // Kosongkan input file
+    var preview = document.getElementById('previewAvatar');
+
+    // Menghapus semua elemen anak dari elemen previewAvatar
+    while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
     }
+
+    // Mengatur path gambar profil ke gambar default
+    var defaultProfilePath = '/photo-profile/defaultProfile.png'; // Ganti dengan path default profile Anda
+    preview.innerHTML = '<img src="' + defaultProfilePath + '" style="max-width: 100%; max-height: 100%; display: block;">';
+
+    // Mengosongkan nilai input file
+    document.getElementById('actual-btn').value = '';
+
+    // Mengirimkan formulir delete secara otomatis
+    document.getElementById('deleteForm').submit();
+}
 </script>
 
 
