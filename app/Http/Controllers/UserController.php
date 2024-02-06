@@ -249,33 +249,34 @@ class UserController extends Controller
         return view('workspace.settings');
     }
 
-    public function uploudImage(Request $request){
-        // $validator = Validator::make($request->all(), [
-        //     'photo_profile' => ['required', 'mimes:jpg,jpeg,png', 'max:4072'],
-        // ]);
+    public function uploadProfile(Request $request){
+        $validator = Validator::make($request->all(), [
+            'fullname' => ['required'],
+            'email' => ['required', 'email:dns'],
+            'profession' => ['required'],
+            'experience_level' => ['required'],
+            'organization' => ['required'],
+        ]);
 
-        // if ($validator->fails()) {
-        //     dd($validator->errors());
-        //     return redirect()
-        //     ->back()
-        //     ->withInput()
-        //     ->withErrors($validator);
-        // }
-            $photo = $request->file('photo_profile');
-            $photoName = time().'_'.$photo->getClientOriginalName();
-            $path = 'photo-user/'.$photoName;
-    
-            // $path = $photo->storeAs('/public/photo-user', $photoName, 'public');
-            Storage::disk('public')->put($path, file_get_contents($photo));
-            
-            $data = [
-                'photo_profile' => $photoName,
-            ];
-    
-            $user = User::find(Auth::user()->id);
-            $user->update($data);
-            return redirect()->route('workspace.settings');
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed update profile.'.strval($validator->errors()));
+            return redirect()->route('workspace.settings')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
-        
+        $data = [
+            'fullname' => $request->fullname,
+            'email' => $request->email,
+            'profession' => $request->profession,
+            'experience_level' => $request->experience_level,
+            'organization' => $request->organization,
+        ];
+
+
+        Alert::success('Success Message', 'You have successfully update profile.');
+        $user = User::find(Auth::user()->id);
+        $user->update($data);
+        return redirect()->route('workspace.settings');
     }
 }

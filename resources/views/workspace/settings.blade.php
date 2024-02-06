@@ -63,33 +63,67 @@
                     </a></div>
                 </div>
                 <div class="row g-3 mt-3">
-                    <form action="#" method="post">
+                  
+                <form  action="{{ route('workspace.settings.update') }}" method="post" id="profileForm">
+                  @csrf
                     <fieldset class="form-fieldset">
                     <div class="col-md">
                         <h3 class="card-title">Profile</h3>
                         <div class="form-label">Fullname</div>
-                        <input type="text" class="form-control" value="Tabler">
+                        <input type="text" class="form-control" name="fullname" value="{{Auth::user()->fullname}}" required>
                     </div>
                   <div class="col-md mt-3">
                         <div class="form-label">Profession</div>
-                        <input type="text" class="form-control" value="560afc32">
+                        <select class="form-select" name="profession" required>
+                            <option value="{{Auth::user()->profession}}">{{Auth::user()->profession}}</option>
+                            <option value="developer">Developer</option>
+                            <option value="consultant">Consultant</option>
+                            <option value="marketer">Marketer</option>
+                            <option value="photographer">Photographer</option>
+                            <option value="videographer">Videographer</option>
+                            <option value="designer">Designer</option>
+                            <option value="law">Law</option>
+                            <option value="other">Other</option>
+                        </select>
                   </div>
                   <div class="col-md mt-3">
                         <div class="form-label">Experience Level</div>
-                        <input type="text" class="form-control" value="Peimei, China">
+                        <select class="form-select" name="experience_level" required>
+                          <option value="{{Auth::user()->experience_level}}">
+                            @if (Auth::user()->experience_level == 0)
+                              Beginner (0-3 years)
+                            @elseif (Auth::user()->experience_level == 1)
+                              Intermediate (4-6 years)
+                            @elseif (Auth::user()->experience_level == 2)
+                              Expert (6+ years)
+                            @endif
+                          </option>
+                          <option value="0">Beginner (0-3 years)</option>
+                          <option value="1">Intermediate (4-6 years)</option>
+                          <option value="2">Expert (6+ years)</option>
+                      </select>
                   </div>
                   <div class="col-md mt-3">
                     <div class="form-label">Organization</div>
-                    <input type="text" class="form-control" value="Peimei, China">
-              </div>
+                    <div class="mb-3">
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="organization" value="I Work Solo" {{ Auth::user()->organization == 'I Work Solo' ? 'checked' : '' }}>  
+                          <span class="form-check-label">I work solo</span>
+                        </label>
+                        <label class="form-check">
+                          <input class="form-check-input" type="radio" name="organization" value="I Work on Team" {{ Auth::user()->organization == 'I Work on Team' ? 'checked' : '' }}>
+                          <span class="form-check-label">I work on team</span>
+                        </label>
+                  </div>
                   <div class="col-md mt-3">
                         <div class="form-label">Email</div>
                         <p class="card-subtitle">This contact will be shown to others publicly, so choose it carefully.</p>
-                        <input type="text" class="form-control" value="paweluna@howstuffworks.com">
+                        <input type="email" class="form-control" name="email" value="{{Auth::user()->email}}" />
                   </div>
                     {{-- add button --}}
                     <div class="col-md mt-3">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" id="saveButtonFormProfiles">Save</button>
+                        
                     </div>
                     </form>
                 </div>
@@ -110,25 +144,51 @@
 
   {{-- add ajax --}}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
   <script>
+            $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+      });
         $(document).ready(function(){
             $('#actual-btn').change(function(){
                 // ajax
-                // var formData = new FormData($('#profileForm')[0]);
-                // $.ajax({
-                //     url: '{{route('workspace.settings.upload')}}',
-                //     type: 'post',
-                //     data: formData,
-                //     contentType: false,
-                //     processData: false,
-                //     success: function(response){
-                //         console.log(formData);
-                //     },
-                //     error: function(error) {
-                //         console.log(error);
-                //     }
-                // });
+                var formData = new FormData($('#profileForm')[0]);
+                e.preventDefault();
+                $.ajax({
+                    url: '{{route('workspace.settings.upload')}}',
+                    type: 'post',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response){
+                        console.log(formData);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
             });
+
+            // $('#profileForm').on('submit', function(e){
+            //     // ajax
+            //     e.preventDefault();
+            //     var formData = new FormData($('#profileForm')[0]);
+            //     $.ajax({
+            //         url: '{{route('workspace.settings.update')}}',
+            //         type: 'post',
+            //         data: formData,
+            //         contentType: false,
+            //         processData: false,
+            //         success: function(response){
+            //             console.log(formData);
+            //         },
+            //         error: function(error) {
+            //             console.log(error);
+            //         }
+            //     });
+            // });
         });
 
 </script>
