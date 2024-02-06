@@ -10,6 +10,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AdminTranscationController;
 use App\Http\Controllers\admin\DashboardController;
@@ -86,12 +87,19 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
 
+    Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
+
+    Route::post('/invoice/create', [InvoiceController::class, 'store'])->name('invoices.store');
+
+
     // settings
 
     Route::get('/settings', [UserController::class, 'usersetting'])->name('settings');
     // change photo profile
-    Route::post('/settings/upload', [UserController::class, 'uploudImage'])->name('settings.upload');
     Route::post('/settings/update', [UserController::class, 'uploadProfile'])->name('settings.update');
+    Route::post('/settings/upload', [UserController::class, 'uploadImage'])->name('settings.upload');
+    // Delete profile
+    Route::delete('/settings/delete', [UserController::class, 'deleteProfile'])->name('settings.deleteProfile');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
