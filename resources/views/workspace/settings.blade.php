@@ -46,21 +46,31 @@
             <div class="card-body">
                 <h2 class="mb-4">My Account</h2>
                 <div class="row align-items-center">
-                  <div class="col-auto"><span class="avatar avatar-xl" style="background-image: url({{Auth::user()->photo_profile}})"></span>
-                  </div>
-
                   <div class="col-auto">
-                    <form enctype="multipart/form-data" id="profileForm" action="{{route('workspace.settings.upload')}}" method="post" >
-                        @csrf
-                        <input name="photo_profile" type="file" id="actual-btn" hidden>
-                        <label for="actual-btn" class="btn btn-primary">Upload</label>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </form>
+                    <span class="avatar avatar-xl" id="previewAvatar">
+                        @if(Auth::user()->photo_profile)
+                            <img src="{{ asset('photo-user/' . Auth::user()->photo_profile) }}" alt="Preview Image" style="max-width: 100%; max-height: 100%; display: block;">
+                        @else
+                            <img src="{{ asset('photo-user/defaultphoto.jpg') }}" alt="Default Avatar" style="max-width: 100%; max-height: 100%; display: block;">
+                        @endif
+                    </span>
                 </div>
                 
-                  <div class="col-auto"><a href="#" class="btn btn-ghost-danger">
-                      Delete avatar
-                    </a></div>
+                <div class="col-auto">
+                  <form enctype="multipart/form-data" id="profileForm" action="{{ route('workspace.settings.upload') }}" method="post">
+                    @csrf
+                    <input name="photo_profile" type="file" id="actual-btn" hidden accept="image/*">
+                    <label for="actual-btn" class="btn btn-primary">Change</label>
+                </form>                
+                </div>
+                
+                <div class="col-auto">
+                  <form action="{{ route('workspace.settings.deleteProfile') }}" method="POST" id="deleteForm">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" id="deleteButton" class="btn btn-ghost-danger" onclick="deleteAvatar()">Delete Avatar</button>
+                </form>
+                </div>                
                 </div>
                 <div class="row g-3 mt-3">
                     <form action="#" method="post">
@@ -111,6 +121,9 @@
   {{-- add ajax --}}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+       document.getElementById('actual-btn').addEventListener('change', function() {
+        document.getElementById('profileForm').submit(); // Menyubmit formulir saat gambar dipilih
+        });
         $(document).ready(function(){
             $('#actual-btn').change(function(){
                 // ajax
@@ -130,7 +143,53 @@
                 // });
             });
         });
+        function updatePreview() {
+        var input = document.getElementById('actual-btn');
+        var preview = document.getElementById('previewAvatar');
+        var maxSizeInBytes = 1048576; // 1MB
 
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            var fileSize = input.files[0].size;
+
+            if (fileSize <= maxSizeInBytes) {
+                reader.onload = function(e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100%'; // Atur lebar maksimum gambar
+                    img.style.maxHeight = '100%'; // Atur tinggi maksimum gambar
+                    img.style.display = 'block'; // Menampilkan gambar sebagai blok
+                    preview.appendChild(img);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                alert('Ukuran file melebihi batas maksimum (1MB). Silakan unggah gambar yang lebih kecil.');
+                input.value = ''; // Kosongkan input file untuk mencegah pengunggahan gambar yang melebihi batas
+            }
+        }
+    }
+    function deleteAvatar() {
+    var preview = document.getElementById('previewAvatar');
+
+    // Menghapus semua elemen anak dari elemen previewAvatar
+    while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+    }
+
+    // Mengatur path gambar profil ke gambar default
+    var defaultProfilePath = '/photo-profile/defaultProfile.png'; // Ganti dengan path default profile Anda
+    preview.innerHTML = '<img src="' + defaultProfilePath + '" style="max-width: 100%; max-height: 100%; display: block;">';
+
+    // Mengosongkan nilai input file
+    document.getElementById('actual-btn').value = '';
+
+    // Mengirimkan formulir delete secara otomatis
+    document.getElementById('deleteForm').submit();
+}
 </script>
-
   @endsection

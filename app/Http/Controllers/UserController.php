@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\File;
 
 use App\Models\User;
 
@@ -249,33 +249,43 @@ class UserController extends Controller
         return view('workspace.settings');
     }
 
-    public function uploudImage(Request $request){
-        // $validator = Validator::make($request->all(), [
-        //     'photo_profile' => ['required', 'mimes:jpg,jpeg,png', 'max:4072'],
-        // ]);
+    public function uploadImage(Request $request)
+    {
+    // Validasi inputan jika diperlukan
+    $request->validate([
+        'photo_profile' => ['required', 'image', 'max:2048'], // Maksimum 2MB (2048 KB)
+    ]);
+    if($request->file('photo_profile')){
+        $file= $request->file('photo_profile');
+        $filename= date('YmdHi').$file->getClientOriginalName();
+        $file-> move(public_path('photo-user'), $filename);
+        $data['photo_profile']= $filename;
 
-        // if ($validator->fails()) {
-        //     dd($validator->errors());
-        //     return redirect()
-        //     ->back()
-        //     ->withInput()
-        //     ->withErrors($validator);
-        // }
-            $photo = $request->file('photo_profile');
-            $photoName = time().'_'.$photo->getClientOriginalName();
-            $path = 'photo-user/'.$photoName;
-    
-            // $path = $photo->storeAs('/public/photo-user', $photoName, 'public');
-            Storage::disk('public')->put($path, file_get_contents($photo));
-            
-            $data = [
-                'photo_profile' => $photoName,
-            ];
-    
-            $user = User::find(Auth::user()->id);
-            $user->update($data);
-            return redirect()->route('workspace.settings');
+        $user = User::find(Auth::user()->id);
+        $user->update($data);
+        Alert::success('Success Message', 'You have successfully update photo profile.');
+        return redirect()->route('workspace.settings');
+    }
+}
+    public function deleteProfile() {
+        $user = User::find(Auth::user()->id);
+         // Memeriksa apakah foto pengguna sudah menjadi default
+        if ($user->photo_profile === 'defaultProfile.png') {
+        Alert::error('Error Message', 'Cannot delete default profile picture.');
+        return redirect()->back()->with('error', 'Cannot delete default profile picture.');
+        }
+        if($user->photo_profile) {
+            File::delete(public_path('photo-user/'.$user->photo_profile));
+        }
+         // Mengatur foto profil menjadi default
+        $defaultProfilePath = 'defaultProfile.png'; // Ganti dengan path default profile Anda
+        $user->photo_profile = basename($defaultProfilePath); // Menggunakan nama file default
+        $user->save();
+        Alert::success('Success Message', 'You have successfully delete photo profile.');
+        return redirect()->route('workspace.settings');
 
         
+
     }
+
 }
