@@ -99,7 +99,6 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/settings/upload', [UserController::class, 'uploadImage'])->name('settings.upload');
     // Delete profile
     Route::delete('/settings/delete', [UserController::class, 'deleteProfile'])->name('settings.deleteProfile');
-
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){

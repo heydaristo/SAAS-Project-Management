@@ -124,7 +124,6 @@
        document.getElementById('actual-btn').addEventListener('change', function() {
         document.getElementById('profileForm').submit(); // Menyubmit formulir saat gambar dipilih
         });
-
         $(document).ready(function(){
             $('#actual-btn').change(function(){
                 // ajax
@@ -193,6 +192,4 @@
     document.getElementById('deleteForm').submit();
 }
 </script>
-
-
   @endsection
