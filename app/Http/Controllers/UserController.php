@@ -25,37 +25,33 @@ class UserController extends Controller
 
     public function login_proses(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => ['required'],
+            'email_or_name' => ['required'],
             'password' => ['required'],
-            
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->route('login')
                         ->withErrors($validator)
                         ->withInput();
         }
-
-        $data = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-
-        if(Auth::attempt($data)){
+    
+        $credentials = $request->only('email_or_name', 'password');
+    
+        if (Auth::attempt(['email' => $credentials['email_or_name'], 'password' => $credentials['password']]) ||
+            Auth::attempt(['fullname' => $credentials['email_or_name'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
             if(Auth::user()->id_role == 1){
                 return redirect()->route('superadmin.dashboard');
-            }else if(Auth::user()->id_role == 2){
+            } else if(Auth::user()->id_role == 2){
                 return redirect()->route('admin.dashboard');
-            }
-            else{
+            } else {
                 return redirect()->route('workspace.dashboard');
             }
-        }else{
+        } else {
             return redirect()->route('login')->with('failed','Email atau Password Salah');
         }
-
     }
+    
 
     public function register(){
         return view('authentication.register');
@@ -76,7 +72,7 @@ class UserController extends Controller
                         ->withInput();
         }
 
-
+        $defaultProfilePath = 'defaultProfile.png';
 
         $data['id_role'] = 3;
         $data['fullname']   = $request->fullname;
@@ -85,7 +81,7 @@ class UserController extends Controller
         $data['profession'] = "notset";
         $data['experience_level'] = 0;
         $data['organization'] = "notset";
-        $data['photo_profile'] = "https://png.pngtree.com/png-vector/20220628/ourmid/pngtree-user-profile-avatar-vector-admin-png-image_5289693.png";
+        $data['photo_profile'] = $defaultProfilePath;
         
 
         if(!$data){

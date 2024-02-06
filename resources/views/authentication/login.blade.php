@@ -25,13 +25,13 @@
               @csrf
               <div class="mb-3">
                 <label class="form-label">Email address</label>
-                <input type="email" class="form-control  @error('email')is-invalid @enderror"  name="email" placeholder="your@email.com" autocomplete="off" required value="{{ old('email')}}">
-                @error('email')
+                <input type="text" class="form-control @error('email_or_name') is-invalid @enderror" name="email_or_name" placeholder="Your Email or Full Name" autocomplete="off" required value="{{ old('email_or_name') }}">
+                @error('email_or_name')
                     <div class="invalid-feedback">
-                      {{ $message }}
-                  </div>
-                  @enderror
-              </div>
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
               <div class="mb-2">
                 <label class="form-label">
                   Password
