@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\File;
 
 use App\Models\User;
 
@@ -249,33 +249,36 @@ class UserController extends Controller
         return view('workspace.settings');
     }
 
-    public function uploudImage(Request $request){
-        // $validator = Validator::make($request->all(), [
-        //     'photo_profile' => ['required', 'mimes:jpg,jpeg,png', 'max:4072'],
-        // ]);
+    public function uploadImage(Request $request)
+    {
+    // Validasi inputan jika diperlukan
+    $request->validate([
+        'photo_profile' => ['required', 'image', 'max:2048'], // Maksimum 2MB (2048 KB)
+    ]);
 
-        // if ($validator->fails()) {
-        //     dd($validator->errors());
-        //     return redirect()
-        //     ->back()
-        //     ->withInput()
-        //     ->withErrors($validator);
-        // }
-            $photo = $request->file('photo_profile');
-            $photoName = time().'_'.$photo->getClientOriginalName();
-            $path = 'photo-user/'.$photoName;
-    
-            // $path = $photo->storeAs('/public/photo-user', $photoName, 'public');
-            Storage::disk('public')->put($path, file_get_contents($photo));
-            
-            $data = [
-                'photo_profile' => $photoName,
-            ];
-    
-            $user = User::find(Auth::user()->id);
-            $user->update($data);
-            return redirect()->route('workspace.settings');
-
+    // Cek apakah ada file yang diunggah
+    if ($request->hasFile('photo_profile')) {
+        // Mendapatkan file yang diunggah
+        $photo = $request->file('photo_profile');
+        // Membuat nama unik untuk file gambar
+        // $photoName = '/public/photo-user/' . $photo->getClientOriginalName();
+        $photoName =  $photo->getClientOriginalName();
         
+        // Simpan file ke dalam folder public/photo-user
+        $photo->storeAs('public/photo-user', $photoName);
+
+        // Mendapatkan ID pengguna yang sedang masuk
+        $userId = auth()->id();
+        // Menyimpan path foto ke database sesuai dengan ID pengguna
+        $user = auth()->user();
+        $user->photo_profile = $photoName;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile picture saved successfully.');
+    } else {
+        // Jika tidak ada file yang diunggah
+        return redirect()->back()->with('error', 'No file uploaded.');
     }
+}
+
 }

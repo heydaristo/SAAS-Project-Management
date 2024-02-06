@@ -46,21 +46,30 @@
             <div class="card-body">
                 <h2 class="mb-4">My Account</h2>
                 <div class="row align-items-center">
-                  <div class="col-auto"><span class="avatar avatar-xl" style="background-image: url({{Auth::user()->photo_profile}})"></span>
-                  </div>
-
                   <div class="col-auto">
-                    <form enctype="multipart/form-data" id="profileForm" action="{{route('workspace.settings.upload')}}" method="post" >
+                    <span class="avatar avatar-xl" id="previewAvatar">
+                        @if(Auth::user()->photo_profile)
+                            <img src="{{ asset('storage/photo-user/' . Auth::user()->photo_profile) }}" alt="Preview Image" style="max-width: 100%; max-height: 100%; display: block;">
+                        @else
+                            <img src="{{ asset('path/ke/default_avatar.jpg') }}" alt="Default Avatar" style="max-width: 100%; max-height: 100%; display: block;">
+                        @endif
+                    </span>
+                </div>
+                
+                <div class="col-auto">
+                    <form enctype="multipart/form-data" id="profileForm" action="{{ route('workspace.settings.upload') }}" method="post">
                         @csrf
-                        <input name="photo_profile" type="file" id="actual-btn" hidden>
-                        <label for="actual-btn" class="btn btn-primary">Upload</label>
+                        <input name="photo_profile" type="file" id="actual-btn" hidden accept="image/*" onchange="updatePreview()">
+                        <label for="actual-btn" class="btn btn-primary">Choose File</label>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                 </div>
                 
-                  <div class="col-auto"><a href="#" class="btn btn-ghost-danger">
-                      Delete avatar
-                    </a></div>
+                <div class="col-auto">
+                    @if(isset($base64Image) || isset(Auth::user()->photo_profile))
+                        <button type="button" class="btn btn-ghost-danger" onclick="deleteAvatar()">Delete Avatar</button>
+                    @endif
+                </div>                
                 </div>
                 <div class="row g-3 mt-3">
                     <form action="#" method="post">
@@ -130,7 +139,44 @@
                 // });
             });
         });
+        function updatePreview() {
+        var input = document.getElementById('actual-btn');
+        var preview = document.getElementById('previewAvatar');
+        var maxSizeInBytes = 1048576; // 1MB
 
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            var fileSize = input.files[0].size;
+
+            if (fileSize <= maxSizeInBytes) {
+                reader.onload = function(e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100%'; // Atur lebar maksimum gambar
+                    img.style.maxHeight = '100%'; // Atur tinggi maksimum gambar
+                    img.style.display = 'block'; // Menampilkan gambar sebagai blok
+                    preview.appendChild(img);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                alert('Ukuran file melebihi batas maksimum (1MB). Silakan unggah gambar yang lebih kecil.');
+                input.value = ''; // Kosongkan input file untuk mencegah pengunggahan gambar yang melebihi batas
+            }
+        }
+    }
+    function deleteAvatar() {
+        var preview = document.getElementById('previewAvatar');
+        while (preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+        document.getElementById('actual-btn').value = ''; // Kosongkan input file
+    }
 </script>
+
 
   @endsection

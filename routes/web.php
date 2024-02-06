@@ -96,7 +96,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/settings', [UserController::class, 'usersetting'])->name('settings');
     // change photo profile
-    Route::post('/settings/upload', [UserController::class, 'uploudImage'])->name('settings.upload');
+    Route::post('/settings/upload', [UserController::class, 'uploadImage'])->name('settings.upload');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
