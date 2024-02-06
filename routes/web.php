@@ -94,12 +94,19 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     // settings
 
+    // change password
+
+    Route::get('/settings/changepassword', [UserController::class, 'changePasswordShow'])->name('settings.changepassword');
+
     Route::get('/settings', [UserController::class, 'usersetting'])->name('settings');
     // change photo profile
     Route::post('/settings/update', [UserController::class, 'uploadProfile'])->name('settings.update');
     Route::post('/settings/upload', [UserController::class, 'uploadImage'])->name('settings.upload');
     // Delete profile
     Route::delete('/settings/delete', [UserController::class, 'deleteProfile'])->name('settings.deleteProfile');
+
+    // change password
+    Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
