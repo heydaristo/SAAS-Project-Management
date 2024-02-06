@@ -311,9 +311,36 @@ class UserController extends Controller
         $user->save();
         Alert::success('Success Message', 'You have successfully delete photo profile.');
         return redirect()->route('workspace.settings');
+    }
 
-        
+    public function changePasswordShow() {
+        return view('workspace.changepassword');
+    }
 
+    public function changePassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'oldPassword' => ['required'],
+            'newPassword' => ['required', 'min:6'],
+            'confirmPassword' => ['required', 'same:newPassword'],
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed change password.'.strval($validator->errors()));
+            return redirect()->route('workspace.settings.changepassword')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        $user = User::find(Auth::user()->id);
+        if(Hash::check($request->oldPassword, $user->password)){
+            $user->password = Hash::make($request->newPassword);
+            $user->save();
+            Alert::success('Success Message', 'You have successfully change password.');
+            return redirect()->route('workspace.settings.changepassword');
+        }else{
+            Alert::error('Failed Message', 'You have failed change password.');
+            return redirect()->route('workspace.settings.changepassword');
+        }
     }
 
 }
