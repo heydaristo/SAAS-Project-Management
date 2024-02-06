@@ -91,6 +91,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::post('/invoice/create', [InvoiceController::class, 'store'])->name('invoices.store');
 
+    Route::put('/invoice/update/{id}', [InvoiceController::class, 'update'])->name('invoices.update');
 
     // settings
 

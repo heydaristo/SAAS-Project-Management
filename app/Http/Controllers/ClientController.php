@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 
@@ -21,10 +23,13 @@ class ClientController extends Controller
         
         // Hitung jumlah total klien
         $clientCount = Client::count();
-        
-        // Mengirimkan data ke tampilan Blade
-        $client = Client::where('user_id', auth()->user()->id)->get();
-        $client = Client::paginate(5);
+
+        $userId = Auth::id();
+
+        $client = DB::table('clients')
+        ->where('clients.user_id', $userId)
+        ->paginate(5);
+
         return view('workspace.clients.index', [
             'userCountLastWeek' => $userCountLastWeek,
             'userCount' => $userCount,
@@ -66,8 +71,15 @@ class ClientController extends Controller
             'no_telp' => $request->no_telp,
         ];
 
-        Client::find($id)->update($data);
+            if(!$data) {
+            Alert::error('Failed Message', 'You have failed to edit client.');
+            return redirect()->route('workspace.clients');
+        } else {
+            Alert::success('Success Message', 'You have successfully to edit client.');
+            Client::find($id)->update($data);
+            return redirect()->route('workspace.clients');
 
+        }
         return redirect()->route('workspace.clients');
     }
 

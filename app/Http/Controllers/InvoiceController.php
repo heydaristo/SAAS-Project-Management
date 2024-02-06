@@ -21,7 +21,7 @@ class InvoiceController extends Controller
         ->join('clients', 'invoices.id_client', '=', 'clients.id')
         ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
         // ->get();
-        ->paginate(1); // Menggunakan paginate dengan 10 item per halaman
+        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
     
         // Periksa dan ubah status invoice jika due date telah terlewati
         foreach ($invoices as $invoice) {
@@ -41,22 +41,13 @@ class InvoiceController extends Controller
     {
         // Validasi data dari formulir
         $validator = Validator::make($request->all(), [
-            'id_project' => 'required|exists:projects,id',
+            'id_project' => 'required|exists:project_models,id',
             'id_client' => 'required|exists:clients,id',
             'status' => 'required',
             'due_date' => 'required|date',
             'total' => 'required|numeric',
         ]);
     
-        // Validasi issued_date menggunakan aturan kustom
-        $validator->sometimes('issued_date', 'required|date|before_or_equal:today', function ($input) {
-            return !$input->has('issued_date') || !isset($input->issued_date); // Validasi hanya berlaku jika issued_date ada dalam input
-        });
-    
-        // Jika validasi gagal, kembali ke halaman sebelumnya dengan pesan kesalahan
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
     
         // Data yang akan disimpan
         $data = [
@@ -68,7 +59,6 @@ class InvoiceController extends Controller
             'total' => $request->total,
             'invoice_pdf' => '1',
         ];
-    
         // Simpan data ke dalam database
         if (Invoice::create($data)) {
             // Jika berhasil, kembalikan dengan pesan sukses
@@ -76,6 +66,32 @@ class InvoiceController extends Controller
         } else {
             // Jika gagal, kembalikan dengan pesan gagal
             return redirect()->route('workspace.invoice')->with('error', 'Failed to add new invoice.');
+        }
+    }
+    public function update(Request $request, $id){
+        $request->validate([
+            'id_project' => ['required'],
+            'id_client' => ['required'],
+            'status' => ['required'],
+            'due_date' => ['required'],
+            'total' => ['required'],
+        ]);
+        $data = [
+            'id_project' => $request->id_project,
+            'id_client' => $request->id_client,
+            'status' => $request->status,
+            'due_date' => $request->due_date,
+            'total' => $request->total,
+        ];
+       
+        if(!$data) {
+            Alert::error('Failed Message', 'You have failed to edit invoice.');
+            return redirect()->route('workspace.invoice');
+        } else {
+            Alert::success('Success Message', 'You have successfully to edit invoice.');
+            Invoice::find($id)->update($data);
+            return redirect()->route('workspace.invoice');
+
         }
     }
     

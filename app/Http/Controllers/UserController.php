@@ -279,20 +279,33 @@ class UserController extends Controller
 
     public function uploadImage(Request $request)
     {
-    // Validasi inputan jika diperlukan
-    $request->validate([
+       // Validasi inputan jika diperlukan
+       $request->validate([
         'photo_profile' => ['required', 'image', 'max:2048'], // Maksimum 2MB (2048 KB)
     ]);
-    if($request->file('photo_profile')){
-        $file= $request->file('photo_profile');
-        $filename= date('YmdHi').$file->getClientOriginalName();
-        $file-> move(public_path('photo-user'), $filename);
-        $data['photo_profile']= $filename;
 
+    if ($request->hasFile('photo_profile')) {
+        // Dapatkan foto profil sebelumnya
         $user = User::find(Auth::user()->id);
-        $user->update($data);
-        Alert::success('Success Message', 'You have successfully update photo profile.');
-        return redirect()->route('workspace.settings');
+        $previousPhoto = $user->photo_profile;
+
+        // Hapus foto profil sebelumnya jika bukan foto default dan ada
+        if ($previousPhoto && $previousPhoto !== 'defaultProfile.png' && File::exists(public_path('photo-user/' . $previousPhoto))) {
+            File::delete(public_path('photo-user/' . $previousPhoto));
+        }
+
+        // Unggah foto profil yang baru
+        $file = $request->file('photo_profile');
+        $filename =  auth()->id() . '_' . date('Y-m-d') . '_' . $file->getClientOriginalName();
+        $file->move(public_path('photo-user'), $filename);
+
+        // Simpan nama file foto profil yang baru ke dalam database
+        $user->photo_profile = $filename;
+        $user->save();
+
+        // Tampilkan pesan sukses dan redirect
+        Alert::success('Success Message', 'You have successfully updated the photo profile.');
+        return redirect()->route('workspace.settings', ['#tabs-activity-7']);
     }
 }
     public function deleteProfile() {
@@ -300,7 +313,7 @@ class UserController extends Controller
          // Memeriksa apakah foto pengguna sudah menjadi default
         if ($user->photo_profile === 'defaultProfile.png') {
         Alert::error('Error Message', 'Cannot delete default profile picture.');
-        return redirect()->back()->with('error', 'Cannot delete default profile picture.');
+        return redirect()->route('workspace.settings', ['#tabs-activity-7'])->with('error', 'Cannot delete default profile picture.');
         }
         if($user->photo_profile) {
             File::delete(public_path('photo-user/'.$user->photo_profile));
@@ -310,7 +323,7 @@ class UserController extends Controller
         $user->photo_profile = basename($defaultProfilePath); // Menggunakan nama file default
         $user->save();
         Alert::success('Success Message', 'You have successfully delete photo profile.');
-        return redirect()->route('workspace.settings');
+        return redirect()->route('workspace.settings', ['#tabs-activity-7']);
     }
 
     public function changePasswordShow() {
