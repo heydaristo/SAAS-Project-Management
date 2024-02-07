@@ -1,3 +1,4 @@
+
 @extends('template')
 
 @php
@@ -100,7 +101,7 @@
           </tr>
 
           {{-- Modals Edit --}}
-          <div class="modal fade" id="modalEdit-{{$invoice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          {{-- <div class="modal fade" id="modalEdit-{{$invoice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -125,9 +126,12 @@
                       <label for="client">Client Name</label>
                       <select class="form-control mt-1" name="id_client" id="id_client">
                         <option value="">Select client</option>
-                        @foreach ($clients as  $client)
-                        <option value="{{ $client->id }}" {{ $invoice->id_client == $client->id ? 'selected' : '' }}>
-                          {{ $client->name }}</option>
+                        @foreach ($clients as $client)
+                        @if ($client->user_id == auth()->user()->id)
+                            <option value="{{ $client->id }}" {{ $project->id_client == $client->id ? 'selected' : '' }}>
+                                {{ $client->name }}
+                            </option>
+                        @endif
                         @endforeach
                     </select>
                      </div>
@@ -157,7 +161,8 @@
               </div>
             </div>
           </div>
-          
+           --}}
+           
 {{-- Modal Hapus --}}
 {{-- <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -221,18 +226,24 @@
             <label for="Project">Project Name</label>
             <select class="form-control mt-1" name="id_project" id="user_id">
               <option value="">Select Project</option>
-              @foreach ($project as  $projectmodels)
-              <option value="{{ $projectmodels->id }}">{{ $projectmodels->project_name}}</option>
-              @endforeach
+              @foreach ($project as $projectmodels)
+              @if ($projectmodels->user_id == auth()->user()->id)
+                  <option value="{{ $projectmodels->id }}" >
+                      {{ $projectmodels->project_name }}
+                  </option>
+              @endif
+          @endforeach
           </select>
            </div>
          <div class="mb-3">
             <label for="client">Client Name</label>
             <select class="form-control mt-1" name="id_client" id="id_client">
               <option value="">Select client</option>
-              @foreach ($clients as  $client)
+              @foreach ($clients as $client)
+              @if ($client->user_id == auth()->user()->id)
               <option value="{{ $client->id }}">{{ $client->name }}</option>
-              @endforeach
+              @endif
+          @endforeach
           </select>
            </div>
           <div class="mb-3">

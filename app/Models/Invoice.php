@@ -20,7 +20,8 @@ class Invoice extends Model
         'status',
         'due_date',
         'total',
-        'invoice_pdf'
+        'invoice_pdf',
+        'user_id'
     ];
 
     public function project() : BelongsTo
@@ -36,5 +37,10 @@ class Invoice extends Model
     public function transaction() : HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    Public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
