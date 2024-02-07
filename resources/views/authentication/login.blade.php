@@ -1,82 +1,72 @@
 @extends('script')
 @section('body')
 <script src="./dist/js/demo-theme.min.js?1695847769"></script>
-    <div class="page page-center">
-      <div class="container container-tight py-4">
-        <div class="card card-md">
-          <div class="card-body">
-            <h2 class="h2 text-center mb-4">Login to your account</h2>
+    <section class="sign-in">
+      <div class="container">
+          <div class="signin-content">
+              <div class="signin-image">
+                  <figure><img src="{{ asset('images/signin-image.jpg') }}" alt="sing up image"></figure>
+              </div>
+              
+              <div class="signin-form">
+                  <h2 class="form-title">Sign in</h2>
+                  <form action="{{ route('login-proses') }}" method="post">
+                    
+                    @if(session()->has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                       {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      @endif
+        
+                    @if(session()->has('failed'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                       {{ session('failed') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      @endif
+        
+                    @csrf
+                      <div class="form-group">
+                          <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                          <input type="text" name="email_or_name" id="your_name" placeholder="example@mail.com" autocomplete="off" required value="{{ old('email_or_name') }}"/>
 
-            @if(session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-               {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                      <div class="form-group">
+                          <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                          <input type="password" name="password" id="password" placeholder="Password"/>
+                      </div>
+                      {{-- <div class="form-group">
+                          <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                          <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                      </div> --}}
+                      <div class="form-group form-button">
+                          <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                      </div>
+                      @if ($errors->any())
+                      <div class="alert alert-danger">
+                          <ul>
+                              @foreach ($errors->all() as $error)
+                                  <li>{{ $error }}</li>
+                              @endforeach
+                          </ul>
+                      </div>
+                      @endif
+                  </form>
+                  {{-- <div class="social-login">
+                      <span class="social-label">Or login with</span>
+                      <ul class="socials">
+                          <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                          <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                          <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                      </ul>
+                  </div> --}}
+                  <div class="text-secondary mt-3">
+                    Don't have account yet? <a href="{{route('register')}}" tabindex="-1">Sign up</a>
+                  </div>
               </div>
-              @endif
-
-            @if(session()->has('failed'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-               {{ session('failed') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              @endif
-
-            <form action="{{ route('login-proses') }}" method="post">
-              @csrf
-              <div class="mb-3">
-                <label class="form-label">Email address</label>
-                <input type="text" class="form-control @error('email_or_name') is-invalid @enderror" name="email_or_name" placeholder="Your Email or Full Name" autocomplete="off" required value="{{ old('email_or_name') }}">
-                @error('email_or_name')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-              <div class="mb-2">
-                <label class="form-label">
-                  Password
-                <div class="input-group input-group-flat">
-                  <input type="password" class="form-control"  placeholder="Your password"  id="password" name="password" autocomplete="off" required>
-                  @error('password')
-                  <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-                  <span class="input-group-text">
-                    <a href="#" class="link-secondary" 
-                    title="Show password" 
-                    data-bs-toggle="tooltip" onclick="togglePassword('password')"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
-                    </a>
-                  </span>
-                </div>
-                <small id="passwordHelp" class="form-text text-danger"></small>
-              </div>
-              <div class="form-footer">
-                <button type="submit" class="btn btn-primary w-100">Sign in</button>
-              </div>
-            </form>
           </div>
-          {{-- <div class="hr-text">or</div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col"><a href="#" class="btn w-100">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon text-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
-                  Login with Github
-                </a></div>
-              <div class="col"><a href="#" class="btn w-100">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/brand-twitter -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon text-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c0 -.249 1.51 -2.772 1.818 -4.013z" /></svg>
-                  Login with Twitter
-                </a></div>
-            </div>
-          </div> --}}
-        </div>
-        <div class="text-center text-secondary mt-3">
-          Don't have account yet? <a href="{{route('register')}}" tabindex="-1">Sign up</a>
-        </div>
       </div>
-    </div>
+  </section>
 
 @endsection

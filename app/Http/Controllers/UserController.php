@@ -65,11 +65,8 @@ class UserController extends Controller
             'password' => ['required', 'min:6'],
             'confirmPassword' => ['required', 'same:password'],
         ]);
-
         if ($validator->fails()) {
-            return redirect()->route('register')
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect()->route('register')->withErrors($validator)->withInput();
         }
 
         $defaultProfilePath = 'defaultProfile.png';
@@ -112,8 +109,10 @@ class UserController extends Controller
 
                 DB::table('transaction_admins')->insert($transaction);
                 return redirect()->route('login')->with('success','Register Success');
+                Alert::success('Success Message', 'Register Success');
             }else{
                 return redirect()->route('register')->with('failed','Register Failed');
+                Alert::error('Failed Message', 'Register Failed');
             }
             
         }
