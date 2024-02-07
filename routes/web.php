@@ -38,6 +38,7 @@ Route::get('/loginadmin', [UserController::class, 'loginadmin'])->name('forgot-p
 Route::get('/register', [UserController::class, 'register'])->name('register');
 Route::post('/register-proses', [UserController::class, 'register_proses'])->name('register-proses');
 
+Route::get('/forgot-password', [UserController::class, 'forgotPasswordShow'])->name('forgot-password');
 
 Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'workspace.'], function(){
 

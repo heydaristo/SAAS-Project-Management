@@ -52,6 +52,9 @@ class UserController extends Controller
         }
     }
     
+    public function forgotPasswordShow() {
+        return view('authentication.forgot-password');
+    }
 
     public function register(){
         return view('authentication.register');
