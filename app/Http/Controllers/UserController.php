@@ -25,37 +25,33 @@ class UserController extends Controller
 
     public function login_proses(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => ['required'],
+            'email_or_name' => ['required'],
             'password' => ['required'],
-            
         ]);
-
+    
         if ($validator->fails()) {
             return redirect()->route('login')
                         ->withErrors($validator)
                         ->withInput();
         }
-
-        $data = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-
-        if(Auth::attempt($data)){
+    
+        $credentials = $request->only('email_or_name', 'password');
+    
+        if (Auth::attempt(['email' => $credentials['email_or_name'], 'password' => $credentials['password']]) ||
+            Auth::attempt(['fullname' => $credentials['email_or_name'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
             if(Auth::user()->id_role == 1){
                 return redirect()->route('superadmin.dashboard');
-            }else if(Auth::user()->id_role == 2){
+            } else if(Auth::user()->id_role == 2){
                 return redirect()->route('admin.dashboard');
-            }
-            else{
+            } else {
                 return redirect()->route('workspace.dashboard');
             }
-        }else{
+        } else {
             return redirect()->route('login')->with('failed','Email atau Password Salah');
         }
-
     }
+    
 
     public function register(){
         return view('authentication.register');
@@ -69,14 +65,11 @@ class UserController extends Controller
             'password' => ['required', 'min:6'],
             'confirmPassword' => ['required', 'same:password'],
         ]);
-
         if ($validator->fails()) {
-            return redirect()->route('register')
-                        ->withErrors($validator)
-                        ->withInput();
+            return redirect()->route('register')->withErrors($validator)->withInput();
         }
 
-
+        $defaultProfilePath = 'defaultProfile.png';
 
         $data['id_role'] = 3;
         $data['fullname']   = $request->fullname;
@@ -85,7 +78,7 @@ class UserController extends Controller
         $data['profession'] = "notset";
         $data['experience_level'] = 0;
         $data['organization'] = "notset";
-        $data['photo_profile'] = "https://png.pngtree.com/png-vector/20220628/ourmid/pngtree-user-profile-avatar-vector-admin-png-image_5289693.png";
+        $data['photo_profile'] = $defaultProfilePath;
         
 
         if(!$data){
@@ -116,8 +109,10 @@ class UserController extends Controller
 
                 DB::table('transaction_admins')->insert($transaction);
                 return redirect()->route('login')->with('success','Register Success');
+                Alert::success('Success Message', 'Register Success');
             }else{
                 return redirect()->route('register')->with('failed','Register Failed');
+                Alert::error('Failed Message', 'Register Failed');
             }
             
         }
@@ -283,20 +278,33 @@ class UserController extends Controller
 
     public function uploadImage(Request $request)
     {
-    // Validasi inputan jika diperlukan
-    $request->validate([
+       // Validasi inputan jika diperlukan
+       $request->validate([
         'photo_profile' => ['required', 'image', 'max:2048'], // Maksimum 2MB (2048 KB)
     ]);
-    if($request->file('photo_profile')){
-        $file= $request->file('photo_profile');
-        $filename= date('YmdHi').$file->getClientOriginalName();
-        $file-> move(public_path('photo-user'), $filename);
-        $data['photo_profile']= $filename;
 
+    if ($request->hasFile('photo_profile')) {
+        // Dapatkan foto profil sebelumnya
         $user = User::find(Auth::user()->id);
-        $user->update($data);
-        Alert::success('Success Message', 'You have successfully update photo profile.');
-        return redirect()->route('workspace.settings');
+        $previousPhoto = $user->photo_profile;
+
+        // Hapus foto profil sebelumnya jika bukan foto default dan ada
+        if ($previousPhoto && $previousPhoto !== 'defaultProfile.png' && File::exists(public_path('photo-user/' . $previousPhoto))) {
+            File::delete(public_path('photo-user/' . $previousPhoto));
+        }
+
+        // Unggah foto profil yang baru
+        $file = $request->file('photo_profile');
+        $filename =  auth()->id() . '_' . date('Y-m-d') . '_' . $file->getClientOriginalName();
+        $file->move(public_path('photo-user'), $filename);
+
+        // Simpan nama file foto profil yang baru ke dalam database
+        $user->photo_profile = $filename;
+        $user->save();
+
+        // Tampilkan pesan sukses dan redirect
+        Alert::success('Success Message', 'You have successfully updated the photo profile.');
+        return redirect()->route('workspace.settings', ['#tabs-activity-7']);
     }
 }
     public function deleteProfile() {
@@ -304,7 +312,7 @@ class UserController extends Controller
          // Memeriksa apakah foto pengguna sudah menjadi default
         if ($user->photo_profile === 'defaultProfile.png') {
         Alert::error('Error Message', 'Cannot delete default profile picture.');
-        return redirect()->back()->with('error', 'Cannot delete default profile picture.');
+        return redirect()->route('workspace.settings', ['#tabs-activity-7'])->with('error', 'Cannot delete default profile picture.');
         }
         if($user->photo_profile) {
             File::delete(public_path('photo-user/'.$user->photo_profile));
@@ -314,7 +322,7 @@ class UserController extends Controller
         $user->photo_profile = basename($defaultProfilePath); // Menggunakan nama file default
         $user->save();
         Alert::success('Success Message', 'You have successfully delete photo profile.');
-        return redirect()->route('workspace.settings');
+        return redirect()->route('workspace.settings', ['#tabs-activity-7']);
     }
 
     public function changePasswordShow() {

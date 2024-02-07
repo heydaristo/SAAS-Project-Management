@@ -100,11 +100,11 @@
           </tr>
 
           {{-- Modals Edit --}}
-          {{-- <div class="modal fade" id="modalEdit-{{ $invoices->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="modalEdit-{{$invoice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="modal2Label">invoices Name</h5>
+                  <h5 class="modal-title" id="modal2Label">Edit Invoice</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -112,55 +112,52 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
-                      <label for="project_name">Project Name</label>
-                      <input type="text" value="{{ $project->project_name }}" class="form-control mt-1" name="project_name" placeholder="Masukkan Project name" required />
-                    </div>
-                    <div class="mb-3">
-                     <label for="start_date">Start Date</label>
-                     <input type="date" class="form-control mt-1" value="{{ $project->start_date }}" id="start_date" name="start_date" placeholder="Start Date" required />
-                    </div>
-                    <div class="mb-3">
-                      <label for="end_date">End Date</label>
-                      <input type="date" class="form-control mt-1" value="{{ $project->end_date }}" id="end_date" name="end_date" placeholder="Masukkan alamat" required />
+                      <label for="Project">Project Name</label>
+                      <select class="form-control mt-1" name="id_project" id="user_id">
+                        <option value="">Select Project</option>
+                        @foreach ($project as  $projectmodels)
+                        <option value="{{ $projectmodels->id }}" {{ $invoice->id_project == $projectmodels->id ? 'selected' : '' }}>
+                          {{ $projectmodels->project_name}}</option>
+                        @endforeach
+                    </select>
+                     </div>
+                   <div class="mb-3">
+                      <label for="client">Client Name</label>
+                      <select class="form-control mt-1" name="id_client" id="id_client">
+                        <option value="">Select client</option>
+                        @foreach ($clients as  $client)
+                        <option value="{{ $client->id }}" {{ $invoice->id_client == $client->id ? 'selected' : '' }}>
+                          {{ $client->name }}</option>
+                        @endforeach
+                    </select>
                      </div>
                     <div class="mb-3">
                       <label for="status">Status</label>
                       <select class="form-control mt-1" name="status">
-                          <option value="Active" {{ $project->status == 'Active' ? 'selected' : '' }}>Active</option>
-                          <option value="Pending" {{ $project->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                          <option value="Inactive" {{ $project->status == 'Inactive' ? 'selected' : '' }}>Inactive</option>
-                      </select>
-                     </div>
-                     <div class="mb-3">
-                      <label for="client">Nama Client</label>
-                      <select class="form-control mt-1" name="id_client" id="id_client">
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}" {{ $project->id_client == $client->id ? 'selected' : '' }}>
-                                {{ $client->name }}
-                            </option>
-                        @endforeach
+                        <option value="Active" {{ $invoice->status == 'Active' ? 'selected' : '' }}>Active</option>
+                        <option value="Pending" {{ $invoice->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="Inactive" {{ $invoice->status == 'Inactive' ? 'selected' : '' }}>Inactive</option>
                     </select>
                      </div>
-                     <div class="mb-3">
-                      <label for="freelance">Nama Freelance</label>
-                      <select class="form-control mt-1" name="user_id" id="user_id">
-                        @foreach ($freelances as $freelance)
-                            <option value="{{ $freelance->id }}" {{ $project->user_id == $freelance->id ? 'selected' : '' }}>
-                                {{ $freelance->fullname }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <div class="mb-3">
+                      <label for="due_date">Expired</label>
+                      <input type="date" class="form-control mt-1" value="{{ $invoice->due_date }}" id="due_date" name="due_date" placeholder="Masukkan alamat" required />
                      </div>
+                     <div class="mb-3">
+                      <label for="total">Total</label>
+                      <input type="number" class="form-control mt-1" value="{{ $invoice->total }}" id="total" name="total" placeholder="Masukkan total" required />
+                     </div>
+                
                 </div>
                 <div class="modal-footer">
                   <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
-                  <button type="submit" class="btn btn-primary">Add Project</button>
+                  <button type="submit" class="btn btn-primary">Edit Project</button>
                 </div>
               </form>
               </div>
             </div>
-          </div> --}}
-
+          </div>
+          
 {{-- Modal Hapus --}}
 {{-- <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">

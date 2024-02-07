@@ -9,23 +9,28 @@ use App\Models\Client;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 
 
 
 class ProjectController extends Controller
 {
-    public function index(){
+    public function index()
+    {
+        // Mendapatkan ID pengguna yang sedang login
+        $userId = Auth::id();
+    
+        // Mengambil proyek yang dimiliki oleh pengguna yang sedang login
         $projectmodels = DB::table('project_models')
-        ->join('users', 'project_models.user_id', '=', 'users.id')
-        ->join('clients', 'project_models.id_client', '=', 'clients.id')
-        ->select('project_models.*', 'users.fullname as fullname', 'clients.name as name')
-        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
+            ->where('project_models.user_id', $userId) // Filter berdasarkan user_id
+            ->join('clients', 'project_models.id_client', '=', 'clients.id')
+            ->select('project_models.*', 'clients.name as name')
+            ->paginate(5);
     
-        $freelances = User::where('id_role', 3)->get();
-        $clients = Client::all();
+        // Mengambil klien yang dimiliki oleh pengguna yang sedang login
+        $clients = Client::where('user_id', $userId)->get();
     
-        return view('workspace.projects.index', compact('projectmodels', 'freelances', 'clients'));
-    
+        return view('workspace.projects.index', compact('projectmodels', 'clients'));
     }
 
     public function create(){
@@ -39,20 +44,21 @@ class ProjectController extends Controller
             'end_date' => ['required'],
             'status' => ['required'],
             'id_client' => ['required'],
-            'user_id' => ['required'],
+            // 'user_id' => ['required'], user id tidak perlu di validasi
         ]);
         if ($validator->fails()) {
             $error = "You have failed add new projeect.\n".strval($validator->errors());
             Alert::error('Failed Message', $error);
             return redirect()->route('workspace.projects');
         }
+        $user = Auth::user();
 
         $data['project_name'] = $request->project_name;
         $data['start_date'] = $request->start_date;
         $data['end_date'] = $request->end_date;
         $data['status'] = $request->status;
         $data['id_client'] = $request->id_client;
-        $data['user_id'] = $request->user_id;
+        $data['user_id'] = $user->id;
 
         if(!$data){
             $error = "You have failed add new projeect.\n".strval($validator->errors());
@@ -84,8 +90,8 @@ class ProjectController extends Controller
            'end_date' => ['required'],
          'status' => ['required'],
            'id_client' => ['required'],
-           'user_id' => ['required'],
         ]);
+        $user = Auth::user();
 
         $data = [
             'project_name' => $request->project_name,
@@ -93,7 +99,8 @@ class ProjectController extends Controller
             'end_date' => $request->end_date,
             'status' => $request->status,
             'id_client' => $request->id_client,
-            'user_id' => $request->user_id,
+            'user_id' => $user->id,
+            
         ];
         if(!$data) {
             Alert::error('Failed Message', 'You have failed to edit project.');

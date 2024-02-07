@@ -58,7 +58,7 @@
             <th>End Date</th>
             <th>Status</th>
             <th>Client</th>
-            <th>Freelancer</th>
+            {{-- <th>Freelancer</th> --}}
             <th class="w-1"></th>
           </tr>
         </thead>
@@ -82,7 +82,7 @@
                 @endif
             </td>
               <td>{{ $project->name }}</td>
-              <td>{{ $project->fullname }}</td>
+              {{-- <td>{{ $project->fullname }}</td> --}}
             <td><div class="btn-group mb-1 dropleft ">
               <div class="dropdown dropleft">
                 <button class="btn btn-primary dropdown-toggle me-1" type="button" id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -133,14 +133,16 @@
                      <div class="mb-3">
                       <label for="client">Nama Client</label>
                       <select class="form-control mt-1" name="id_client" id="id_client">
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}" {{ $project->id_client == $client->id ? 'selected' : '' }}>
-                                {{ $client->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                     </div>
-                     <div class="mb-3">
+                          @foreach ($clients as $client)
+                              @if ($client->user_id == auth()->user()->id)
+                                  <option value="{{ $client->id }}" {{ $project->id_client == $client->id ? 'selected' : '' }}>
+                                      {{ $client->name }}
+                                  </option>
+                              @endif
+                          @endforeach
+                      </select>
+                  </div>
+                     {{-- <div class="mb-3">
                       <label for="freelance">Nama Freelance</label>
                       <select class="form-control mt-1" name="user_id" id="user_id">
                         @foreach ($freelances as $freelance)
@@ -149,7 +151,7 @@
                             </option>
                         @endforeach
                     </select>
-                     </div>
+                     </div> --}}
                 </div>
                 <div class="modal-footer">
                   <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
@@ -249,7 +251,7 @@
               @endforeach
           </select>
            </div>
-           <div class="mb-3">
+           {{-- <div class="mb-3">
             <label for="freelance">Nama Freelance</label>
             <select class="form-control mt-1" name="user_id" id="user_id">
               <option value="">Select freelance</option>
@@ -257,7 +259,7 @@
               <option value="{{ $freelance->id }}">{{ $freelance->fullname }}</option>
               @endforeach
           </select>
-           </div>
+           </div> --}}
       </div>
       <div class="modal-footer">
         <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
