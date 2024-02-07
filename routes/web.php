@@ -108,6 +108,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     // change password
     Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
+    // upgrade
+    Route::get('/subscriptions/upgrade', [SubscriptionController::class, 'upgradeshow'])->name('subscriptions.upgradeshow');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){

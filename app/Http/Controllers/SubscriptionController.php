@@ -158,4 +158,10 @@ class SubscriptionController extends Controller
             return redirect()->route('admin.subscription.show');
         }
     }
+
+    public function upgradeshow()
+    {
+        $plans = Plan::all();
+        return view('workspace.upgrade.index', compact('plans'));
+    }
 }
