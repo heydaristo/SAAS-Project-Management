@@ -29,16 +29,26 @@ use App\Http\Controllers\workspace\WorkspaceDashboardController;
 
 // login
 Route::get('/', [UserController::class, 'login'])->name('/ ');
-
-Route::get('/login', [UserController::class, 'login'])->name('login');
-Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-Route::get('/loginadmin', [UserController::class, 'loginadmin'])->name('forgot-password');
 
-Route::get('/register', [UserController::class, 'register'])->name('register');
-Route::post('/register-proses', [UserController::class, 'register_proses'])->name('register-proses');
 
-Route::get('/forgot-password', [UserController::class, 'forgotPasswordShow'])->name('forgot-password');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [UserController::class, 'login'])->name('login');
+    Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
+    Route::get('/forgot-password', [UserController::class, 'forgotPasswordShow'])->name('forgot-password');
+    Route::post('/forgot-password', [UserController::class, 'forgotPassword'])->name('forgot-password.store');
+    Route::get('/reset-password/{token}', [UserController::class, 'resetPassword'])->name('password.reset');
+    Route::post('/reset-password', [UserController::class,'resetPasswordProses'])->name('password.reset.store');
+});
+
+Route::middleware(['guest'])->name('password.reset')->prefix('reset-password')->group(function () {
+    Route::get('/{token}', [UserController::class, 'resetPassword'])->name('');
+});
+
+Route::get('/loginadmin', [UserController::class, 'loginadmin'])->name('loginadmin')->middleware('guest');
+Route::get('/register', [UserController::class, 'register'])->name('register')->middleware('guest');
+Route::post('/register-proses', [UserController::class, 'register_proses'])->name('register-proses')->middleware('guest');
+
 
 Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'workspace.'], function(){
 

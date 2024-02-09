@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\DB;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\Password;
 use App\Models\Plan;
+use Carbon\Carbon;
+use App\Models\PasswordResetToken;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-
+use Illuminate\Validation\Rule;
 use App\Models\User;
 
 
@@ -55,6 +58,67 @@ class UserController extends Controller
     public function forgotPasswordShow() {
         return view('authentication.forgot-password');
     }
+    
+    public function forgotPassword(Request $request) {
+    $request->validate(['email' => 'required|email']);
+
+    // Cek apakah pengguna adalah superadmin atau admin
+    $user = User::where('email', $request->email)->first();
+    if ($user && in_array($user->id_role, [1, 2])) {
+        return back()->withErrors(['email' => 'Email not found']);
+    }
+
+    // Cek apakah ada token yang berlaku dalam satu jam terakhir
+    $lastHour = Carbon::now()->subHour();
+    $existingToken = PasswordResetToken::where('email', $request->email)
+                                        ->where('created_at', '>=', $lastHour)
+                                        ->first();
+
+    if ($existingToken) {
+        return back()->withErrors(['email' => 'Password reset link has been sent recently. Please try again later.']);
+    }
+
+    // Generate new reset token
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['success' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+    }
+
+    public function resetPassword(Request $request, $token) {
+        return view('authentication.reset-password', ['token' => $token]);
+
+    }
+    
+    public function resetPasswordProses(Request $request) {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|different:password', // Memastikan password baru berbeda dengan password saat ini
+            'confirmPassword' => 'required|same:password',
+        ]);
+        
+        // Gunakan Password::reset untuk mengubah password
+        $status = Password::reset(
+            $request->only('email', 'password', 'token'),
+            function ($user, $password) {
+                // Reset password dan simpan
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
+        
+        // Periksa status reset
+        if ($status === Password::PASSWORD_RESET) {
+            return redirect()->route('login')->with('success', 'Password has been reset successfully');
+        } else {
+            return back()->withInput($request->only('email'))->withErrors(['email' => [__($status)]]);
+        }
+    }
+    
 
     public function register(){
         return view('authentication.register');

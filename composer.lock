@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "arielmejiadev/larapex-charts",
-            "version": "8.0.1",
+            "version": "8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArielMejiaDev/larapex-charts.git",
-                "reference": "585e17bd44e2b29c51b896ab7221e307095e9271"
+                "reference": "5461a65f730c66735599e142e384d2689209eedf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArielMejiaDev/larapex-charts/zipball/585e17bd44e2b29c51b896ab7221e307095e9271",
-                "reference": "585e17bd44e2b29c51b896ab7221e307095e9271",
+                "url": "https://api.github.com/repos/ArielMejiaDev/larapex-charts/zipball/5461a65f730c66735599e142e384d2689209eedf",
+                "reference": "5461a65f730c66735599e142e384d2689209eedf",
                 "shasum": ""
             },
             "require": {
@@ -66,9 +66,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ArielMejiaDev/larapex-charts/issues",
-                "source": "https://github.com/ArielMejiaDev/larapex-charts/tree/8.0.1"
+                "source": "https://github.com/ArielMejiaDev/larapex-charts/tree/8.1.0"
             },
-            "time": "2024-01-25T17:23:02+00:00"
+            "time": "2024-02-08T16:17:30+00:00"
         },
         {
             "name": "brick/math",
