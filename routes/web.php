@@ -109,7 +109,10 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     // change password
     Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
     // upgrade
-    Route::get('/subscriptions/upgrade', [SubscriptionController::class, 'upgradeshow'])->name('subscriptions.upgradeshow');
+    Route::get('/subscriptions/upgradeshow', [SubscriptionController::class, 'upgradeshow'])->name('subscriptions.upgradeshow');
+    Route::get('/subscriptions/upgrade/{planid}', [SubscriptionController::class, 'upgrade'])->name('subscriptions.upgrade');
+    Route::get('/subscriptions/bayar/{transactionid}', [SubscriptionController::class, 'bayar'])->name('subscriptions.bayar');
+    Route::get('/subscriptions/success/{transactionid}', [SubscriptionController::class, 'success'])->name('subscriptions.success');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){
