@@ -16,7 +16,8 @@ class TransactionAdmin extends Model
         'id_user',
         'amount',
         'date',
-        'status'
+        'status',
+        'snap_token',
     ];
 
     public function subscription() : BelongsTo

@@ -87,7 +87,7 @@
                     </span>
                 @else
                     <span class="text-green d-inline-flex align-items-center lh-1">
-                        Data users tidak tersedia
+                        Data client tidak tersedia
                     </span>
                 @endif
             </div>

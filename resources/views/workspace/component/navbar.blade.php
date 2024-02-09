@@ -103,7 +103,7 @@
         <div class="nav-item dropdown">
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
             <span class="avatar avatar-sm">
-              {{-- <img src="{{ public/photo-user/Auth::user()->photo_profile }}" alt=""> --}}
+              {{-- <img src="public/photo-user/Auth::user()->photo_profile }}" alt=""> --}}
               <img src="{{ asset('/photo-user/'.Auth::user()->photo_profile)}}" alt="profile">
 
             </span>

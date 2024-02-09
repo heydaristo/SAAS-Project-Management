@@ -33,9 +33,12 @@
 
                       </div>
                       <div class="form-group">
-                          <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                          <label for="password"><i class="zmdi zmdi-lock mb-5"></i></label>
                           <input type="password" name="password" id="password" placeholder="Password"/>
-                      </div>
+                          <span class="form-label-description">
+                            <a href="{{ route('forgot-password') }}">I forgot password</a>
+                          </span>
+                        </div>
                       {{-- <div class="form-group">
                           <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                           <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>

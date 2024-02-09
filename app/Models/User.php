@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, CanResetPassword;
 
     /**
      * The attributes that are mass assignable.
@@ -58,6 +59,10 @@ class User extends Authenticatable
     public function project() : HasMany
     {
         return $this->hasMany(ProjectModel::class);
+    }
+    public function invoice() : HasMany
+    {
+        return $this->hasMany(Invoice::class);
     }
 
     public function quotation() : HasMany
