@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ProjectModel;
 use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use App\Models\Invoice;
@@ -16,7 +17,10 @@ class InvoiceController extends Controller
 {
     public function index()
     {
+        $userId = Auth::id();
+
         $invoices = DB::table('invoices')
+        ->where('invoices.user_id', $userId)
         ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
         ->join('clients', 'invoices.id_client', '=', 'clients.id')
         ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
@@ -48,7 +52,7 @@ class InvoiceController extends Controller
             'total' => 'required|numeric',
         ]);
     
-    
+        $user = Auth::user();
         // Data yang akan disimpan
         $data = [
             'id_project' => $request->id_project,
@@ -58,6 +62,7 @@ class InvoiceController extends Controller
             'due_date' => $request->due_date,
             'total' => $request->total,
             'invoice_pdf' => '1',
+            'user_id' => $user->id,
         ];
         // Simpan data ke dalam database
         if (Invoice::create($data)) {

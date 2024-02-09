@@ -247,8 +247,11 @@
             <select class="form-control mt-1" name="id_client" id="id_client">
               <option value="">Select client</option>
               @foreach ($clients as  $client)
+              @if ($client->user_id == auth()->user()->id)
               <option value="{{ $client->id }}">{{ $client->name }}</option>
+              @endif
               @endforeach
+              
           </select>
            </div>
            {{-- <div class="mb-3">
