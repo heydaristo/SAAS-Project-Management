@@ -749,5 +749,6 @@
       // @formatter:on
     </script>
 	@yield('sweetalert')
+	@yield('script')
   </body>
 </html>
