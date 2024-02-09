@@ -39,8 +39,6 @@
                           {!! nl2br($plan->benefits) !!}
                           </span>
                         </div>
-
-
                       </li>
                     </ul>
                     <div class="text-center mt-6">

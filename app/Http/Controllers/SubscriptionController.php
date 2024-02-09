@@ -253,5 +253,4 @@ class SubscriptionController extends Controller
 
         return view('workspace.upgrade.success');
     }
-
 }
