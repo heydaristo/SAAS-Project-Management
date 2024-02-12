@@ -152,7 +152,7 @@
             </span>
           </a>
         </li>
-        <li class="nav-item  {{ request()->routeIs('workspace.project') ? 'active' : '' }}">
+        <li class="nav-item  {{ request()->routeIs('workspace.projects') ? 'active' : '' }}">
           {{-- <a class="nav-link" href="#"> --}}
           <a class="nav-link" href="{{ route('workspace.projects') }}">
             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
