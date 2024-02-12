@@ -28,11 +28,12 @@ use App\Http\Controllers\workspace\WorkspaceDashboardController;
 */
 
 // login
-Route::get('/', [UserController::class, 'login'])->name('/ ');
+Route::get('/', [UserController::class, 'login'])->name('/');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 Route::middleware(['guest'])->group(function () {
+    Route::get('/', [UserController::class,'login'])->name('/');
     Route::get('/login', [UserController::class, 'login'])->name('login');
     Route::post('/login-proses', [UserController::class, 'login_proses'])->name('login-proses');
     Route::get('/forgot-password', [UserController::class, 'forgotPasswordShow'])->name('forgot-password');
