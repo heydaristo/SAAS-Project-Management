@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transaction_admins', function (Blueprint $table) {
-            $table->string('snap_token')->after('status');
+            // buat boleh null
+            $table->string('snap_token')->after('status')->nullable();
         });
     }
 

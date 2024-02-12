@@ -23,5 +23,9 @@ class Role extends Seeder
         \App\Models\Role::create([
             'role_name' => 'user',
         ]);
+
+        \App\Models\Role::create([
+            'role_name' => 'premium',
+        ]);
     }
 }

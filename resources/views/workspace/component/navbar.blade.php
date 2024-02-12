@@ -116,6 +116,8 @@
                     Admin
                 @elseif(Auth::user()->id_role == 3)
                     Freelance
+                @elseif(Auth::user()->id_role == 4)
+                    <span class="text-red">Pro Freelance</span>
                 @else
                     Peran tidak dikenali
                 @endif

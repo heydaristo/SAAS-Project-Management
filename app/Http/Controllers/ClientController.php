@@ -100,4 +100,21 @@ class ClientController extends Controller
         Alert::success('Success Message', 'You have successfully delete.');
         return redirect()->route('workspace.clients');
     }
+
+    public function checklimit($id){
+        $user = User::find($id);
+        if($user->id_role == 3){
+            // check bila sudah limit 
+            $client = Client::where('user_id', $id)->count();
+            if($client < 5){
+                return back()->with('aman','aman');
+            }else{
+                return back()->with('limit','limit');
+            }
+        }else{
+            return back()->with('aman','aman');
+        }
+    }
+
+
 }

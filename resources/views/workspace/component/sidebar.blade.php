@@ -13,7 +13,6 @@
       <div class="nav-item d-none d-lg-flex me-3">
        
         {{-- Nothing --}}
-
       </div>
       <div class="d-none d-lg-flex">
         <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
@@ -198,6 +197,7 @@
           </a>
         </li>
         {{-- upgrade to premium, make this button at button--}}
+        @if ( Auth::user()->id_role == 3 )
         <li class="nav-item">
           <a href="{{ route('workspace.subscriptions.upgradeshow')}}" class="nav-link">
             {{-- make button --}}
@@ -205,7 +205,10 @@
                 Upgrade to Premium
             </button>
           </a>
+        </li>
+        @endif
       </ul>
+
     </div>
     
     
