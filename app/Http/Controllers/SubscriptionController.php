@@ -201,7 +201,6 @@ class SubscriptionController extends Controller
             \Midtrans\Config::$is3ds = config('midtrans.is3ds');
 
             
-
             $params = array(
                 'transaction_details' => array(
                     'order_id' => rand(),
@@ -247,6 +246,12 @@ class SubscriptionController extends Controller
             Alert::error('Failed Message', 'You have failed to pay.');
             return redirect()->route('workspace.subscriptions.upgradeshow');
         }
+
+        // change freelance role to 4, premium
+
+        $user = Auth::user();
+        $user->id_role = 4;
+        $user->save();
 
         $transactionadmin->status = "PAID";
         $transactionadmin->save();

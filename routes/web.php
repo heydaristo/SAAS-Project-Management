@@ -67,6 +67,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/clients/show/{id}', [ClientController::class, 'show'])->name('clients.show');
 
+    Route::get('/clients/checklimit/{id}', [ClientController::class, 'checklimit'])->name('clients.checklimit');
+
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 
     Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
