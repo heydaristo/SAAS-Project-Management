@@ -189,11 +189,11 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
-
-    public function index(){
-        $users = User::where('id_role', 3)->get();
-        $users = User::paginate(10);
-
+    public function index()
+    {
+        // Mengambil data pengguna dengan ID role 3 terpaginasi
+        $users = User::where('id_role', 3)->paginate(5); // Menggunakan pagination dengan 10 item per halaman
+    
         return view('admin.user.index', compact('users'));
     }
 
