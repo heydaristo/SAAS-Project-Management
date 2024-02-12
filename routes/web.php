@@ -100,6 +100,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
 
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
+    
+    Route::get('/invoice/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
 
     Route::post('/invoice/create', [InvoiceController::class, 'store'])->name('invoices.store');
 

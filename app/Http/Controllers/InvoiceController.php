@@ -38,9 +38,32 @@ class InvoiceController extends Controller
         $project = ProjectModel::all();
         $clients = Client::all();
     
-        return view('workspace.invoice.index', compact('invoices', 'project', 'clients'));
+        return view('workspace.invoices.index', compact('invoices', 'project', 'clients'));
 
     }
+
+    public function show($id)
+    {
+     $userId = auth()->user()->id;
+
+    $invoice = DB::table('invoices')
+        ->where('invoices.user_id', $userId)
+        ->where('invoices.id', $id) // Filter berdasarkan ID invoice
+        ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
+        ->join('clients', 'invoices.id_client', '=', 'clients.id')
+        ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
+        ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
+
+  
+        if (!$invoice) {
+        // Jika bukan pemiliknya, kembalikan response tidak diizinkan
+        return abort(403, 'Not Found');
+    }
+
+    // Kembalikan view dengan data invoice
+    return view('workspace.invoices.show', compact('invoice'));
+    }
+
     public function store(Request $request)
     {
         // Validasi data dari formulir
@@ -68,9 +91,12 @@ class InvoiceController extends Controller
         if (Invoice::create($data)) {
             // Jika berhasil, kembalikan dengan pesan sukses
             return redirect()->route('workspace.invoice')->with('success', 'You have successfully added new invoice.');
+            Alert::success('Success Message', 'You have successfully added new invoice.');
         } else {
             // Jika gagal, kembalikan dengan pesan gagal
             return redirect()->route('workspace.invoice')->with('error', 'Failed to add new invoice.');
+            Alert::error('Error Message', 'Failed to add new invoice.');
+            
         }
     }
     public function update(Request $request, $id){
