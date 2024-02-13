@@ -177,8 +177,8 @@ class SubscriptionController extends Controller
             'id_plan' => $plan->id,
             'duration' => 12,
             'status' => "PENDING",
-            'start_date' => date('Y-m-d'),
-            'end_date' => date('Y-m-d', strtotime('+' . $plan->duration . ' months'))
+            'start_date' => now(),
+            'end_date' => now()->addMonths(12),
         ]);
 
         // masukkan transaction_admins table
@@ -188,7 +188,7 @@ class SubscriptionController extends Controller
             $dataTransaction['id_user'] = $subscription->id_user;
             $plan = Plan::find($subscription->id_plan);
             $dataTransaction['amount'] = $plan->price;
-            $dataTransaction['date'] = date('Y-m-d');
+            $dataTransaction['date'] = now();
             $dataTransaction['status'] = 'PENDING';
 
             // Set your Merchant Server Key
@@ -255,6 +255,13 @@ class SubscriptionController extends Controller
 
         $transactionadmin->status = "PAID";
         $transactionadmin->save();
+
+        // change subscription status to ACCESS
+        $subscription = Subscription::find($transactionadmin->id_subscription);
+        $subscription->status = "ACTIVE";
+        $subscription->start_date = now();
+        $subscription->end_date = now()->addMonths($subscription->duration);
+        $subscription->save();
 
         return view('workspace.upgrade.success');
     }
