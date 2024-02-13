@@ -47,7 +47,31 @@ class UserController extends Controller
                 return redirect()->route('superadmin.dashboard');
             } else if(Auth::user()->id_role == 2){
                 return redirect()->route('admin.dashboard');
-            } else {
+            } else if(Auth::user()->id_role == 3){
+                return redirect()->route('workspace.dashboard');
+            } else if(Auth::user()->id_role == 4){
+                // check masa aktif subscription
+                $subscription = Subscription::where('id_user', Auth::user()->id)->get()->last();
+
+                if($subscription->status == 'ACTIVE'){
+                    $now = Carbon::now();
+                    $endDate = Carbon::parse($subscription->end_date);
+                    if($now->gt($endDate)){
+                        $subscription->status = 'END';
+                        $subscription->save();
+
+                        // change user role to 3
+                        $user = User::find(Auth::user()->id);
+                        $user->id_role = 3;
+                        $user->save();
+                    }
+                }else if($subscription->status == 'END'){
+                    // change user role to 3
+                    $user = User::find(Auth::user()->id);
+                    $user->id_role = 3;
+                    $user->save();
+                }
+
                 return redirect()->route('workspace.dashboard');
             }
         } else {
@@ -175,11 +199,11 @@ class UserController extends Controller
                 ];
 
                 DB::table('transaction_admins')->insert($transaction);
-                return redirect()->route('login')->with('success','Register Success');
                 Alert::success('Success Message', 'Register Success');
+                return redirect()->route('login')->with('success','Register Success');
             }else{
-                return redirect()->route('register')->with('failed','Register Failed');
                 Alert::error('Failed Message', 'Register Failed');
+                return redirect()->route('register')->with('failed','Register Failed');
             }
             
         }

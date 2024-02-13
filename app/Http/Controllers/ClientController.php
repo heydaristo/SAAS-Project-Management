@@ -26,16 +26,19 @@ class ClientController extends Controller
 
         $userId = Auth::id();
 
-        $client = DB::table('clients')
-        ->where('clients.user_id', $userId)
-        ->paginate(5);
+       if(Auth::user()->id_role == 3){
+            $client = Client::where('user_id', $userId)->limit(5)->get();
+        }else{
+            $client = Client::where('user_id', $userId)->paginate(5);
+        }
 
         return view('workspace.clients.index', [
             'userCountLastWeek' => $userCountLastWeek,
             'userCount' => $userCount,
             'clientCountLastWeek' => $clientCountLastWeek,
             'clientCount' => $clientCount,
-            'client' => $client
+            'client' => $client,
+            'only5' => Auth::user()->id_role == 3 ? true : false,
         ]);
     }
 
