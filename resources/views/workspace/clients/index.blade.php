@@ -71,7 +71,11 @@
                         </thead>
                         <tbody>
                             @php
-                                $i = 1 + ($client->currentPage() - 1) * $client->perPage();
+                                if($only5 == true){
+                                    $i = 1;
+                                }else{
+                                    $i = 1 + ($client->currentPage() - 1) * $client->perPage();
+                                }
                             @endphp
                             @foreach ($client as $clients)
                                 <tr>
@@ -203,7 +207,9 @@
                     </table>
                 </div>
                 <div class="card-footer d-flex align-items-center ms-auto">
+                    @if ($only5 != true)
                     {!! $client->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
+                    @endif
                 </div>
                 {{-- Modal Dialog --}}
                 <div class="modal fade" id="tambah_client" tabindex="-1" aria-labelledby="modal2Label"

@@ -8,7 +8,6 @@
 * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
 -->
 <html lang="en">
-<<<<<<< HEAD
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -25,8 +24,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       @import url('https://rsms.me/inter/inter.css');
-=======
->>>>>>> bea78f35a77a6114c2772cb2a538fff047c17f7d
+
 
 <head>
     <meta charset="utf-8" />
