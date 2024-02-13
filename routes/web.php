@@ -85,6 +85,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/quotation', [QuotationController::class, 'index'])->name('quotation');
 
+    Route::get('/quotation/showadd', [QuotationController::class, 'showadd'])->name('quotation.showadd');
+
     Route::get('/quotation/create', [QuotationController::class, 'create'])->name('quotation.create');
 
     Route::get('/quotation/edit/{id}', [QuotationController::class, 'edit'])->name('quotation.edit');

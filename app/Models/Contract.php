@@ -21,6 +21,7 @@ class Contract extends Model
         'status',
         'contract_pdf',
         'id_client',
+        'id_user',
         'id_project',
     ];
 

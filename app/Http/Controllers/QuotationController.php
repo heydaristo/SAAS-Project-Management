@@ -3,11 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Quotation;
+use App\Models\User;
+use App\Models\Client;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 
 class QuotationController extends Controller
 {
     public function index(){
-        return view('workspace.quotations');
+        // Mendapatkan ID pengguna yang sedang login
+        $userId = Auth::id();
+        // Mengambil proyek yang dimiliki oleh pengguna yang sedang login
+        $quotations = DB::table('quotations')
+            ->where('quotations.id_user', $userId) // Filter berdasarkan user_id
+            ->join('clients', 'quotations.id_client', '=', 'clients.id')
+            ->select('quotations.*', 'clients.name as name')
+            ->paginate(5);
+
+        
+        // Mengambil klien yang dimiliki oleh pengguna yang sedang login
+        
+        return view('workspace.quotation.index', compact('quotations', 'clients'));
+    }
+
+    public function showadd(){
+        $userId = Auth::id();
+        $clients = Client::where('user_id', $userId)->get();
+        return view('workspace.component.addqc', compact('clients'));
     }
 
     public function create(){

@@ -1,50 +1,19 @@
 @extends('template')
 
-@php
-    $title = 'Project';
-@endphp
-
-
 @section('body')
     <div class="row row-deck row-cards">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Project</h3>
+                    <h3 class="card-title">quotations</h3>
                 </div>
 
                 <div class="card-body border-bottom py-3">
-                    <div class="d-flex">
-                        <div class="text-muted">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Select Plan</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="text-muted ms-3">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Select Plan</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="ms-auto me-3">
-                            <select class="form-select" id="select">
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <!-- Tambahkan opsi lain sesuai kebutuhan -->
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
-                            data-bs-target="#tambah_project">
-                            New Project
+                    <a href="{{ route('workspace.quotation.showadd') }}">
+                        <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal">
+                            New Quotation
                         </button>
-                    </div>
+                    </a>
                 </div>
                 <div class="table-responsive">
                     <table class="table card-table table-vcenter text-nowrap datatable">
@@ -58,7 +27,7 @@
                                         <path d="M6 15l6 -6l6 6" />
                                     </svg>
                                 </th>
-                                <th>Project Name</th>
+                                <th>quotation Name</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Status</th>
@@ -69,25 +38,25 @@
                         </thead>
                         <tbody>
                             @php
-                                $i = 1 + ($projectmodels->currentPage() - 1) * $projectmodels->perPage();
+                                $i = 1 + ($quotations->currentPage() - 1) * $quotations->perPage();
                             @endphp
-                            @foreach ($projectmodels as $project)
+                            @foreach ($quotations as $quotation)
                                 <tr>
                                     <td><span class="text-muted">{{ $i++ }}</span></td>
-                                    <td>{{ $project->project_name }}</td>
-                                    <td>{{ $project->start_date }}</td>
-                                    <td>{{ $project->end_date }}</td>
+                                    <td>{{ $quotation->quotation_name }}</td>
+                                    <td>{{ $quotation->start_date }}</td>
+                                    <td>{{ $quotation->end_date }}</td>
                                     <td>
-                                        @if ($project->status == 'Active')
-                                            <span class="badge text-bg-success">{{ $project->status }}</span>
-                                        @elseif($project->status == 'Pending')
-                                            <span class="badge text-bg-warning">{{ $project->status }}</span>
-                                        @elseif($project->status == 'Inactive')
-                                            <span class="badge text-bg-danger">{{ $project->status }}</span>
+                                        @if ($quotation->status == 'Active')
+                                            <span class="badge text-bg-success">{{ $quotation->status }}</span>
+                                        @elseif($quotation->status == 'Pending')
+                                            <span class="badge text-bg-warning">{{ $quotation->status }}</span>
+                                        @elseif($quotation->status == 'Inactive')
+                                            <span class="badge text-bg-danger">{{ $quotation->status }}</span>
                                         @endif
                                     </td>
-                                    <td>{{ $project->name }}</td>
-                                    {{-- <td>{{ $project->fullname }}</td> --}}
+                                    <td>{{ $quotation->name }}</td>
+                                    {{-- <td>{{ $quotation->fullname }}</td> --}}
                                     <td>
                                         <div class="btn-group mb-1 dropleft ">
                                             <div class="dropdown dropleft">
@@ -98,11 +67,11 @@
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit-{{ $project->id }}">
+                                                        data-bs-target="#modalEdit-{{ $quotation->id }}">
                                                         Edit
                                                     </button>
                                                     <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDelete-{{ $project->id }}">Delete</button>
+                                                        data-bs-target="#modalDelete-{{ $quotation->id }}">Delete</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,61 +79,61 @@
                                 </tr>
 
                                 {{-- Modals Edit --}}
-                                <div class="modal fade" id="modalEdit-{{ $project->id }}" tabindex="-1"
+                                <div class="modal fade" id="modalEdit-{{ $quotation->id }}" tabindex="-1"
                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="modal2Label">Project Name</h5>
+                                                <h5 class="modal-title" id="modal2Label">quotation Name</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <form
-                                                    action="{{ route('workspace.projects.update', ['id' => $project->id]) }}"
+                                                    action="{{ route('workspace.quotations.update', ['id' => $quotation->id]) }}"
                                                     method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
                                                     <div class="mb-3">
-                                                        <label for="project_name">Project Name</label>
-                                                        <input type="text" value="{{ $project->project_name }}"
-                                                            class="form-control mt-1" name="project_name"
-                                                            placeholder="Masukkan Project name" required />
+                                                        <label for="quotation_name">quotation Name</label>
+                                                        <input type="text" value="{{ $quotation->quotation_name }}"
+                                                            class="form-control mt-1" name="quotation_name"
+                                                            placeholder="Masukkan quotation name" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="start_date">Start Date</label>
                                                         <input type="date" class="form-control mt-1"
-                                                            value="{{ $project->start_date }}" id="start_date"
+                                                            value="{{ $quotation->start_date }}" id="start_date"
                                                             name="start_date" placeholder="Start Date" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="end_date">End Date</label>
                                                         <input type="date" class="form-control mt-1"
-                                                            value="{{ $project->end_date }}" id="end_date"
+                                                            value="{{ $quotation->end_date }}" id="end_date"
                                                             name="end_date" placeholder="Masukkan alamat" required />
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="status">Status</label>
                                                         <select class="form-control mt-1" name="status">
                                                             <option value="Active"
-                                                                {{ $project->status == 'Active' ? 'selected' : '' }}>Active
+                                                                {{ $quotation->status == 'Active' ? 'selected' : '' }}>
+                                                                Active
                                                             </option>
                                                             <option value="Pending"
-                                                                {{ $project->status == 'Pending' ? 'selected' : '' }}>
+                                                                {{ $quotation->status == 'Pending' ? 'selected' : '' }}>
                                                                 Pending</option>
                                                             <option value="Inactive"
-                                                                {{ $project->status == 'Inactive' ? 'selected' : '' }}>
+                                                                {{ $quotation->status == 'Inactive' ? 'selected' : '' }}>
                                                                 Inactive</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="client">Nama Client</label>
-                                                        <select class="form-control mt-1" name="id_client"
-                                                            id="id_client">
+                                                        <select class="form-control mt-1" name="id_client" id="id_client">
                                                             @foreach ($clients as $client)
                                                                 @if ($client->user_id == auth()->user()->id)
                                                                     <option value="{{ $client->id }}"
-                                                                        {{ $project->id_client == $client->id ? 'selected' : '' }}>
+                                                                        {{ $quotation->id_client == $client->id ? 'selected' : '' }}>
                                                                         {{ $client->name }}
                                                                     </option>
                                                                 @endif
@@ -172,20 +141,20 @@
                                                         </select>
                                                     </div>
                                                     {{-- <div class="mb-3">
-                      <label for="freelance">Nama Freelance</label>
-                      <select class="form-control mt-1" name="user_id" id="user_id">
-                        @foreach ($freelances as $freelance)
-                            <option value="{{ $freelance->id }}" {{ $project->user_id == $freelance->id ? 'selected' : '' }}>
-                                {{ $freelance->fullname }}
-                            </option>
-                        @endforeach
-                    </select>
-                     </div> --}}
+                        <label for="freelance">Nama Freelance</label>
+                        <select class="form-control mt-1" name="user_id" id="user_id">
+                          @foreach ($freelances as $freelance)
+                              <option value="{{ $freelance->id }}" {{ $quotation->user_id == $freelance->id ? 'selected' : '' }}>
+                                  {{ $freelance->fullname }}
+                              </option>
+                          @endforeach
+                      </select>
+                       </div> --}}
                                             </div>
                                             <div class="modal-footer">
                                                 <a type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</a>
-                                                <button type="submit" class="btn btn-primary">Add Project</button>
+                                                <button type="submit" class="btn btn-primary">Add quotation</button>
                                             </div>
                                             </form>
                                         </div>
@@ -193,7 +162,7 @@
                                 </div>
 
                                 {{-- Modal Hapus --}}
-                                <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}"
+                                <div class="modal modal-blur fade" id="modalDelete-{{ $quotation->id }}"
                                     aria-hidden="true">
                                     <div class="modal-dialog modal-lg modal-dialog-centered">
                                         <div class="modal-content">
@@ -213,14 +182,15 @@
                                                     <path d="M12 16h.01"></path>
                                                 </svg>
                                                 <h3>Are you sure?</h3>
-                                                <div class="text-secondary">Do you really want to remove project
-                                                    {{ $project->project_name }}? What you've done cannot be undone.</div>
+                                                <div class="text-secondary">Do you really want to remove quotation
+                                                    {{ $quotation->quotation_name }}? What you've done cannot be undone.
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <div class="w-100">
                                                     <div class="row">
                                                         <form
-                                                            action="{{ route('workspace.projects.delete', ['id' => $project->id]) }}"
+                                                            action="{{ route('workspace.quotations.delete', ['id' => $quotation->id]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
@@ -245,75 +215,8 @@
                     </table>
                 </div>
                 <div class="card-footer d-flex align-items-center ms-auto">
-                    {!! $projectmodels->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
+                    {!! $quotations->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
                 </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- Modals Tambah --}}
-    <div class="modal fade" id="tambah_project" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal2Label">Project Name</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('workspace.projects.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="project_name">Project Name</label>
-                            <input type="text" class="form-control mt-1" name="project_name"
-                                placeholder="Masukkan Project name" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="start_date">Start Date</label>
-                            <input type="date" class="form-control mt-1" id="start_date" name="start_date"
-                                placeholder="Start Date" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="end_date">End Date</label>
-                            <input type="date" class="form-control mt-1" id="end_date" name="end_date"
-                                placeholder="Masukkan alamat" required />
-                        </div>
-                        <div class="mb-3">
-                            <label for="status">Status</label>
-                            <select class="form-control mt-1" name="status">
-                                <option value="">Select Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="client">Nama Client</label>
-                            <select class="form-control mt-1" name="id_client" id="id_client">
-                                <option value="">Select client</option>
-                                @foreach ($clients as $client)
-                                    @if ($client->user_id == auth()->user()->id)
-                                        <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                    @endif
-                                @endforeach
-
-
-                            </select>
-                        </div>
-                        {{-- <div class="mb-3">
-            <label for="freelance">Nama Freelance</label>
-            <select class="form-control mt-1" name="user_id" id="user_id">
-              <option value="">Select freelance</option>
-              @foreach ($freelances as $freelance)
-              <option value="{{ $freelance->id }}">{{ $freelance->fullname }}</option>
-              @endforeach
-          </select>
-           </div> --}}
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</a>
-                    <button type="submit" class="btn btn-primary">Add Project</button>
-                </div>
-                </form>
             </div>
         </div>
     </div>
