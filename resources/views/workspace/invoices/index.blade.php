@@ -7,6 +7,20 @@
 
 
 @section('body') 
+<style>
+  .cardForm {
+      transition: box-shadow 0.3s ease;
+      cursor: pointer;
+      border-radius: 10px;
+  }
+  .cardForm.active {
+      box-shadow: 0 0 10px 2px rgba(0, 0, 255, 0.5);
+  }
+  .cardForm:hover {
+      box-shadow: 0 0 10px 2px rgba(0, 0, 255, 0.5);
+  }
+</style>
+
 <div class="row row-deck row-cards">
   <div class="col-12">
     <div class="card">
@@ -224,8 +238,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <div class="col">
             <a href="#" style="text-decoration: none;">
-            <div class="card h-100">
-              <div class="card h-100" style="transition: box-shadow 0.3s ease;" onmouseover="this.style.boxShadow='0 0 10px 2px rgba(0, 0, 255, 0.5)'" onmouseout="this.style.boxShadow=''">
+            <div class="card h-100 cardForm card1" onclick="setActiveCard(this)">
               <div class="card-body">
                 <h5 class="card-title">An existing project</h5>
                 <p class="card-text">Choose an existing project and client to populate your invoice. If you used time tracking, you can invoice your tracked time.</p>
@@ -247,29 +260,27 @@
                   </div>
                 </div>
               </div>
-            </div>
+
             </div>
             </a>
           </div>
           <a href="#" style="text-decoration: none;">
           <div class="col">
-            <div class="card h-100">
-              <div class="card h-100" style="transition: box-shadow 0.3s ease;" onmouseover="this.style.boxShadow='0 0 10px 2px rgba(0, 0, 255, 0.5)'" onmouseout="this.style.boxShadow=''">
+            <div class="card h-100 cardForm card2" onclick="setActiveCard(this)">
               <div class="card-body">
                 <h5 class="card-title">A new project</h5>
                 <p class="card-text">Create an invoice and set up a new project and client based on the info. This way you can better keep track of your work and send future invoices more easily.</p>
               </div>
               <div class="card-footer">
-                <input type="text" class="form-control" name="project_name" id="project_name" placeholder="Project Name" oninput="checkInputValues()">
+                <input type="text" class="form-control" name="project_name" id="project_name" placeholder="Project Name" oninput="checkInputValues()" onblur="checkInputValues()">
               </div>
-            </div>
             </div>
           </div>
           </a>
           <a href="#" style="text-decoration: none;">
           <div class="col">
-            <div class="card h-100">
-              <div class="card h-100" style="transition: box-shadow 0.3s ease;" onmouseover="this.style.boxShadow='0 0 10px 2px rgba(0, 0, 255, 0.5)'" onmouseout="this.style.boxShadow=''">
+            <div class="card h-100 cardForm card3"  onclick="setActiveCard(this)">
+            
               <div class="card-body">
                 {{-- <h5 class="card-title">Card title</h5> --}}
                 <h5 class="card-title">Just a quick invoice</h5>
@@ -278,15 +289,14 @@
               <div class="card-footer">
                 <small class="text-body-secondary"></small>
               </div>
-            </div>
-            </div>  
+            </div> 
           </div>
           </a>
         </div>
       </div>
       <div class="modal-footer">
         <p id="errorMessage" style="display: none;" class="text-danger">Please choose one!</p>
-        <button id="nextButton" type="button" class="btn btn-primary" onclick="sendData()" disabled>Next</button>
+        <button id="nextButton" type="button" class="btn btn-primary"  onclick="sendData()" disabled>Next</button>
       </div>
       </div>
     </div>
@@ -301,46 +311,65 @@
     setTimeout(function() {
         $('.swal2-popup').fadeOut();
     }, 3000);
-    
-    function checkInputValues() {
-        var idProject = document.getElementById('id_project').value;
-        var projectName = document.getElementById('project_name').value;
-        var nextButton = document.getElementById('nextButton');
-        var errorMessage = document.getElementById('errorMessage');
 
-        // Periksa apakah kedua input telah diisi
-        if (idProject.trim() !== '' && projectName.trim() !== '') {
-            // Jika kedua input diisi, nonaktifkan tombol "Next" dan tampilkan pesan kesalahan
-            nextButton.disabled = true;
-            errorMessage.style.display = 'block';
-        } else {
-            // Jika salah satu input atau kedua-duanya kosong, aktifkan tombol "Next" dan sembunyikan pesan kesalahan
-            nextButton.disabled = false;
-            errorMessage.style.display = 'none';
-        }
-    }
-    // Fungsi untuk mengirimkan data dari kartu yang aktif
-// Fungsi untuk mengirimkan data dari kartu yang aktif
-function sendData() {
-    // Ambil nilai input/select pada kartu aktif
-    const input1Value = document.getElementById('project_name').value;
-    const select2Value = document.getElementById('id_project').value;
+    let activeCard = null;
 
-    // Periksa nilai input sebelum mengirim data
-    checkInputValues();
-
-    // Kirim data sesuai dengan kartu yang aktif
+function setActiveCard(card) {
     if (activeCard !== null) {
-        if (input1Value.trim() !== '') {
-            console.log('Data from Card 1:', input1Value);
-            // Redirect ke halaman yang ditentukan untuk ID kartu 1
-            window.location.href = '/page1';
-        } else if (select2Value.trim() !== '') {
-            console.log('Data from Card 2:', select2Value);
-            // Redirect ke halaman yang ditentukan untuk ID kartu 2
-            window.location.href = '/page2';
+        activeCard.classList.remove('active');
+    }
+    card.classList.add('active');
+    activeCard = card;
+
+    checkInputValues();
+}
+
+function checkInputValues() {
+    const idProject = document.getElementById('id_project').value;
+    const projectName = document.getElementById('project_name').value;
+    const nextButton = document.getElementById('nextButton');
+    const errorMessage = document.getElementById('errorMessage');
+
+    if ((idProject.trim() !== '' || projectName.trim() !== '') && activeCard !== null) {
+        nextButton.disabled = false;
+    } else {
+        nextButton.disabled = true;
+        if (idProject.trim() === '' || projectName.trim() === '') {
+          errorMessage.style.display = 'none';
+        } else {
+          errorMessage.style.display = 'block';
         }
     }
 }
+function sendData() {
+    const input1Value = document.getElementById('project_name').value;
+    const select2Value = document.getElementById('id_project').value;
+
+    if (activeCard !== null) {
+        let nextPage = '';
+        let dataToSend = {};
+
+        // Cek kartu yang aktif dan tambahkan data sesuai dengan input yang ada di kartu itu
+        if (activeCard.classList.contains('card1')) {
+            nextPage = '/page1'; // Sesuaikan dengan halaman yang sesuai dengan kartu 1
+            if (input1Value.trim() !== '') {
+                dataToSend.projectName = input1Value;
+            }
+            if (select2Value.trim() !== '') {
+                dataToSend.idProject = select2Value;
+            }
+        } else if (activeCard.classList.contains('card2')) {
+            nextPage = '/page2'; // Sesuaikan dengan halaman yang sesuai dengan kartu 2
+            // Tambahkan kondisi untuk input di kartu kedua jika ada
+        } else if (activeCard.classList.contains('card3')) {
+            nextPage = '/page3'; // Sesuaikan dengan halaman yang sesuai dengan kartu 3
+            // Tambahkan kondisi untuk input di kartu ketiga jika ada
+        }
+
+        // Redirect ke halaman berikutnya dengan data yang sesuai
+        window.location.href = nextPage + '?' + new URLSearchParams(dataToSend);
+    }
+}
+
 </script>
 @endsection

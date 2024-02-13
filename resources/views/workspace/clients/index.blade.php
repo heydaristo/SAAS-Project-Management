@@ -6,7 +6,7 @@
 
 
 @section('body')
-    @include('workspace.component.letsupgrade');ß
+    @include('workspace.component.letsupgrade')
     <div class="row row-deck row-cards">
         @include('workspace.header')
         <div class="col-12">
