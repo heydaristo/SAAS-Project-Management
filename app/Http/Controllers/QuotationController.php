@@ -25,7 +25,7 @@ class QuotationController extends Controller
 
         
         // Mengambil klien yang dimiliki oleh pengguna yang sedang login
-        
+        $clients = Client::where('user_id', $userId)->get();
         return view('workspace.quotation.index', compact('quotations', 'clients'));
     }
 
@@ -40,16 +40,30 @@ class QuotationController extends Controller
     }
 
     public function store(Request $request){
-        $data = [
-            'name' => $request->name,
-            'address' => $request->address,
-            'no_telp' => $request->no_telp,
-            'user_id' => auth()->user()->id,
-        ];
+        // Validate the request data
+        $request->validate([
+            'project_name' => 'required|string',
+            'id_client' => 'required|exists:clients,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'final_invoice_date' => 'required|date',
+            // Add more validation rules as needed
+        ]);
 
-        Client::create($data);
+        // Create a new Quotation instance
+        $quotation = new Quotation();
+        $quotation->quotation_name = $request->input('project_name');
+        $quotation->start_date = $request->input('start_date');
+        $quotation->end_date = $request->input('end_date');
+        $quotation->status = 'PENDING';
+        $quotation->quotation_pdf = '';
+        $quotation->id_client = $request->input('id_client');
+        $quotation->id_user = Auth::id();
+        $quotation->id_project = 1;
+        $quotation->save();
 
-        return redirect()->route('workspace.clients');
+        // Create each subscription
+
     }
 
     public function edit($id){

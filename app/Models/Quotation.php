@@ -19,6 +19,7 @@ class Quotation extends Model
         'quotation_pdf',
         'id_client',
         'id_project',
+        'id_user',
     ];
 
     public function client() : BelongsTo
