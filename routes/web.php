@@ -105,11 +105,19 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
     
-    Route::get('/invoice/{id}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoice/show/{id}', [InvoiceController::class, 'showId'])->name('invoices.show');
 
     Route::post('/invoice/create', [InvoiceController::class, 'store'])->name('invoices.store');
 
     Route::put('/invoice/update/{id}', [InvoiceController::class, 'update'])->name('invoices.update');
+
+    Route::get('/invoice/create', [InvoiceController::class, 'createInvoiceShowStep1'])->name('invoices.createInvoiceShowStep1');
+    // Post Create Invoice
+    Route::get('/invoice/create/preview', function () {
+        return view('workspace.invoices.previewstep.preview');
+    });
+    // Route::post('/invoice/create/')
+    // End Post
 
     // settings
 

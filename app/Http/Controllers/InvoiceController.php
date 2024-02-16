@@ -42,7 +42,7 @@ class InvoiceController extends Controller
 
     }
 
-    public function show($id)
+    public function showId($id)
     {
      $userId = auth()->user()->id;
 
@@ -99,6 +99,24 @@ class InvoiceController extends Controller
             
         }
     }
+
+    public function createInvoiceShowStep1() {
+        $userId = Auth::id();
+
+        $invoices = DB::table('invoices')
+        ->where('invoices.user_id', $userId)
+        ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
+        ->join('clients', 'invoices.id_client', '=', 'clients.id')
+        ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
+        // ->get();
+        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
+    
+        $project = ProjectModel::all();
+        $clients = Client::all();
+
+        return view('workspace.invoices.createstep1', compact('invoices', 'project', 'clients'));
+    }
+
     public function update(Request $request, $id){
         $request->validate([
             'id_project' => ['required'],
