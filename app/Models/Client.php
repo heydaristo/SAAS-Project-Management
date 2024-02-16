@@ -17,6 +17,7 @@ class Client extends Model
         'address',
         'no_telp',
         'user_id',
+        'email'
     ];
 
     public function user() : BelongsTo

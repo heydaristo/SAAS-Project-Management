@@ -48,6 +48,7 @@ class ClientController extends Controller
             'address' => $request->address,
             'no_telp' => $request->no_telp,
             'user_id' => auth()->user()->id,
+            'email' => $request->email,
         ];
         if(!$data) {
         return redirect()->route('workspace.clients');
@@ -72,6 +73,7 @@ class ClientController extends Controller
             'name' => $request->name,
             'address' => $request->address,
             'no_telp' => $request->no_telp,
+            'email' => $request->email,
         ];
 
             if(!$data) {

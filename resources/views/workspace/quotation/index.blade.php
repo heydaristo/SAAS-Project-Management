@@ -45,13 +45,14 @@
                                     <td><span class="text-muted">{{ $i++ }}</span></td>
                                     <td>{{ $quotation->quotation_name }}</td>
                                     <td>{{ $quotation->start_date }}</td>
-                                    <td>{{ $quotation->end_date }}</td>
+                                    {{-- jika end date null isi dengan - --}}
+                                    <td>{{ $quotation->end_date == null ? '-' : $quotation->end_date }}</td>
                                     <td>
-                                        @if ($quotation->status == 'Active')
+                                        @if ($quotation->status == 'APPROVED')
                                             <span class="badge text-bg-success">{{ $quotation->status }}</span>
-                                        @elseif($quotation->status == 'Pending')
+                                        @elseif($quotation->status == 'SENT')
                                             <span class="badge text-bg-warning">{{ $quotation->status }}</span>
-                                        @elseif($quotation->status == 'Inactive')
+                                        @elseif($quotation->status == 'DISMISSED')
                                             <span class="badge text-bg-danger">{{ $quotation->status }}</span>
                                         @endif
                                     </td>
@@ -90,7 +91,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form
-                                                    action="{{ route('workspace.quotations.update', ['id' => $quotation->id]) }}"
+                                                    action="{{ route('workspace.quotation.update', ['id' => $quotation->id]) }}"
                                                     method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')
@@ -190,7 +191,7 @@
                                                 <div class="w-100">
                                                     <div class="row">
                                                         <form
-                                                            action="{{ route('workspace.quotations.delete', ['id' => $quotation->id]) }}"
+                                                            action="{{ route('workspace.quotation.delete', ['id' => $quotation->id]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')

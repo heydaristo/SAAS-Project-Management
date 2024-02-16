@@ -65,6 +65,7 @@
                                 <th>Client</th>
                                 <th>Alamat</th>
                                 <th>Nomor HP</th>
+                                <th>Email</th>
                                 {{-- <th>Status</th> --}}
                                 <th class="w-1"></th>
                             </tr>
@@ -83,6 +84,7 @@
                                     <td>{{ $clients->name }}</td>
                                     <td>{{ $clients->address }}</td>
                                     <td>{{ $clients->no_telp }}</td>
+                                    <td>{{ $clients->email }}</td>
                                     <td>
                                         <div class="btn-group mb-1 dropleft ">
                                             <div class="dropdown dropleft">
@@ -133,6 +135,11 @@
                                                         <label class="form-label">No Telp</label>
                                                         <input type="text" name="no_telp" class="form-control"
                                                             placeholder="Masukan Jurusan" value="{{ $clients->no_telp }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="text" name="email" class="form-control"
+                                                            placeholder="Masukkan Email" value="{{ $clients->email }}">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -255,6 +262,18 @@
                                                     <input type="text" class="form-control mt-1" id="no_telp"
                                                         name="no_telp" placeholder="Masukkan Nomor HP" required />
                                                     @error('no_telp')
+                                                        <div class="invalid-feedback">
+                                                            {{ $message }}
+                                                        </div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 mt-2">
+                                                <div class="form-group">
+                                                    <label for="email">Email</label>
+                                                    <input type="text" class="form-control mt-1" id="email"
+                                                        name="email" placeholder="Masukkan Email" required />
+                                                    @error('email')
                                                         <div class="invalid-feedback">
                                                             {{ $message }}
                                                         </div>

@@ -16,6 +16,7 @@ class ServiceDetail extends Model
         'service_name',
         'price',
         'pay_method',
+        'description'
     ];
 
     public function service() : BelongsTo
