@@ -63,9 +63,9 @@
                                     </svg>
                                 </th>
                                 <th>Client</th>
+                                <th>Email</th>
                                 <th>Alamat</th>
                                 <th>Nomor HP</th>
-                                {{-- <th>Status</th> --}}
                                 <th class="w-1"></th>
                             </tr>
                         </thead>
@@ -81,6 +81,7 @@
                                 <tr>
                                     <td>{{ $i++ }}</td>
                                     <td>{{ $clients->name }}</td>
+                                    <td>{{ $clients->email }}</td>
                                     <td>{{ $clients->address }}</td>
                                     <td>{{ $clients->no_telp }}</td>
                                     <td>
@@ -123,6 +124,11 @@
                                                         <label class="form-label">Nama Client</label>
                                                         <input type="text" name="name" class="form-control"
                                                             placeholder="Masukkan Nama" value="{{ $clients->name }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="text" name="email" class="form-control"
+                                                            placeholder="Masukkan Email" value="{{ $clients->email }}">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">Alamat</label>
@@ -232,6 +238,18 @@
                                                 <input type="text" class="form-control mt-1" name="name"
                                                     placeholder="Masukkan nama client" required />
                                                 @error('name')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-group">
+                                                <label for="Email">Email</label>
+                                                <input type="text" class="form-control mt-1 @error('email')is-invalid @enderror" name="email"
+                                                    placeholder="Masukkan Email" required />
+                                                @error('email')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>

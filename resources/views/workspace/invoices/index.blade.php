@@ -49,7 +49,7 @@
         </div>
       </div>  
     <div class="table-responsive">
-      <table class="table card-table table-vcenter text-nowrap datatable">
+      <table class="table card-table table-vcenter text-nowrap datatable table-hover">
         <thead>
           <tr>
             <th class="w-1">No.
@@ -69,9 +69,9 @@
             $i = 1 + (($invoices->currentPage()-1) * $invoices->perPage());
             @endphp
             @foreach($invoices as $invoice)
-            <tr>
+            <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'" style="cursor: pointer;">
               <td><span class="text-muted">{{ $i++ }}</span></td>
-              <td><a href="{{ route('workspace.invoices.show', $invoice->id) }}">{{ $invoice->project_name}}</a></td>
+              <td>{{ $invoice->project_name}}</td>
               <td>{{ $invoice->name }}</td>
               <td>{{ $invoice->issued_date }}</td>
               <td>

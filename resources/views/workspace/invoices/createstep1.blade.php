@@ -119,7 +119,7 @@ function sendData() {
                 dataToSend.idProject = select2Value;
             }
         } else if (activeCard.classList.contains('card2')) {
-            nextPage = '{{ route('') }}'; // Sesuaikan dengan halaman yang sesuai dengan kartu 2
+            nextPage = '{{ route('admin.dashboardrv') }}'; // Sesuaikan dengan halaman yang sesuai dengan kartu 2
             // Tambahkan kondisi untuk input di kartu kedua jika ada
         } else if (activeCard.classList.contains('card3')) {
             nextPage = '/page3'; // Sesuaikan dengan halaman yang sesuai dengan kartu 3
