@@ -61,7 +61,7 @@
             <th>Status</th>
             <th>Kadarluarsa</th>
             <th>Total</th>
-            <th class="w-1"></th>
+            {{-- <th class="w-1"></th> --}}
           </tr>
         </thead>
         <tbody>
@@ -85,20 +85,6 @@
             </td>
               <td>{{ $invoice->due_date }}</td>
               <td>{{ $invoice->total }}</td>
-
-              <td><div class="btn-group mb-1 dropleft ">
-                <div class="dropdown dropleft">
-                  <button class="btn btn-primary dropdown-toggle me-1" type="button" id="dropdownMenuButtonIcon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Aksi
-                  </button>
-                  <div class="dropdown-menu dropdown-menu-end">
-                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEdit-{{$invoice->id}}">
-                      Edit
-                    </button>
-                    <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalDelete-{{$invoice->id}}">Delete</button>
-                  </div>
-                </div>
-            </div></td>
             </tr>
 
           {{-- Modals Edit --}}
