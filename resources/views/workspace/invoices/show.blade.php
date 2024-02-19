@@ -8,6 +8,20 @@
 @section('body')
 <div class="page-body">
   <div class="container-xl">
+    <div class="d-flex justify-content-between mb-3">
+      <a href="{{ route('workspace.invoice') }}" class="btn btn-primary">Back</a>
+      <a  class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-printer" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M3 5h18c1.2 0 1.774 .927 1.424 2.19l-7.43 13.81c-.35 .647 -1.42 .647 -1.77 0l-7.43 -13.81c-.35 -1.263 .224 -2.19 1.424 -2.19Z" />
+              <line x1="3" y1="7" x2="21" y2="7" />
+              <line x1="5" y1="11" x2="19" y2="11" />
+              <line x1="3" y1="15" x2="21" y2="15" />
+              <line x1="7" y1="19" x2="17" y2="19" />
+          </svg>
+          Cetak PDF
+      </a>
+  </div>
     <div class="card card-lg">
       <div class="card-body">
         <div class="row">
