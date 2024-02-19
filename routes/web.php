@@ -97,11 +97,14 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/quotation/show/{id}', [QuotationController::class, 'show'])->name('quotation.show');
 
-    Route::get('/quotation/store', [QuotationController::class, 'store'])->name('quotation.store');
+    Route::post('/quotation/store', [QuotationController::class, 'store'])->name('quotation.store');
+    Route::get('/quotation/review/{id}', [QuotationController::class, 'review'])->name('quotation.review');
 
     Route::get('/quotation/pdf/{id}', [QuotationController::class, 'pdf'])->name('quotation.pdf');
 
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
+    Route::post('/quotation/editemail/{id}', [QuotationController::class, 'showEditEmail'])->name('quotation.editemail');
+    Route::post('/quotation/sendemail', [QuotationController::class, 'sendEmail'])->name('quotation.sendemail');
 
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
     
@@ -139,6 +142,9 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/subscriptions/upgrade/{planid}', [SubscriptionController::class, 'upgrade'])->name('subscriptions.upgrade');
     Route::get('/subscriptions/bayar/{transactionid}', [SubscriptionController::class, 'bayar'])->name('subscriptions.bayar');
     Route::get('/subscriptions/success/{transactionid}', [SubscriptionController::class, 'success'])->name('subscriptions.success');
+
+    // email
+    
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'], function(){

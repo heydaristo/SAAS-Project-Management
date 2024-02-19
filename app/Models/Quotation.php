@@ -20,6 +20,11 @@ class Quotation extends Model
         'id_client',
         'id_project',
         'id_user',
+        'require_deposit',
+        'deposit_amount',
+        'deposit_percentage',
+        'client_agrees_deposit',
+        'final_invoice_date'
     ];
 
     public function client() : BelongsTo

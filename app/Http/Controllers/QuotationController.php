@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Service;
+use App\Models\ServiceDetail;
 
 class QuotationController extends Controller
 {
@@ -54,16 +56,84 @@ class QuotationController extends Controller
         $quotation = new Quotation();
         $quotation->quotation_name = $request->input('project_name');
         $quotation->start_date = $request->input('start_date');
-        $quotation->end_date = $request->input('end_date');
-        $quotation->status = 'PENDING';
+        
+        if ($request->has('end_date')) {
+            $quotation->end_date = $request->input('end_date');
+        } else {
+            $quotation->end_date = null;
+        }
+
+        $quotation->status = 'SENT';
         $quotation->quotation_pdf = '';
         $quotation->id_client = $request->input('id_client');
         $quotation->id_user = Auth::id();
         $quotation->id_project = 1;
-        $quotation->save();
+        $quotation->final_invoice_date = $request->input('final_invoice_date');
+
+
+        // deposit
+        // Check if deposit information is provided
+        if ($request->has('require_deposit')) {
+            // Validate deposit percentage
+            $request->validate([
+                'deposit_percentage' => 'required|numeric|min:0|max:100',
+            ]);
+
+            // Calculate deposit amount
+            $totalCost = 0;
+            $servicePrices = $request->input('service_price');
+            foreach ($servicePrices as $price) {
+                $totalCost += $price;
+            }
+            $depositPercentage = $request->input('deposit_percentage');
+            $depositAmount = ($depositPercentage / 100) * $totalCost;
+
+            // Update the quotation with deposit information
+            $quotation->require_deposit = true;
+            $quotation->deposit_percentage = $depositPercentage;
+            $quotation->deposit_amount = $depositAmount;
+            $quotation->client_agrees_deposit = $request->has('client_agrees_deposit');
+            $quotation->save();
+        }else{
+            $quotation->require_deposit = false;
+            $quotation->deposit_percentage = null;
+            $quotation->deposit_amount = null;
+            $quotation->client_agrees_deposit = false;
+            $quotation->save();
+        }
 
         // Create each subscription
+        $service = new Service();
+        $service->id_quotation = $quotation->id;
+        $service->id_project = 1;
+        $service->id_contract = 1;
+        $service->save();
 
+        // create each subscription detail
+        $serviceNames = $request->input('service_name');
+        $servicePrices = $request->input('service_price');
+        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceDescriptions = $request->input('service_description');
+        foreach ($serviceNames as $index => $serviceName) {
+            $serviceDetail = new ServiceDetail();
+            $serviceDetail->id_service = $service->id;
+            $serviceDetail->service_name = $serviceName;
+            $serviceDetail->price = $servicePrices[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->description = $serviceDescriptions[$index];
+            $serviceDetail->save();
+        }
+        
+        // Redirect to the quotation index page
+        return redirect()->route('workspace.quotation.review', $quotation->id);
+    }
+
+    public function review($id){
+        $quotation = Quotation::find($id);
+        $services = Service::where('id_quotation', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        $client = Client::find($quotation->id_client);
+        return view('workspace.quotation.review', compact('quotation', 'services', 'serviceDetails', 'client'));
     }
 
     public function edit($id){
@@ -95,6 +165,27 @@ class QuotationController extends Controller
          $quotation = Quotation::find($id);
             $quotation->status = $status;
             $quotation->save();
+        return redirect()->route('workspace.quotation');
+    }
+
+    public function showEditEmail($id){
+        $quotation = Quotation::find($id);
+        $client = Client::find($quotation->id_client);
+        return view('workspace.component.editemail', compact('quotation', 'client'));
+    }
+
+    public function sendEmail(Request $request, $id){
+        $quotation = Quotation::find($id);
+        $client = Client::find($quotation->id_client);
+
+        $data = [
+            'client' => $client,
+            'quotation' => $quotation,
+            'message' => $request->message,
+        ];
+
+        // Send email
+        Mail::to($client->email)->send(new QuotationEmail($data));
         return redirect()->route('workspace.quotation');
     }
 }
