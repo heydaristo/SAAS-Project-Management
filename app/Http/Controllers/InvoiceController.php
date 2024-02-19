@@ -45,13 +45,15 @@ class InvoiceController extends Controller
     public function showId($id)
     {
      $userId = auth()->user()->id;
+        
 
     $invoice = DB::table('invoices')
         ->where('invoices.user_id', $userId)
         ->where('invoices.id', $id) // Filter berdasarkan ID invoice
         ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
         ->join('clients', 'invoices.id_client', '=', 'clients.id')
-        ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name', 'clients.address as address', '')
+        ->select('invoices.*', 'project_models.project_name as project_name',
+         'clients.name as name', 'clients.address as address', 'clients.email as email')
         ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
 
   

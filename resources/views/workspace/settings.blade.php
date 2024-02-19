@@ -137,6 +137,10 @@
                                                 value="{{ Auth::user()->fullname }}" required>
                                         </div>
                                         <div class="col-md mt-3">
+                                            <div class="form-label">Address</div>
+                                            <textarea class="form-control" name="address" rows="4" placeholder="Address..">{{ Auth::user()->address }}</textarea>
+                                        </div>
+                                        <div class="col-md mt-3">
                                             <div class="form-label">Profession</div>
                                             <select class="form-select" name="profession" required>
                                                 <option value="{{ Auth::user()->profession }}">
@@ -172,15 +176,13 @@
                                             <div class="form-label">Organization</div>
                                             <div class="mb-3">
                                                 <label class="form-check">
-                                                    <input class="form-check-input" type="radio" name="organization"
-                                                        value="I Work Solo"
-                                                        {{ Auth::user()->organization == 'I Work Solo' ? 'checked' : '' }}>
+                                                    <input class="form-check-input" type="radio" name="organization" value="I work solo" 
+                                                        {{ Auth::user()->organization == 'I work solo' ? 'checked' : '' }}>
                                                     <span class="form-check-label">I work solo</span>
                                                 </label>
                                                 <label class="form-check">
-                                                    <input class="form-check-input" type="radio" name="organization"
-                                                        value="I Work on Team"
-                                                        {{ Auth::user()->organization == 'I Work on Team' ? 'checked' : '' }}>
+                                                    <input class="form-check-input" type="radio" name="organization" value="I work team"
+                                                        {{ Auth::user()->organization == 'I work team' ? 'checked' : '' }}>
                                                     <span class="form-check-label">I work on team</span>
                                                 </label>
                                             </div>

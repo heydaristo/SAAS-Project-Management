@@ -14,10 +14,14 @@
           <div class="col-6">
             <h1>Invoice {{ $invoice->id }}</h1>
             <address>
-              Street Address<br>
+              @if( Auth::user()->address === null)
+              <i>Your account address is null</i> <br>
+              @else
+              {{ Auth::user()->address }}<br>
+              @endif
               State, City<br>
               Region, Postal Code<br>
-              ltd@example.com
+              {{ Auth::user()->email }}
             </address>
           </div>
           <div class="col-6 text-end">
@@ -26,7 +30,7 @@
               {{ $invoice->address }}<br>
               State, City<br>
               Region, Postal Code<br>
-              ctr@example.com
+              {{ $invoice->email }}
             </address>
           </div>
         </div>

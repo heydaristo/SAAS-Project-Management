@@ -336,26 +336,28 @@ class UserController extends Controller
     }
 
     public function uploadProfile(Request $request){
-        $validator = Validator::make($request->all(), [
-            'fullname' => ['required'],
-            'email' => ['required', 'email:dns'],
-            'profession' => ['required'],
-            'experience_level' => ['required'],
-            'organization' => ['required'],
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'fullname' => ['required'],
+        //     'email' => ['required', 'email:dns'],
+        //     'address' => ['required'],
+        //     'profession' => ['required'],
+        //     'experience_level' => ['required'],
+        //     'organization' => ['required'],
+        // ]);
 
 
-        if ($validator->fails()) {
-            Alert::error('Failed Message', 'You have failed update profile.'.strval($validator->errors()));
-            return redirect()->route('workspace.settings')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        // if ($validator->fails()) {
+        //     Alert::error('Failed Message', 'You have failed update profile.'.strval($validator->errors()));
+        //     return redirect()->route('workspace.settings', ['tabs-activity-7'])
+        //                 ->withErrors($validator)
+        //                 ->withInput();
+        // }
 
         $data = [
             'fullname' => $request->fullname,
             'email' => $request->email,
             'profession' => $request->profession,
+            'address' => $request->address,
             'experience_level' => $request->experience_level,
             'organization' => $request->organization,
         ];
@@ -364,7 +366,7 @@ class UserController extends Controller
         Alert::success('Success Message', 'You have successfully update profile.');
         $user = User::find(Auth::user()->id);
         $user->update($data);
-        return redirect()->route('workspace.settings');
+        return redirect()->route('workspace.settings', ['tabs-activity-7']);
     }
 
     public function uploadImage(Request $request)
