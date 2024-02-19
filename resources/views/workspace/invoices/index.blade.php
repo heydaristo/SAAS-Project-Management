@@ -7,19 +7,6 @@
 
 
 @section('body') 
-<style>
-  .cardForm {
-      transition: box-shadow 0.3s ease;
-      cursor: pointer;
-      border-radius: 10px;
-  }
-  .cardForm.active {
-      box-shadow: 0 0 10px 2px rgba(0, 0, 255, 0.5);
-  }
-  .cardForm:hover {
-      box-shadow: 0 0 10px 2px rgba(0, 0, 255, 0.5);
-  }
-</style>
 
 <div class="row row-deck row-cards">
   <div class="col-12">
@@ -62,7 +49,7 @@
         </div>
       </div>  
     <div class="table-responsive">
-      <table class="table card-table table-vcenter text-nowrap datatable">
+      <table class="table card-table table-vcenter text-nowrap datatable table-hover">
         <thead>
           <tr>
             <th class="w-1">No.
@@ -82,9 +69,9 @@
             $i = 1 + (($invoices->currentPage()-1) * $invoices->perPage());
             @endphp
             @foreach($invoices as $invoice)
-            <tr>
+            <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'" style="cursor: pointer;">
               <td><span class="text-muted">{{ $i++ }}</span></td>
-              <td><a href="{{ route('workspace.invoices.show', $invoice->id) }}">{{ $invoice->project_name}}</a></td>
+              <td>{{ $invoice->project_name}}</td>
               <td>{{ $invoice->name }}</td>
               <td>{{ $invoice->issued_date }}</td>
               <td>
@@ -311,65 +298,6 @@
     setTimeout(function() {
         $('.swal2-popup').fadeOut();
     }, 3000);
-
-    let activeCard = null;
-
-function setActiveCard(card) {
-    if (activeCard !== null) {
-        activeCard.classList.remove('active');
-    }
-    card.classList.add('active');
-    activeCard = card;
-
-    checkInputValues();
-}
-
-function checkInputValues() {
-    const idProject = document.getElementById('id_project').value;
-    const projectName = document.getElementById('project_name').value;
-    const nextButton = document.getElementById('nextButton');
-    const errorMessage = document.getElementById('errorMessage');
-
-    if ((idProject.trim() !== '' || projectName.trim() !== '') && activeCard !== null) {
-        nextButton.disabled = false;
-    } else {
-        nextButton.disabled = true;
-        if (idProject.trim() === '' || projectName.trim() === '') {
-          errorMessage.style.display = 'none';
-        } else {
-          errorMessage.style.display = 'block';
-        }
-    }
-}
-function sendData() {
-    const input1Value = document.getElementById('project_name').value;
-    const select2Value = document.getElementById('id_project').value;
-
-    if (activeCard !== null) {
-        let nextPage = '';
-        let dataToSend = {};
-
-        // Cek kartu yang aktif dan tambahkan data sesuai dengan input yang ada di kartu itu
-        if (activeCard.classList.contains('card1')) {
-            nextPage = '/page1'; // Sesuaikan dengan halaman yang sesuai dengan kartu 1
-            if (input1Value.trim() !== '') {
-                dataToSend.projectName = input1Value;
-            }
-            if (select2Value.trim() !== '') {
-                dataToSend.idProject = select2Value;
-            }
-        } else if (activeCard.classList.contains('card2')) {
-            nextPage = '/page2'; // Sesuaikan dengan halaman yang sesuai dengan kartu 2
-            // Tambahkan kondisi untuk input di kartu kedua jika ada
-        } else if (activeCard.classList.contains('card3')) {
-            nextPage = '/page3'; // Sesuaikan dengan halaman yang sesuai dengan kartu 3
-            // Tambahkan kondisi untuk input di kartu ketiga jika ada
-        }
-
-        // Redirect ke halaman berikutnya dengan data yang sesuai
-        window.location.href = nextPage + '?' + new URLSearchParams(dataToSend);
-    }
-}
 
 </script>
 @endsection

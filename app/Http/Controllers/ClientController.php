@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
@@ -49,6 +50,7 @@ class ClientController extends Controller
         $data = [
             'name' => $request->name,
             'address' => $request->address,
+            'email' => $request->email,
             'no_telp' => $request->no_telp,
             'user_id' => auth()->user()->id,
             'email' => $request->email,
@@ -72,10 +74,20 @@ class ClientController extends Controller
         return view('workspace.clients.edit', compact('client'));
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'email' => ['required', 'email:dns', 'unique:clients,email'],
+            'address' => ['required'],
+            'no_telp' => ['required'],
+        ]);
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed to edit client.')->withErrors($validator);
+            return redirect()->route('workspace.clients');
+        }
         $data = [
             'name' => $request->name,
+            'email' => $request->email,
             'address' => $request->address,
             'no_telp' => $request->no_telp,
             'email' => $request->email,
