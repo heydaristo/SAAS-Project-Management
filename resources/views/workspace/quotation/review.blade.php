@@ -59,7 +59,7 @@
     <!-- Tombol Submit -->
     <form action="{{ route('workspace.quotation.editemail', $quotation->id) }}" method="post" class="mt-4">
         @csrf
-        <button type="submit" class="btn btn-primary mt-4">Submit</button>
+        <button type="submit" class="btn btn-primary mt-4">Continue</button>
     </form>
 </div>
 @endsection

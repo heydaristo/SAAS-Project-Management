@@ -1,6 +1,6 @@
 @extends('script')
 @section('body')
-<script src="./dist/js/demo-theme.min.js?1695847769"></script>
+<script src="{{ asset('/dist/js/demo-theme.min.js?1695847769')}}"></script>
     <section class="sign-in">
       <div class="container">
           <div class="signin-content">
