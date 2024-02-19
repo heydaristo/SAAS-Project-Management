@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_service');
             $table->foreign('id_service')->references('id')->on('services');
             $table->string('service_name');
-            $table->decimal('price');
+            $table->unsignedBigInteger('price');
             $table->string('pay_method');
             $table->timestamps();
         });

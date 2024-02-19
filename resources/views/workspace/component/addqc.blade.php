@@ -68,7 +68,7 @@
                                         name="service_description[]" placeholder="Description">
                                 </div>
                             </div>
-                            <button type="button" id="addService" class="btn btn-primary mt-2">Add Service</button>
+                            <button type="button" id="addService" class="btn btn-primary mt-2">Add Other Service</button>
                         </fieldset>
                         <fieldset class="form-fieldset">
                             <legend>Billing Schedule</legend>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('quotation_name', 100);
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->string('status', 100);
             $table->string('quotation_pdf');
             $table->unsignedBigInteger('id_client');
