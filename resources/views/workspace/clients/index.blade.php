@@ -66,7 +66,6 @@
                                 <th>Email</th>
                                 <th>Alamat</th>
                                 <th>Nomor HP</th>
-                                <th>Email</th>
                                 {{-- <th>Status</th> --}}
                                 <th class="w-1"></th>
                             </tr>
@@ -86,7 +85,6 @@
                                     <td>{{ $clients->email }}</td>
                                     <td>{{ $clients->address }}</td>
                                     <td>{{ $clients->no_telp }}</td>
-                                    <td>{{ $clients->email }}</td>
                                     <td>
                                         <div class="btn-group mb-1 dropleft ">
                                             <div class="dropdown dropleft">
@@ -142,11 +140,6 @@
                                                         <label class="form-label">No Telp</label>
                                                         <input type="text" name="no_telp" class="form-control"
                                                             placeholder="Masukan Jurusan" value="{{ $clients->no_telp }}">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="text" name="email" class="form-control"
-                                                            placeholder="Masukkan Email" value="{{ $clients->email }}">
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -228,10 +221,10 @@
                 {{-- Modal Dialog --}}
                 <div class="modal fade" id="tambah_client" tabindex="-1" aria-labelledby="modal2Label"
                     aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modal2Label">Modal 2 Title</h5>
+                                <h5 class="modal-title" id="modal2Label">Add new client</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -267,13 +260,32 @@
                                         <div class="col-md-12 mt-2">
                                             <div class="form-group">
                                                 <label for="address">Address</label>
-                                                <input type="text" class="form-control mt-1" id="address"
-                                                    name="address" placeholder="Masukkan alamat" required />
+                                                <textarea class="form-control mt-1  " name="address" rows="3" placeholder="Masukkan Alamat"></textarea>
                                                 @error('address')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
                                                     </div>
                                                 @enderror
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-lg-6">
+                                                      <label class="form-label">State</label>
+                                                      <input type="text" name="state" class="form-control" placeholder="Masukan Negaramu">
+                                                  </div>
+                                                  <div class="col-lg-6">
+                                                      <label class="form-label">City</label>
+                                                      <input type="text" class="form-control" name="city" placeholder="Masukan Kotamu">
+                                                  </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-lg-6">
+                                                      <label class="form-label">Province</label>
+                                                      <input type="text" name="region" class="form-control" placeholder="Masukan Provinsimu">
+                                                  </div>
+                                                  <div class="col-lg-6">
+                                                      <label class="form-label">Zip Code</label>
+                                                      <input type="number" class="form-control" name="postal_code" placeholder="Masukan Kodepos mu">
+                                                  </div>
                                             </div>
                                             <div class="col-md-12 mt-2">
                                                 <div class="form-group">
@@ -281,18 +293,6 @@
                                                     <input type="text" class="form-control mt-1" id="no_telp"
                                                         name="no_telp" placeholder="Masukkan Nomor HP" required />
                                                     @error('no_telp')
-                                                        <div class="invalid-feedback">
-                                                            {{ $message }}
-                                                        </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 mt-2">
-                                                <div class="form-group">
-                                                    <label for="email">Email</label>
-                                                    <input type="text" class="form-control mt-1" id="email"
-                                                        name="email" placeholder="Masukkan Email" required />
-                                                    @error('email')
                                                         <div class="invalid-feedback">
                                                             {{ $message }}
                                                         </div>

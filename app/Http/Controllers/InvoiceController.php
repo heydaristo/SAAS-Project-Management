@@ -54,7 +54,7 @@ class InvoiceController extends Controller
         ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
         ->join('clients', 'invoices.id_client', '=', 'clients.id')
         ->select('invoices.*', 'project_models.project_name as project_name',
-         'clients.name as name', 'clients.address as address', 'clients.email as email')
+         'clients.*')
         ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
 
   
