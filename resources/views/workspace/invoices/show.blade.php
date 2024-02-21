@@ -49,8 +49,8 @@
               @else
               {{ Auth::user()->address }}<br>
               @endif
-              State, City<br>
-              Region, Postal Code<br>
+              {{ Auth::user()->state }}, {{ Auth::user()->city }}<br>
+              {{ Auth::user()->region }}, {{ Auth::user()->postal_code }}<br>
               {{ Auth::user()->email }}
             </address>
           </div>
@@ -58,7 +58,7 @@
             <p class="h3">{{ $invoice->name }}</p>
             <address>
               {{ $invoice->address }}<br>
-              State, City<br>
+              {{ $invoice->region }}, {{ $invoice->city }}<br>
               Region, Postal Code<br>
               {{ $invoice->email }}
             </address>
