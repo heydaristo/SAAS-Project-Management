@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client;
+use App\Models\Contract;
 
 class ContractController extends Controller
 {
@@ -24,4 +25,102 @@ class ContractController extends Controller
         $clients = Client::where('user_id', $userId)->get();
         return view('workspace.contracts.index', compact('contracts','clients'));
     }
+
+    public function showadd(){
+        $userId = Auth::id();
+        $clients = Client::where('user_id', $userId)->get();
+        return view('workspace.contracts.addc', compact('clients'));
+    }
+
+    public function store(Request $request){
+        // Validate the request data
+        $request->validate([
+            'project_name' => 'required|string',
+            'id_client' => 'required|exists:clients,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'final_invoice_date' => 'required|date',
+            // Add more validation rules as needed
+        ]);
+
+        // Create a new Quotation instance
+        $contract = new Contract();
+        $contract->quotation_name = $request->input('project_name');
+        $contract->start_date = $request->input('start_date');
+        
+        if ($request->has('end_date')) {
+            $contract->end_date = $request->input('end_date');
+        } else {
+            $contract->end_date = null;
+        }
+
+        $contract->status = 'SENT';
+        $contract->quotation_pdf = '';
+        $contract->id_client = $request->input('id_client');
+        $contract->id_user = Auth::id();
+        $contract->id_project = 1;
+        $contract->final_invoice_date = $request->input('final_invoice_date');
+
+
+        // deposit
+        // Check if deposit information is provided
+        if ($request->has('require_deposit')) {
+            // Validate deposit percentage
+            $request->validate([
+                'deposit_percentage' => 'required|numeric|min:0|max:100',
+            ]);
+
+            // Calculate deposit amount
+            $totalCost = 0;
+            $servicePrices = $request->input('service_price');
+            foreach ($servicePrices as $price) {
+                $totalCost += $price;
+            }
+            $depositPercentage = $request->input('deposit_percentage');
+            $depositAmount = ($depositPercentage / 100) * $totalCost;
+
+            // Update the quotation with deposit information
+            $contract->require_deposit = true;
+            $contract->deposit_percentage = $depositPercentage;
+            $contract->deposit_amount = $depositAmount;
+            $contract->client_agrees_deposit = $request->has('client_agrees_deposit');
+            $contract->save();
+        }else{
+            $contract->require_deposit = false;
+            $contract->deposit_percentage = null;
+            $contract->deposit_amount = null;
+            $contract->client_agrees_deposit = false;
+            $contract->save();
+        }
+
+        // Create each subscription
+        $service = new Service();
+        $service->id_quotation = $contract->id;
+        $service->id_project = 1;
+        $service->id_contract = 1;
+        $service->save();
+
+        // create each subscription detail
+        $serviceNames = $request->input('service_name');
+        $servicePrices = $request->input('service_price');
+        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceDescriptions = $request->input('service_description');
+        foreach ($serviceNames as $index => $serviceName) {
+            $serviceDetail = new ServiceDetail();
+            $serviceDetail->id_service = $service->id;
+            $serviceDetail->service_name = $serviceName;
+            $serviceDetail->price = $servicePrices[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->description = $serviceDescriptions[$index];
+            $serviceDetail->save();
+        }
+        
+        // Redirect to the quotation index page
+        return redirect()->route('workspace.quotation.review', $contract->id);
+    }
+
+    public function review($id){
+        
+    }
+
 }

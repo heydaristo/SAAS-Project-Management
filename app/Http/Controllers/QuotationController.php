@@ -34,11 +34,11 @@ class QuotationController extends Controller
     public function showadd(){
         $userId = Auth::id();
         $clients = Client::where('user_id', $userId)->get();
-        return view('workspace.component.addqc', compact('clients'));
+        return view('workspace.quotation.addqc', compact('clients'));
     }
 
     public function create(){
-        return view('workspace.quotations.create');
+        return view('workspace.quotation.create');
     }
 
     public function store(Request $request){
