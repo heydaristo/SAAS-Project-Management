@@ -122,4 +122,5 @@ class ContractController extends Controller
     public function review($id){
         
     }
+
 }

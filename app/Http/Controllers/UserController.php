@@ -358,6 +358,10 @@ class UserController extends Controller
             'email' => $request->email,
             'profession' => $request->profession,
             'address' => $request->address,
+            'state' => $request->state,
+            'city' => $request->city,
+            'region' => $request->region,
+            'postal_code' => $request->postal_code,
             'experience_level' => $request->experience_level,
             'organization' => $request->organization,
         ];
@@ -419,7 +423,7 @@ class UserController extends Controller
     }
 
     public function changePasswordShow() {
-        return view('workspace.changepassword');
+        return view('workspace.settings', ['#tabs-activity-7']);
     }
 
     public function changePassword(Request $request){

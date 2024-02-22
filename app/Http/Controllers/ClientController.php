@@ -50,7 +50,10 @@ class ClientController extends Controller
         $data = [
             'name' => $request->name,
             'address' => $request->address,
-            'email' => $request->email,
+            'state' => $request->state,
+            'city' => $request->city,
+            'region' => $request->region,
+            'postal_code' => $request->postal_code,
             'no_telp' => $request->no_telp,
             'user_id' => auth()->user()->id,
             'email' => $request->email,

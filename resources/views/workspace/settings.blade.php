@@ -141,6 +141,23 @@
                                             <textarea class="form-control" name="address" rows="4" placeholder="Address..">{{ Auth::user()->address }}</textarea>
                                         </div>
                                         <div class="col-md mt-3">
+                                            <div class="form-label">State</div>
+                                            <input class="form-control" name="state" placeholder="State..." value="{{ Auth::user()->state }}">
+                                        </div>
+                                        <div class="col-md mt-3">
+                                            <div class="form-label">Province</div>
+                                            <input class="form-control" name="region" placeholder="Province..." value="{{ Auth::user()->region }}">
+                                        </div>
+                                        <div class="col-md mt-3">
+                                            <div class="form-label">City</div>
+                                            <input class="form-control" name="city" placeholder="City..." value="{{ Auth::user()->city }}">
+                                        </div>
+                                        <div class="col-md mt-3">
+                                            <div class="form-label">Zip Code</div>
+                                            <input type="number" class="form-control" name="postal_code" placeholder="Zip Code..." value="{{ Auth::user()->postal_code }}">
+                                        </div>
+                                        
+                                        <div class="col-md mt-3">
                                             <div class="form-label">Profession</div>
                                             <select class="form-select" name="profession" required>
                                                 <option value="{{ Auth::user()->profession }}">
