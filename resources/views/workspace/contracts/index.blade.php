@@ -9,9 +9,10 @@
                 </div>
 
                 <div class="card-body border-bottom py-3">
-                    <a href="{{ route('workspace.contract.showadd') }}">
+                    <a href="{{ route('workspace.contract') }}">
                         <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal">
-                            New Contract
+                            New contract
+>>>>>>> refs/remotes/origin/main
                         </button>
                     </a>
                 </div>
