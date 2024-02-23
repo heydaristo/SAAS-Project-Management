@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\Service;
+use App\Models\ServiceDetail;
 
 class ContractController extends Controller
 {
@@ -45,7 +47,7 @@ class ContractController extends Controller
 
         // Create a new Quotation instance
         $contract = new Contract();
-        $contract->quotation_name = $request->input('project_name');
+        $contract->contract_name = $request->input('project_name');
         $contract->start_date = $request->input('start_date');
         
         if ($request->has('end_date')) {
@@ -55,7 +57,7 @@ class ContractController extends Controller
         }
 
         $contract->status = 'SENT';
-        $contract->quotation_pdf = '';
+        $contract->contract_pdf = '';
         $contract->id_client = $request->input('id_client');
         $contract->id_user = Auth::id();
         $contract->id_project = 1;
@@ -95,9 +97,9 @@ class ContractController extends Controller
 
         // Create each subscription
         $service = new Service();
-        $service->id_quotation = $contract->id;
+        $service->id_contract = $contract->id;
         $service->id_project = 1;
-        $service->id_contract = 1;
+        $service->id_quotation = 1;
         $service->save();
 
         // create each subscription detail
@@ -116,11 +118,15 @@ class ContractController extends Controller
         }
         
         // Redirect to the quotation index page
-        return redirect()->route('workspace.quotation.review', $contract->id);
+        return redirect()->route('workspace.contract.review', $contract->id);
     }
 
     public function review($id){
-        
+        $contract = Contract::findOrFail($id);
+        $services = Service::where('id_quotation', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        $client = Client::find($contract->id_client);
+        return view('workspace.contracts.contract', compact('contract', 'services', 'serviceDetails', 'client'));
     }
 
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('contract_name');
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->string('status');
             $table->string('contract_pdf');
             $table->unsignedBigInteger('id_client');
