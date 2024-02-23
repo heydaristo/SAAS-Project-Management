@@ -57,7 +57,7 @@ class ContractController extends Controller
         }
 
         $contract->status = 'SENT';
-        $contract->contract_pdf = '';
+        $contract->contract_pdf = $request->input('contract_pdf');
         $contract->id_client = $request->input('id_client');
         $contract->id_user = Auth::id();
         $contract->id_project = 1;
@@ -125,6 +125,8 @@ class ContractController extends Controller
         $contract = Contract::findOrFail($id);
         $services = Service::where('id_quotation', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        $total = $serviceDetails->sum('price');
+        $contract->total = $total;
         $client = Client::find($contract->id_client);
         return view('workspace.contracts.contract', compact('contract', 'services', 'serviceDetails', 'client'));
     }
