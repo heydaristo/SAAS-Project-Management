@@ -16,7 +16,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ContractController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         // Mendapatkan ID pengguna yang sedang login
         $userId = Auth::id();
         // Mengambil proyek yang dimiliki oleh pengguna yang sedang login
@@ -26,19 +27,21 @@ class ContractController extends Controller
             ->select('contracts.*', 'clients.name as name')
             ->paginate(5);
 
-        
+
         // Mengambil klien yang dimiliki oleh pengguna yang sedang login
         $clients = Client::where('user_id', $userId)->get();
-        return view('workspace.contracts.index', compact('contracts','clients'));
+        return view('workspace.contracts.index', compact('contracts', 'clients'));
     }
 
-    public function showadd(){
+    public function showadd()
+    {
         $userId = Auth::id();
         $clients = Client::where('user_id', $userId)->get();
         return view('workspace.contracts.addc', compact('clients'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         // Validate the request data
         $request->validate([
             'project_name' => 'required|string',
@@ -53,7 +56,7 @@ class ContractController extends Controller
         $contract = new Contract();
         $contract->contract_name = $request->input('project_name');
         $contract->start_date = $request->input('start_date');
-        
+
         if ($request->has('end_date')) {
             $contract->end_date = $request->input('end_date');
         } else {
@@ -91,7 +94,7 @@ class ContractController extends Controller
             $contract->deposit_amount = $depositAmount;
             $contract->client_agrees_deposit = $request->has('client_agrees_deposit');
             $contract->save();
-        }else{
+        } else {
             $contract->require_deposit = false;
             $contract->deposit_percentage = null;
             $contract->deposit_amount = null;
@@ -120,36 +123,39 @@ class ContractController extends Controller
             $serviceDetail->description = $serviceDescriptions[$index];
             $serviceDetail->save();
         }
-        
+
         // Redirect to the quotation index page
         return redirect()->route('workspace.contract.review', $contract->id);
     }
 
-    public function review($id){
+    public function review($id)
+    {
         $contract = Contract::findOrFail($id);
         $services = Service::where('id_contract', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
         $total = $serviceDetails->sum('price');
-        $contract->total = $total;  
+        $contract->total = $total;
         $client = Client::find($contract->id_client);
         $user = User::find($contract->id_user);
         return view('workspace.contracts.contract', compact('contract', 'services', 'serviceDetails', 'client', 'user'));
     }
 
-    public function sendemail($id){
+    public function sendemail($id)
+    {
         $contract = Contract::findOrFail($id);
         $client = Client::find($contract->id_client);
-        return view('workspace.contracts.sendmail',compact('contract','client'));
+        return view('workspace.contracts.sendmail', compact('contract', 'client'));
     }
 
-    public function finishemail(Request $request, $id){
-        
+    public function finishemail(Request $request, $id)
+    {
+
         $contract = Contract::findOrFail($id);
         $client = Client::find($contract->id_client);
         $user = User::find($contract->id_user);
         $services = Service::where('id_contract', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
-        Mail::to($request->recipient)->send(new MyEmail($contract,$client,$user,$serviceDetails));
+        Mail::to($request->recipient)->send(new MyEmail($contract, $client, $user, $serviceDetails));
         Alert::success('Success Message', 'You have successfully send email.');
         return redirect()->route('workspace.contract');
     }
