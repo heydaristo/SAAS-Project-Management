@@ -115,8 +115,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/contract/showadd', [ContractController::class, 'showadd'])->name('contract.showadd');
     Route::post('/contract/store', [ContractController::class, 'store'])->name('contract.store');
     Route::get('/contract/review/{id}', [ContractController::class, 'review'])->name('contract.review');
-
-    // Route::get('/contract/showadd', [ContractController::class, 'showadd'])->name('quotation.showadd');
+    Route::post('/contract/sendemail/{id}',[ContractController::class,'sendemail'])->name('contract.sendemail');
+    Route::post('/contract/finishemail/{id}', [ContractController::class, 'finishemail'])->name('contract.finishemail');
 
     // Route::get('/contract/create', [ContractController::class, 'create'])->name('quotation.create');
 

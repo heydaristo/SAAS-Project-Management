@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,9 @@ use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Service;
 use App\Models\ServiceDetail;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ContractController extends Controller
 {
@@ -57,7 +61,7 @@ class ContractController extends Controller
         }
 
         $contract->status = 'SENT';
-        $contract->contract_pdf = $request->input('contract_pdf');
+        $contract->contract_pdf = 'DEFAULT';
         $contract->id_client = $request->input('id_client');
         $contract->id_user = Auth::id();
         $contract->id_project = 1;
@@ -123,12 +127,31 @@ class ContractController extends Controller
 
     public function review($id){
         $contract = Contract::findOrFail($id);
-        $services = Service::where('id_quotation', $id)->get();
+        $services = Service::where('id_contract', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
         $total = $serviceDetails->sum('price');
-        $contract->total = $total;
+        $contract->total = $total;  
         $client = Client::find($contract->id_client);
-        return view('workspace.contracts.contract', compact('contract', 'services', 'serviceDetails', 'client'));
+        $user = User::find($contract->id_user);
+        return view('workspace.contracts.contract', compact('contract', 'services', 'serviceDetails', 'client', 'user'));
+    }
+
+    public function sendemail($id){
+        $contract = Contract::findOrFail($id);
+        $client = Client::find($contract->id_client);
+        return view('workspace.contracts.sendmail',compact('contract','client'));
+    }
+
+    public function finishemail(Request $request, $id){
+        
+        $contract = Contract::findOrFail($id);
+        $client = Client::find($contract->id_client);
+        $user = User::find($contract->id_user);
+        $services = Service::where('id_contract', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        Mail::to($request->recipient)->send(new MyEmail($contract,$client,$user,$serviceDetails));
+        Alert::success('Success Message', 'You have successfully send email.');
+        return redirect()->route('workspace.contract');
     }
 
 }

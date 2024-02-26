@@ -6,8 +6,13 @@
             <div class="col-md-12">
                 <form action="{{ route('workspace.contract.store') }}" method="post">
                     @csrf
-                    <div class="card-header">
-                        <h3 class="card-title">Create Your Contract</h3>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h3 class="card-title">Create Your Contract</h3>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                     <div class="card-body">
                         {{-- project detail --}}
@@ -39,7 +44,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label required">End Date</label>
+                                <label class="form-label">End Date</label>
                                 <div>
                                     <input type="date" class="form-control" name="end_date">
                                     {{-- tambahakan small message --}}
@@ -94,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Final Invoice Date</label>
+                                <label class="form-label required">Final Invoice Date</label>
                                 <input type="date" class="form-control" name="final_invoice_date">
                             </div>
                         </fieldset>
@@ -105,9 +110,6 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="form-label">Summary Service Price: <span id="totalCost">0</span></label>
-                                </div>
-                                <div class="col-md-6">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </div>
