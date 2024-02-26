@@ -9,7 +9,7 @@
                 </div>
 
                 <div class="card-body border-bottom py-3">
-                    <a href="{{ route('workspace.contract') }}">
+                    <a href="{{ route('workspace.contract.showadd') }}">
                         <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal">
                             New contract
                         </button>
