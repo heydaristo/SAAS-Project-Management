@@ -3,9 +3,8 @@
 @section('body')
     <div class="container">
         <h1>Edit Email</h1>
-        <form method="post" action="{{ route('workspace.quotation.sendemail', $quotation->id) }}">
+        <form action="{{ route('workspace.quotation.finishemail', $quotation->id) }}" method="POST">
             @csrf
-            @method('PUT')
             <div class="mb-3">
                 <label for="recipient" class="form-label">To:</label>
                 <input type="text" class="form-control" id="recipient" name="recipient" value="{{ $client->email }}" required>

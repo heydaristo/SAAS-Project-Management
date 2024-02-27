@@ -3,8 +3,18 @@
 @extends('template')
 
 @section('body')
-<div class="container">
-    <h1>Review Quotation</h1>
+<div class="container">   
+    <div class="row mb-3">
+        <div class="col">
+            <h3 class="card-title">Review Quotation</h3>
+        </div>
+        <div class="col d-flex justify-content-end">
+            <form action="{{ route('workspace.quotation.editemail', $quotation->id) }}" method="post" class="mt-4">
+                @csrf
+                <button type="submit" class="btn btn-primary">Continue</button>
+            </form>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Quotation Details</h3>
@@ -55,11 +65,5 @@
         </div>
     </div>
 
-    {{-- place in the left --}}
-    <!-- Tombol Submit -->
-    <form action="{{ route('workspace.quotation.editemail', $quotation->id) }}" method="post" class="mt-4">
-        @csrf
-        <button type="submit" class="btn btn-primary mt-4">Continue</button>
-    </form>
 </div>
 @endsection

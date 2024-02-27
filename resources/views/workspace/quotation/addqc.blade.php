@@ -6,8 +6,13 @@
             <div class="col-md-12">
                 <form action="{{ route('workspace.quotation.store') }}" method="post">
                     @csrf
-                    <div class="card-header">
-                        <h3 class="card-title">Create Your Quotation</h3>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h3 class="card-title">Create Your Quotation</h3>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                        </div>
                     </div>
                     <div class="card-body">
                         {{-- project detail --}}
@@ -94,12 +99,10 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Final Invoice Date</label>
+                                <label class="form-label required">Final Invoice Date</label>
                                 <input type="date" class="form-control" name="final_invoice_date">
                             </div>
                         </fieldset>
-
-
                         <div class="card-footer text-end">
                             {{-- make two col for summary service price and submit button --}}
                             <div class="row">
