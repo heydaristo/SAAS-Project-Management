@@ -67,9 +67,8 @@
                                                     Aksi
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit-{{ $contract->id }}">
-                                                        Edit
+                                                    <button class="dropdown-item">
+                                                        <a href={{route('workspace.contract.showupdate',$contract->id)}}>Edit</a>
                                                     </button>
                                                     <button class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#modalDelete-{{ $contract->id }}">Delete</button>

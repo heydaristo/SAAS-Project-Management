@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\QuotationMail;
 use Illuminate\Http\Request;
 use App\Models\Quotation;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Service;
 use App\Models\ServiceDetail;
 
@@ -171,21 +172,18 @@ class QuotationController extends Controller
     public function showEditEmail($id){
         $quotation = Quotation::find($id);
         $client = Client::find($quotation->id_client);
-        return view('workspace.component.editemail', compact('quotation', 'client'));
+        return view('workspace.quotation.editemail', compact('quotation', 'client'));
     }
 
-    public function sendEmail(Request $request, $id){
-        $quotation = Quotation::find($id);
+    public function finishemail(Request $request, $id)
+    {
+        $quotation = Quotation::findOrFail($id);
         $client = Client::find($quotation->id_client);
-
-        $data = [
-            'client' => $client,
-            'quotation' => $quotation,
-            'message' => $request->message,
-        ];
-
-        // Send email
-        Mail::to($client->email)->send(new QuotationEmail($data));
+        $user = User::find($quotation->id_user);
+        $services = Service::where('id_quotation', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        Mail::to($request->recipient)->send(new QuotationMail($quotation, $client, $user, $serviceDetails, $request->subject, $request->message));
+        Alert::success('Success Message', 'You have successfully send email.');
         return redirect()->route('workspace.quotation');
     }
 }

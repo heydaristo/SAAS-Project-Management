@@ -11,7 +11,7 @@
                             <h3 class="card-title">Create Your Contract</h3>
                         </div>
                         <div class="col d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Continue</button>
                         </div>
                     </div>
                     <div class="card-body">

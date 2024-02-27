@@ -3,6 +3,9 @@
 @section('body')
     <script src="//cdn.ckeditor.com/4.24.0-lts/basic/ckeditor.js"></script>
     <div class="row justify-content-center">
+        <p>
+            {{ $message }}
+        </p>
         <div class="row mb-3">
             <div class="col">
                 <h3 class="card-title">Review Contract</h3>

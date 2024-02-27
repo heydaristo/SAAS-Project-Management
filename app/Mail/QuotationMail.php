@@ -2,20 +2,18 @@
 
 namespace App\Mail;
 
-use App\Models\ServiceDetail;
-use App\Models\Contract;
-use App\Models\Client;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use App\Models\Client;
+use App\Models\Quotation;
 
 
-class MyEmail extends Mailable
+class QuotationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,13 +21,16 @@ class MyEmail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        protected Contract $contract,
+        protected Quotation $quotation,
         protected Client $client,
         protected User $user,
         protected $service,
         public $subject,
         public $message,
-    ) {}
+    )
+    {
+        //
+    }
 
     /**
      * Get the message envelope.
@@ -48,9 +49,9 @@ class MyEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'workspace.contracts.customermail',
+            view: 'workspace.quotation.customermail',
             with:[
-                'contract' => $this->contract,
+                'quotation' => $this->quotation,
                 'client' => $this->client,
                 'user'=> $this->user,
                 'serviceDetails' => $this->service,
