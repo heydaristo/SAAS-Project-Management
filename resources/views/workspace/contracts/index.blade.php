@@ -67,11 +67,16 @@
                                                     Aksi
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <button class="dropdown-item">
-                                                        <a href={{route('workspace.contract.showupdate',$contract->id)}}>Edit</a>
-                                                    </button>
+                                                    <a href={{ route('workspace.contract.showupdate', $contract->id) }}><button
+                                                            class="dropdown-item">
+                                                            Edit
+                                                        </button></a>
                                                     <button class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#modalDelete-{{ $contract->id }}">Delete</button>
+                                                    <a href={{ route('workspace.contract.sendemail', $contract->id) }}>
+                                                        <button class="dropdown-item">
+
+                                                            Send Email</button></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,8 +94,7 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form
-                                                    action="{{ route('workspace.contract', ['id' => $contract->id]) }}"
+                                                <form action="{{ route('workspace.contract', ['id' => $contract->id]) }}"
                                                     method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     @method('PUT')

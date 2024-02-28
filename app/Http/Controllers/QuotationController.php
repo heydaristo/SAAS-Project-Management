@@ -143,18 +143,6 @@ class QuotationController extends Controller
         return view('workspace.clients.edit', compact('client'));
     }
 
-    public function update(Request $request, $id){
-        $data = [
-            'name' => $request->name,
-            'address' => $request->address,
-            'no_telp' => $request->no_telp,
-        ];
-
-        Client::find($id)->update($data);
-
-        return redirect()->route('workspace.clients');
-    }
-
     public function show($id){
         $client = Client::find($id);
 
@@ -184,6 +172,114 @@ class QuotationController extends Controller
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
         Mail::to($request->recipient)->send(new QuotationMail($quotation, $client, $user, $serviceDetails, $request->subject, $request->message));
         Alert::success('Success Message', 'You have successfully send email.');
+        return redirect()->route('workspace.quotation');
+    }
+    public function showUpdate($id){
+        $quotation = Quotation::findOrFail($id);
+        $clients = Client::all();
+        $user = User::find($quotation->id_user);
+        $services = Service::where('id_quotation', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        return view('workspace.quotation.editquotation',compact('quotation','clients','user','services','serviceDetails'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the request data
+        $request->validate([
+            'project_name' => 'required|string',
+            'id_client' => 'required|exists:clients,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'final_invoice_date' => 'required|date',
+            // Add more validation rules as needed
+        ]);
+
+        // Find the contract to update
+        $quotation = Quotation::findOrFail($id); // assuming $id is the contract ID being updated
+
+        // Update contract details
+        $quotation->quotation_name = $request->input('project_name');
+        $quotation->start_date = $request->input('start_date');
+        $quotation->end_date = $request->input('end_date');
+        $quotation->id_client = $request->input('id_client');
+        $quotation->final_invoice_date = $request->input('final_invoice_date');
+
+        // Update the user ID only if necessary
+        if ($quotation->id_user !== Auth::id()) {
+            $quotation->id_user = Auth::id();
+        }
+
+        // Update deposit information if provided
+        if ($request->has('require_deposit')) {
+            // Validate deposit percentage
+            $request->validate([
+                'deposit_percentage' => 'required|numeric|min:0|max:100',
+            ]);
+
+            // Calculate deposit amount
+            $totalCost = 0;
+            $servicePrices = $request->input('service_price');
+            foreach ($servicePrices as $price) {
+                $totalCost += $price;
+            }
+            $depositPercentage = $request->input('deposit_percentage');
+            $depositAmount = ($depositPercentage / 100) * $totalCost;
+
+            // Update contract with deposit information
+            $quotation->require_deposit = true;
+            $quotation->deposit_percentage = $depositPercentage;
+            $quotation->deposit_amount = $depositAmount;
+            $quotation->client_agrees_deposit = $request->has('client_agrees_deposit');
+        } else {
+            $quotation->require_deposit = false;
+            $quotation->deposit_percentage = null;
+            $quotation->deposit_amount = null;
+            $quotation->client_agrees_deposit = false;
+        }
+
+        // Save the updated contract
+        $quotation->save();
+
+        // ambil service 
+        $service = Service::where('id_quotation', $quotation->id)->first();
+
+        // hapus yang lama 
+        ServiceDetail::where('id_service', $service->id)->delete();
+
+        // masukkan yang baru
+        // create each subscription detail
+        $serviceNames = $request->input('service_name');
+        $servicePrices = $request->input('service_price');
+        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceDescriptions = $request->input('service_description');
+        foreach ($serviceNames as $index => $serviceName) {
+            $serviceDetail = new ServiceDetail();
+            $serviceDetail->id_service = $service->id;
+            $serviceDetail->service_name = $serviceName;
+            $serviceDetail->price = $servicePrices[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->description = $serviceDescriptions[$index];
+            $serviceDetail->save();
+        }
+
+        return redirect()->route('workspace.quotation.showeditreview', $quotation->id);
+    }
+
+    public function showeditreview($id){
+        $quotation = Quotation::findOrFail($id);
+        $services = Service::where('id_contract', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        $total = $serviceDetails->sum('price');
+        $quotation->total = $total;
+        $client = Client::find($quotation->id_client);
+        $user = User::find($quotation->id_user);
+        return view('workspace.quotation.editreview', compact('quotation', 'services', 'serviceDetails', 'client', 'user'));
+    }
+
+    public function editreview(){
+        Alert::success('Success Message', 'You have successfully update quotation.');
+        // Redirect to the contract review page
         return redirect()->route('workspace.quotation');
     }
 }

@@ -2,16 +2,17 @@
 
 @section('body')
     <script src="//cdn.ckeditor.com/4.24.0-lts/basic/ckeditor.js"></script>
-    <form action="{{ route('workspace.contract.sendemail',['id' => $contract->id]) }}">
+    <form action="{{ route('workspace.contract.editterm',['id' => $contract->id]) }}" method="POST">
         @csrf
+        @method('PUT')
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="row mb-3">
                     <div class="col">
-                        <h3 class="card-title">Review Contract</h3>
+                        <h3 class="card-title">Edit Review Contract</h3>
                     </div>
                     <div class="col d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary">Continue</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
                 <div class="card">
@@ -104,8 +105,8 @@
                         <div class="form-group">
                             <label class="form-label">Attachment B: Terms and Conditions</label>
                             <button class="btn mb-2">Edit</button>
-                            <textarea class="form-control" id="contract">
-                            {{ $contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : '' }}
+                            <textarea class="form-control" id="contract" name="term">
+                            {{ $contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : $contract->contract_pdf }}
                         </textarea>
                         </div>
                     </div>

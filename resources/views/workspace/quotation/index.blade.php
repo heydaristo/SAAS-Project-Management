@@ -67,12 +67,16 @@
                                                     Aksi
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit-{{ $quotation->id }}">
+                                                    <a href={{ route('workspace.quotation.showupdate', $quotation->id) }}><button
+                                                        class="dropdown-item">
                                                         Edit
-                                                    </button>
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDelete-{{ $quotation->id }}">Delete</button>
+                                                    </button></a>
+                                                <button class="dropdown-item" data-bs-toggle="modal"
+                                                    data-bs-target="#modalDelete-{{ $quotation->id }}">Delete</button>
+                                                <a href={{ route('workspace.quotation.editemail', $quotation->id) }}>
+                                                    <button class="dropdown-item">
+
+                                                        Send Email</button></a>
                                                 </div>
                                             </div>
                                         </div>

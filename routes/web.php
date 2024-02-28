@@ -106,8 +106,13 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/quotation/pdf/{id}', [QuotationController::class, 'pdf'])->name('quotation.pdf');
 
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
-    Route::post('/quotation/editemail/{id}', [QuotationController::class, 'showEditEmail'])->name('quotation.editemail');
+    Route::get('/quotation/editemail/{id}', [QuotationController::class, 'showEditEmail'])->name('quotation.editemail');
     Route::post('/quotation/finishemail/{id}', [QuotationController::class, 'finishemail'])->name('quotation.finishemail');
+    Route::get('/quotation/showupdate/{id}', [QuotationController::class, 'showUpdate'])->name('quotation.showupdate');
+    Route::put('/quotation/update/{id}', [QuotationController::class, 'update'])->name('quotation.update');
+    Route::get('/quotation/showeditreview/{id}', [QuotationController::class,'showeditreview'])->name('quotation.showeditreview');
+    Route::get('/quotation/editreview', [QuotationController::class,'editreview'])->name('quotation.editreview');
+    
 
     // contract
 
@@ -115,30 +120,13 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/contract/showadd', [ContractController::class, 'showadd'])->name('contract.showadd');
     Route::post('/contract/store', [ContractController::class, 'store'])->name('contract.store');
     Route::get('/contract/review/{id}', [ContractController::class, 'review'])->name('contract.review');
-    Route::post('/contract/sendemail/{id}',[ContractController::class,'sendemail'])->name('contract.sendemail');
+    Route::get('/contract/sendemail/{id}',[ContractController::class,'sendemail'])->name('contract.sendemail');
     Route::post('/contract/finishemail/{id}', [ContractController::class, 'finishemail'])->name('contract.finishemail');
     Route::get('/contract/showupdate/{id}', [ContractController::class, 'showUpdate'])->name('contract.showupdate');
     Route::put('/contract/update/{id}', [ContractController::class, 'update'])->name('contract.update');
-
-    // Route::get('/contract/showadd', [ContractController::class, 'showadd'])->name('quotation.showadd');
-
-    // Route::get('/contract/create', [ContractController::class, 'create'])->name('quotation.create');
-
-    // Route::get('/contract/edit/{id}', [ContractController::class, 'edit'])->name('quotation.edit');
-
-
-    // Route::get('/contract/delete/{id}', [ContractController::class, 'delete'])->name('quotation.delete');
-
-    // Route::get('/contract/show/{id}', [ContractController::class, 'show'])->name('quotation.show');
-    // Route::post('/contract/store', [ContractController::class, 'store'])->name('quotation.store');
-    // Route::get('/contract/review/{id}', [ContractController::class, 'review'])->name('quotation.review');
-
-    // Route::get('/contract/pdf/{id}', [ContractController::class, 'pdf'])->name('quotation.pdf');
-
-    // Route::post('/contract/status/{id}', [ContractController::class, 'status'])->name('quotation.pdf');
-    // Route::post('/contract/editemail/{id}', [ContractController::class, 'showEditEmail'])->name('quotation.editemail');
-    // Route::post('/contract/sendemail', [ContractController::class, 'sendEmail'])->name('quotation.sendemail');
-
+    Route::get('/contract/showeditterm/{id}', [ContractController::class,'showeditterm'])->name('contract.showeditterm');
+    Route::put('/contract/editterm/{id}', [ContractController::class,'editterm'])->name('contract.editterm');
+    Route::get('/contract/accepted/{id}', [ContractController::class,'accepted'])->name('contract.accepted');
     // invoice
     
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
