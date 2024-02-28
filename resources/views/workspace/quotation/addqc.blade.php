@@ -109,9 +109,6 @@
                                 <div class="col-md-6">
                                     <label class="form-label">Summary Service Price: <span id="totalCost">0</span></label>
                                 </div>
-                                <div class="col-md-6">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
                             </div>
                         </div>
                 </form>

@@ -228,7 +228,7 @@ class ContractController extends Controller
         $contract->save();
 
         // ambil service 
-        $service = Contract::where('id_contract', $contract->id)->first();
+        $service = Service::where('id_contract', $contract->id)->first();
 
         // hapus yang lama 
         ServiceDetail::where('id_service', $service->id)->delete();
@@ -249,9 +249,36 @@ class ContractController extends Controller
             $serviceDetail->save();
         }
 
-        // Redirect to the contract review page
+        return redirect()->route('workspace.contract.showeditterm', $contract->id);
+    }
+
+    public function showeditterm($id){
+        $contract = Contract::findOrFail($id);
+        $services = Service::where('id_contract', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        $total = $serviceDetails->sum('price');
+        $contract->total = $total;
+        $client = Client::find($contract->id_client);
+        $user = User::find($contract->id_user);
+        return view('workspace.contracts.editterm', compact('contract', 'services', 'serviceDetails', 'client', 'user'));
+    }
+
+    public function editterm(Request $request, $id){
+        $contract = Contract::findOrFail($id);
+        $contract->contract_pdf = $request->term;
+        $contract->save();
         Alert::success('Success Message', 'You have successfully update contract.');
+        // Redirect to the contract review page
+        
         return redirect()->route('workspace.contract', $contract->id);
+    }
+
+    public function accepted($id){
+        $contract = Contract::findOrFail($id);
+        $contract->status = "ACCEPTED";
+        // check if contract need to pay firstly or not
+        // create project based on contract
+        dd($contract);
     }
 
 }

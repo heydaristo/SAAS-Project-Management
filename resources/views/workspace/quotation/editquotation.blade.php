@@ -4,15 +4,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <form action="{{ route('workspace.contract.update', $contract->id) }}" method="POST">
+                <form action="{{ route('workspace.quotation.update', $quotation->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="row mb-3">
                         <div class="col">
-                            <h3 class="card-title">Update Contract</h3>
+                            <h3 class="card-title">Update Quotation</h3>
                         </div>
                         <div class="col d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Next</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                     <div class="card-body">
@@ -23,7 +23,7 @@
                                 <label class="form-label required">Project Name</label>
                                 <div>
                                     <input type="text" class="form-control" placeholder="Project Name"
-                                        name="project_name" value="{{ $contract->contract_name }}">
+                                        name="project_name" value="{{ $quotation->quotation_name }}">
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -31,20 +31,20 @@
                                 <select class="form-control mt-1" name="id_client" id="id_client">
                                     <option value="">Select client</option>
                                     @foreach ($clients as $client)
-                                        <option value="{{ $client->id }}" {{ $client->id == $contract->id_client ? 'selected' : '' }}>{{ $client->name }}</option>
+                                        <option value="{{ $client->id }}" {{ $client->id == $quotation->id_client ? 'selected' : '' }}>{{ $client->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label required">Start Date</label>
                                 <div>
-                                    <input type="date" class="form-control" name="start_date" value="{{ $contract->start_date }}">
+                                    <input type="date" class="form-control" name="start_date" value="{{ $quotation->start_date }}">
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">End Date</label>
                                 <div>
-                                    <input type="date" class="form-control" name="end_date" value="{{ $contract->end_date }}">
+                                    <input type="date" class="form-control" name="end_date" value="{{ $quotation->end_date }}">
                                     <small>Leave empty for open-ended.</small>
                                 </div>
                             </div>
@@ -77,29 +77,29 @@
                         <fieldset class="form-fieldset">
                             <legend>Billing Schedule</legend>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="requireDeposit" name="require_deposit" {{ $contract->require_deposit ? 'checked' : '' }}>
+                                <input class="form-check-input" type="checkbox" id="requireDeposit" name="require_deposit" {{ $quotation->require_deposit ? 'checked' : '' }}>
                                 <label class="form-check-label" for="requireDeposit">Require Deposit?</label>
                             </div>
-                            <div id="depositFields" style="{{ $contract->require_deposit ? 'display: block;' : 'display: none;' }}">
+                            <div id="depositFields" style="{{ $quotation->require_deposit ? 'display: block;' : 'display: none;' }}">
                                 <div class="mb-3">
                                     <label class="form-label">Deposit Percentage</label>
                                     <input type="number" class="form-control" id="depositPercentage"
-                                        name="deposit_percentage" placeholder="Percentage" value="{{ $contract->deposit_percentage }}">
+                                        name="deposit_percentage" placeholder="Percentage" value="{{ $quotation->deposit_percentage }}">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Deposit Amount</label>
                                     <input type="text" class="form-control" id="depositAmount" name="deposit_amount"
-                                        readonly value="{{ $contract->deposit_amount }}">
+                                        readonly value="{{ $quotation->deposit_amount }}">
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="clientAgreesDeposit"
-                                        name="client_agrees_deposit" {{ $contract->client_agrees_deposit ? 'checked' : '' }}>
+                                        name="client_agrees_deposit" {{ $quotation->client_agrees_deposit ? 'checked' : '' }}>
                                     <label class="form-check-label" for="clientAgreesDeposit">Make deposit payment mandatory for approval?</label>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label required">Final Invoice Date</label>
-                                <input type="date" class="form-control" name="final_invoice_date" value="{{ $contract->final_invoice_date }}">
+                                <input type="date" class="form-control" name="final_invoice_date" value="{{ $quotation->final_invoice_date }}">
                             </div>
                         </fieldset>
                         {{-- ganti jadi dinamis aja --}}
