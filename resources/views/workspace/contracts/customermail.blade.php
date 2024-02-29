@@ -11,7 +11,9 @@
                     <h3 class="card-title">Review Contract</h3>
                 </div>
                 <div class="col d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Accept Contract</button>
+                    <a href={{"http://127.0.0.1:8000/workspace/contract/accepted/".strVal($contract->id)}} target="_blank" rel="noopener noreferrer">
+                        <button class="btn btn-primary">Accept Contract</button></a>
+                    
                 </div>
             </div>
             <div class="card">

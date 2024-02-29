@@ -32,6 +32,10 @@ use App\Http\Controllers\workspace\WorkspaceDashboardController;
 Route::get('/', [UserController::class, 'login'])->name('/');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
+// accept
+Route::get('workspace/contract/accepted/{id}', [ContractController::class,'accepted'])->name('workspace.contract.accepted');
+Route::get('workspace/contract/successpaiddpcontract/{id}', [ContractController::class,'successpaiddpcontract'])->name('workspace.contract.successpaiddpcontract');
+
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [UserController::class, 'login'])->name('/');
@@ -126,7 +130,11 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::put('/contract/update/{id}', [ContractController::class, 'update'])->name('contract.update');
     Route::get('/contract/showeditterm/{id}', [ContractController::class,'showeditterm'])->name('contract.showeditterm');
     Route::put('/contract/editterm/{id}', [ContractController::class,'editterm'])->name('contract.editterm');
-    Route::get('/contract/accepted/{id}', [ContractController::class,'accepted'])->name('contract.accepted');
+    Route::put('/contract/successpaiddpcontract/{id}', [ContractController::class,'successpaiddpcontract'])->name('workspace.contract.successpaiddpcontract');
+
+    
+    
+    
     // invoice
     
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
