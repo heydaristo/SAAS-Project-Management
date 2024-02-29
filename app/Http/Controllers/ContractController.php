@@ -160,13 +160,14 @@ class ContractController extends Controller
         return redirect()->route('workspace.contract');
     }
 
-    public function showUpdate($id){
+    public function showUpdate($id)
+    {
         $contract = Contract::findOrFail($id);
         $clients = Client::all();
         $user = User::find($contract->id_user);
         $services = Service::where('id_contract', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
-        return view('workspace.contracts.editcontract',compact('contract','clients','user','services','serviceDetails'));
+        return view('workspace.contracts.editcontract', compact('contract', 'clients', 'user', 'services', 'serviceDetails'));
     }
 
     public function update(Request $request, $id)
@@ -252,7 +253,8 @@ class ContractController extends Controller
         return redirect()->route('workspace.contract.showeditterm', $contract->id);
     }
 
-    public function showeditterm($id){
+    public function showeditterm($id)
+    {
         $contract = Contract::findOrFail($id);
         $services = Service::where('id_contract', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
@@ -263,22 +265,70 @@ class ContractController extends Controller
         return view('workspace.contracts.editterm', compact('contract', 'services', 'serviceDetails', 'client', 'user'));
     }
 
-    public function editterm(Request $request, $id){
+    public function editterm(Request $request, $id)
+    {
         $contract = Contract::findOrFail($id);
         $contract->contract_pdf = $request->term;
         $contract->save();
         Alert::success('Success Message', 'You have successfully update contract.');
         // Redirect to the contract review page
-        
+
         return redirect()->route('workspace.contract', $contract->id);
     }
 
-    public function accepted($id){
+    public function accepted($id)
+    {
         $contract = Contract::findOrFail($id);
-        $contract->status = "ACCEPTED";
         // check if contract need to pay firstly or not
+        if ($contract->client_agrees_deposit == true) {
+            // get subscription detail
+            $services = Service::where('id_contract', $id)->get();
+            $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+            $client = Client::find($contract->id_client);
+            $user = User::find($contract->id_user);
+
+
+            // page pembayaran
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+            \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+            // Set sanitization on (default)
+            \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
+            // Set 3DS transaction for credit card to true
+            \Midtrans\Config::$is3ds = config('midtrans.is3ds');
+
+
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => rand(),
+                    'gross_amount' => $contract->deposit_amount,
+                ),
+                'customer_details' => array(
+                    'first_name' => $user->fullname,
+                    'email' => $user->email,
+                ),
+            );
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $contract['snap_token'] = $snapToken;
+
+            return view('workspace.contracts.paidacceptpage', compact('contract'));
+        } else if ($contract->client_agrees_deposit == false) {
+            // page terimakasih
+            $contract->status = "APPROVED";
+            $contract->save();
+            return view('workspace.contracts.acceptpage');
+        }
         // create project based on contract
-        dd($contract);
+    }
+
+    public function successpaiddpcontract($id)
+    {
+        $contract = Contract::find($id);
+        $contract->status = "APPROVED";
+        $contract->save();
+        return view('workspace.contracts.acceptpage');
     }
 
 }
