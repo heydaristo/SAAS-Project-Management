@@ -9,9 +9,11 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ProjectModel;
 use App\Models\Client;
 use PDF; 
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use App\Models\ServiceDetail;
 use App\Models\Invoice;
 
 class InvoiceController extends Controller
@@ -45,37 +47,48 @@ class InvoiceController extends Controller
 
     public function showId($id)
     {
-     $userId = auth()->user()->id;
+        $userId = Auth::id();
         
+        $invoice = DB::table('invoices')
+            ->where('invoices.user_id', $userId)
+            ->where('invoices.id', $id) // Filter berdasarkan ID invoice
+            ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
+            ->join('clients', 'invoices.id_client', '=', 'clients.id')
+            ->select('invoices.*', 'project_models.project_name as project_name', 'clients.*', 
+            'clients.id as id_client')
+            ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
+        
+        $client = Client::find($invoice->id_client); // Menggunakan find untuk mencari berdasarkan ID
+        
+        $project = ProjectModel::findOrFail($invoice->id_project);
+        
+        $services = Service::where('id_project', $project->id)->get();
+        
+        $serviceDetails = ServiceDetail::where('id_service', $services->first()->id)->get();
+        
+        // Simpan ID invoice yang dipilih
+        $this->selectedInvoiceId = $id;
 
-    $invoice = DB::table('invoices')
-        ->where('invoices.user_id', $userId)
-        ->where('invoices.id', $id) // Filter berdasarkan ID invoice
-        ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
-        ->join('clients', 'invoices.id_client', '=', 'clients.id')
-        ->select('invoices.*', 'project_models.project_name as project_name',
-         'clients.*')
-        ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
-
-  
+        // dd($client);
         if (!$invoice) {
-        // Jika bukan pemiliknya, kembalikan response tidak diizinkan
-        return abort(403, 'Not Found');
-    }
+            // Jika bukan pemiliknya, kembalikan response tidak diizinkan
+            return abort(403, 'Not Found');
+        }
 
-    // Kembalikan view dengan data invoice
-    return view('workspace.invoices.show', compact('invoice'));
+        // Kembalikan view dengan data invoice
+        return view('workspace.invoices.show', compact('invoice', 'services', 'client', 'project', 'serviceDetails'));
     }
 
     public function printPDF(Request $request)
     {
-        $request->validate([
-            'invoice_id' => 'required|integer|exists:invoices,id'
-        ]);
+        // $request->validate([
+        //     'invoice_id' => 'required|integer|exists:invoices,id'
+        // ]);
     
         $invoiceId = $request->input('invoice_id');
+        // $invoiceId = $request->invoice->id;
         $userId = auth()->user()->id;
-    
+        
         $invoice = DB::table('invoices')
             ->where('invoices.user_id', $userId)
             ->where('invoices.id', $invoiceId) // Filter berdasarkan ID invoice
@@ -179,22 +192,22 @@ class InvoiceController extends Controller
         }
     }
     public function destroy(Request $request, $id){
-        $invoiceId = $request->route('id');
+        $invoiceId = $this->invoice->id; // Mengambil ID invoice dari rute
+        dd($invoiceId);
         $userId = auth()->id();
         
-        $invoice = Invoice::find($invoiceId);
+        // Menggunakan findOrFail untuk mencari invoice berdasarkan ID
+        $invoice = Invoice::findOrFail($invoiceId);
         
-        if (!$invoice) {
-            abort(404);
+        // Memeriksa apakah pengguna memiliki izin untuk menghapus invoice
+        if ($invoice->user_id !== $userId) {
+            abort(403, 'Not Found.'); // Menggunakan pesan yang lebih deskriptif
         }
-
-        // Jika invoice tidak ditemukan atau bukan milik pengguna yang sedang login
-        if ($invoice->user_id !== auth()->id()) {
-            abort(403, 'Not Found.');
-        }
-        $invoice->delete();
-        Alert::success('Success Message', 'You have successfully delete.');
-        return redirect()->route('workspace.invoice');
+        
+        $invoice->delete(); // Menghapus invoice
+        
+        Alert::success('Success Message', 'You have successfully deleted.'); // Perbaikan pesan
+        return redirect()->route('workspace.invoice'); // Redirect ke rute setelah penghapusan
     }
     
 }

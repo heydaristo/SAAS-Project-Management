@@ -14,7 +14,7 @@
         <a href="#" class="btn btn-primary">Edit</a>
       </div>
       <div class="p-2">
-      <!-- Form untuk tombol cetak PDF -->
+       <!-- Form untuk tombol cetak PDF -->
       <form action="{{ route('workspace.invoices.print') }}" method="POST">
         @csrf
         <!-- Input tersembunyi untuk mengirimkan id invoice -->
@@ -41,6 +41,7 @@
     <div class="card card-lg">
       <div class="card-body">
         <div class="row">
+          <p>{{ $invoice->id }}</p>
           <div class="col-6">
             <h1>Invoice</h1>
             <address>
@@ -68,62 +69,28 @@
           <thead>
             <tr>
               <th class="text-center" style="width: 1%"></th>
-              <th>Product</th>
-              <th class="text-center" style="width: 1%">Qnt</th>
-              <th class="text-end" style="width: 1%">Unit</th>
-              <th class="text-end" style="width: 1%">Amount</th>
+              <th>Services</th>
+              
+              <th class="text-center" style="width: 1%">Payment Method</th>
+              <th class="text-start" style="width: 1%">Unit</th>
+              <th class="text-start" style="width: 1%">Amount</th>
             </tr>
           </thead>
-          <tbody><tr>
-            <td class="text-center">1</td>
-            <td>
-              <p class="strong mb-1">Logo Creation</p>
-              <div class="text-secondary">Logo and business cards design</div>
-            </td>
-            <td class="text-center">
-              1
-            </td>
-            <td class="text-end">$1.800,00</td>
-            <td class="text-end">$1.800,00</td>
-          </tr>
+          <tbody>
+            @php
+              $i = 1;
+            @endphp
+            @foreach ($serviceDetails as $service)
+                                    <tr>
+                                        <td class="text-center">{{ $i++ }}</td>
+                                        <td>{{ $service->service_name }}</td>
+                                        <td class="text-center">{{ $service->pay_method }}</td>
+                                        <td>{{ $service->description }}</td>
+                                        <td class="text-end">{{ $service->price }}</td>
+                                    </tr>
+            @endforeach
           <tr>
-            <td class="text-center">2</td>
-            <td>
-              <p class="strong mb-1">Online Store Design &amp; Development</p>
-              <div class="text-secondary">Design/Development for all popular modern browsers</div>
-            </td>
-            <td class="text-center">
-              1
-            </td>
-            <td class="text-end">$20.000,00</td>
-            <td class="text-end">$20.000,00</td>
-          </tr>
-          <tr>
-            <td class="text-center">3</td>
-            <td>
-              <p class="strong mb-1">App Design</p>
-              <div class="text-secondary">Promotional mobile application</div>
-            </td>
-            <td class="text-center">
-              1
-            </td>
-            <td class="text-end">$3.200,00</td>
-            <td class="text-end">$3.200,00</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="strong text-end">Subtotal</td>
-            <td class="text-end">$25.000,00</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="strong text-end">Vat Rate</td>
-            <td class="text-end">20%</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="strong text-end">Vat Due</td>
-            <td class="text-end">$5.000,00</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
+            <td colspan="4" class="font-weight-bold text-uppercase text-end"><b>Total Due</b></td>
             <td class="font-weight-bold text-end">${{ $invoice->total }}</td>
           </tr>
         </tbody></table>
