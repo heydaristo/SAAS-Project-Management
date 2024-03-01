@@ -3,7 +3,7 @@
 @section('body')
     <div class="container">
         <p>
-            {{ $message }}
+            {{ $msg }}
         </p>
         <div class="row mb-3">
             <div class="col">
@@ -12,10 +12,9 @@
             <div class="col d-flex justify-content-end">
                 {{-- place in the left --}}
                 <!-- Tombol Submit -->
-                <form action="{{ route('workspace.quotation.editemail', $quotation->id) }}" method="post" class="mt-4">
-                    @csrf
-                    <button type="submit" class="btn btn-primary mt-4">Accept Contract</button>
-                </form>
+                <a href={{"http://127.0.0.1:8000/workspace/quotation/accepted/".strVal($quotation->id)}} target="_blank" rel="noopener noreferrer">
+                    <button class="btn btn-primary">Accept Project</button></a>
+                
             </div>
         </div>
         <div class="card">

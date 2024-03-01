@@ -11,8 +11,10 @@ use App\Models\Contract;
 use App\Models\Service;
 use App\Models\ServiceDetail;
 use App\Models\User;
+use App\Models\ProjectModel;
 use Illuminate\Support\Facades\Mail;
 use RealRashid\SweetAlert\Facades\Alert;
+
 
 class ContractController extends Controller
 {
@@ -317,10 +319,22 @@ class ContractController extends Controller
         } else if ($contract->client_agrees_deposit == false) {
             // page terimakasih
             $contract->status = "APPROVED";
+            
+            // create project based on contract
+            $data['project_name'] = $contract->contract_name;
+            $data['start_date'] = date('Y-m-d');
+            $data['end_date'] = $contract->end_date;
+            $data['status'] = 'ACTIVE';
+            $data['id_client'] = $contract->id_client;
+            $data['user_id'] = $contract->id_user;
+
+            $project = ProjectModel::create($data);
+            $contract->id_project = $project->id;
             $contract->save();
+
             return view('workspace.contracts.acceptpage');
         }
-        // create project based on contract
+
     }
 
     public function successpaiddpcontract($id)
@@ -328,7 +342,27 @@ class ContractController extends Controller
         $contract = Contract::find($id);
         $contract->status = "APPROVED";
         $contract->save();
+
+        // create project based on contract
+        $data['project_name'] = $contract->contract_name;
+        $data['start_date'] = date('Y-m-d');
+        $data['end_date'] = $contract->end_date;
+        $data['status'] = 'ACTIVE';
+        $data['id_client'] = $contract->id_client;
+        $data['user_id'] = $contract->id_user;
+
+        ProjectModel::create($data);
         return view('workspace.contracts.acceptpage');
+    }
+
+    public function deleteContract(Request $request, $id){
+        $contract = Contract::find($id);
+        $service = Service::where('id_contract', $id)->first();
+        $service->id_contract = 1;
+        $service->save();
+        $contract->delete();
+        Alert::success('Success Message', 'You have successfully delete contract.');
+        return redirect()->route('workspace.contract');
     }
 
 }
