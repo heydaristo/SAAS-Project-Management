@@ -78,11 +78,11 @@
                                     <td>{{ $project->start_date }}</td>
                                     <td>{{ $project->end_date }}</td>
                                     <td>
-                                        @if ($project->status == 'Active')
+                                        @if ($project->status == 'ACTIVE')
                                             <span class="badge text-bg-success">{{ $project->status }}</span>
-                                        @elseif($project->status == 'Pending')
+                                        @elseif($project->status == 'PENDING')
                                             <span class="badge text-bg-warning">{{ $project->status }}</span>
-                                        @elseif($project->status == 'Inactive')
+                                        @elseif($project->status == 'ENDED')
                                             <span class="badge text-bg-danger">{{ $project->status }}</span>
                                         @endif
                                     </td>
@@ -146,15 +146,15 @@
                                                     <div class="mb-3">
                                                         <label for="status">Status</label>
                                                         <select class="form-control mt-1" name="status">
-                                                            <option value="Active"
-                                                                {{ $project->status == 'Active' ? 'selected' : '' }}>Active
+                                                            <option value="ACTIVE"
+                                                                {{ $project->status == 'ACTIVE' ? 'selected' : '' }}>ACTIVE
                                                             </option>
-                                                            <option value="Pending"
-                                                                {{ $project->status == 'Pending' ? 'selected' : '' }}>
-                                                                Pending</option>
-                                                            <option value="Inactive"
-                                                                {{ $project->status == 'Inactive' ? 'selected' : '' }}>
-                                                                Inactive</option>
+                                                            <option value="PENDING"
+                                                                {{ $project->status == 'PENDING' ? 'selected' : '' }}>
+                                                                PENDING</option>
+                                                            <option value="ENDED"
+                                                                {{ $project->status == 'ENDED' ? 'selected' : '' }}>
+                                                                ENDED</option>
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
@@ -281,9 +281,9 @@
                             <label for="status">Status</label>
                             <select class="form-control mt-1" name="status">
                                 <option value="">Select Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Inactive">Inactive</option>
+                                <option value="ACTIVE">ACTIVE</option>
+                                <option value="PENDING">PENDING</option>
+                                <option value="ENDED">ENDED</option>
                             </select>
                         </div>
                         <div class="mb-3">

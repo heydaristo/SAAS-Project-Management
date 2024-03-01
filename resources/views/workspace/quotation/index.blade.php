@@ -195,7 +195,7 @@
                                                 <div class="w-100">
                                                     <div class="row">
                                                         <form
-                                                            action="{{ route('workspace.quotation.delete', ['id' => $quotation->id]) }}"
+                                                            action="{{ route('workspace.quotation.deleteQuotation', ['id' => $quotation->id]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
@@ -204,7 +204,7 @@
                                                                     data-bs-dismiss="modal">Cancel</a>
                                                             </div>
                                                             <div class="col">
-                                                                <button class="btn btn-danger w-100"
+                                                                <button type="submit" class="btn btn-danger w-100"
                                                                     data-bs-dismiss="modal">Delete</button>
                                                             </div>
                                                         </form>

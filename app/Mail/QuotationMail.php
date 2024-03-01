@@ -55,7 +55,7 @@ class QuotationMail extends Mailable
                 'client' => $this->client,
                 'user'=> $this->user,
                 'serviceDetails' => $this->service,
-                'message' => $this->message
+                'msg' => $this->message
             ]
         );
     }

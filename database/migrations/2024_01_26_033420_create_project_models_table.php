@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('project_name', 100);
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable(true);
             $table->string('status', 100);
             $table->unsignedBigInteger('id_client');
             $table->foreign('id_client')->references('id')->on('clients');

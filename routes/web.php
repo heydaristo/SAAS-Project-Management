@@ -35,7 +35,8 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 // accept
 Route::get('workspace/contract/accepted/{id}', [ContractController::class,'accepted'])->name('workspace.contract.accepted');
 Route::get('workspace/contract/successpaiddpcontract/{id}', [ContractController::class,'successpaiddpcontract'])->name('workspace.contract.successpaiddpcontract');
-
+Route::get('workspace/quotation/accepted/{id}', [QuotationController::class,'accepted'])->name('workspace.quotation.accepted');
+Route::get('workspace/quotation/successpaiddpcontract/{id}', [QuotationController::class,'successpaiddpcontract'])->name('workspace.quotation.successpaiddpcontract');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [UserController::class, 'login'])->name('/');
@@ -116,7 +117,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::put('/quotation/update/{id}', [QuotationController::class, 'update'])->name('quotation.update');
     Route::get('/quotation/showeditreview/{id}', [QuotationController::class,'showeditreview'])->name('quotation.showeditreview');
     Route::get('/quotation/editreview', [QuotationController::class,'editreview'])->name('quotation.editreview');
-    
+    Route::delete('/quotation/deleteQuotation/{id}', [QuotationController::class,'deleteQuotation'])->name('quotation.deleteQuotation');
 
     // contract
 
@@ -130,8 +131,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::put('/contract/update/{id}', [ContractController::class, 'update'])->name('contract.update');
     Route::get('/contract/showeditterm/{id}', [ContractController::class,'showeditterm'])->name('contract.showeditterm');
     Route::put('/contract/editterm/{id}', [ContractController::class,'editterm'])->name('contract.editterm');
-    Route::put('/contract/successpaiddpcontract/{id}', [ContractController::class,'successpaiddpcontract'])->name('workspace.contract.successpaiddpcontract');
-
+    Route::delete('/contract/deleteContract/{id}', [ContractController::class, 'deleteContract'])->name('contract.deleteContract');    
     
     
     
