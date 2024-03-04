@@ -45,14 +45,14 @@ class ContractController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
-        // $request->validate([
-        //     'project_name' => 'required|string',
-        //     'id_client' => 'required|exists:clients,id',
-        //     'start_date' => 'required|date',
-        //     'end_date' => 'nullable|date',
-        //     'final_invoice_date' => 'required|date',
-        //     // Add more validation rules as needed
-        // ]);
+        $request->validate([
+            'project_name' => 'required|string',
+            'id_client' => 'required|exists:clients,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'final_invoice_date' => 'required|date',
+            // Add more validation rules as needed
+        ]);
 
         // Create a new Quotation instance
         $contract = new Contract();
