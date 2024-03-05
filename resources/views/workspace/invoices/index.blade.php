@@ -85,7 +85,7 @@
                 @endif
             </td>
               <td>{{ $invoice->due_date }}</td>
-              <td>{{ $invoice->total }}</td>
+              <td>@currency($invoice->total)</td>
             </tr>
 
           {{-- Modals Edit --}}

@@ -1,5 +1,9 @@
 @extends('template')
 
+@php
+  $title= "Contract";
+@endphp
+
 @section('body')
     <div class="row row-deck row-cards">
         <div class="col-12">
@@ -7,7 +11,6 @@
                 <div class="card-header">
                     <h3 class="card-title">contracts</h3>
                 </div>
-
                 <div class="card-body border-bottom py-3">
                     <a href="{{ route('workspace.contract.showadd') }}">
                         <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal">
@@ -82,88 +85,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-                                {{-- Modals Edit --}}
-                                <div class="modal fade" id="modalEdit-{{ $contract->id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modal2Label">contract Name</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="{{ route('workspace.contract', ['id' => $contract->id]) }}"
-                                                    method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="mb-3">
-                                                        <label for="contract_name">contract Name</label>
-                                                        <input type="text" value="{{ $contract->contract_name }}"
-                                                            class="form-control mt-1" name="contract_name"
-                                                            placeholder="Masukkan contract name" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="start_date">Start Date</label>
-                                                        <input type="date" class="form-control mt-1"
-                                                            value="{{ $contract->start_date }}" id="start_date"
-                                                            name="start_date" placeholder="Start Date" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="end_date">End Date</label>
-                                                        <input type="date" class="form-control mt-1"
-                                                            value="{{ $contract->end_date }}" id="end_date"
-                                                            name="end_date" placeholder="Masukkan alamat" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="status">Status</label>
-                                                        <select class="form-control mt-1" name="status">
-                                                            <option value="Active"
-                                                                {{ $contract->status == 'Active' ? 'selected' : '' }}>
-                                                                Active
-                                                            </option>
-                                                            <option value="Pending"
-                                                                {{ $contract->status == 'Pending' ? 'selected' : '' }}>
-                                                                Pending</option>
-                                                            <option value="Inactive"
-                                                                {{ $contract->status == 'Inactive' ? 'selected' : '' }}>
-                                                                Inactive</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="client">Nama Client</label>
-                                                        <select class="form-control mt-1" name="id_client" id="id_client">
-                                                            @foreach ($clients as $client)
-                                                                @if ($client->user_id == auth()->user()->id)
-                                                                    <option value="{{ $client->id }}"
-                                                                        {{ $contract->id_client == $client->id ? 'selected' : '' }}>
-                                                                        {{ $client->name }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    {{-- <div class="mb-3">
-                        <label for="freelance">Nama Freelance</label>
-                        <select class="form-control mt-1" name="user_id" id="user_id">
-                          @foreach ($freelances as $freelance)
-                              <option value="{{ $freelance->id }}" {{ $contract->user_id == $freelance->id ? 'selected' : '' }}>
-                                  {{ $freelance->fullname }}
-                              </option>
-                          @endforeach
-                      </select>
-                       </div> --}}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</a>
-                                                <button type="submit" class="btn btn-primary">Add contract</button>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {{-- Modal Hapus --}}
                                 <div class="modal modal-blur fade" id="modalDelete-{{ $contract->id }}"
