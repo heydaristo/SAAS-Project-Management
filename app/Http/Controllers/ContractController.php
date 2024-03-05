@@ -319,7 +319,7 @@ class ContractController extends Controller
         } else if ($contract->client_agrees_deposit == false) {
             // page terimakasih
             $contract->status = "APPROVED";
-            
+
             // create project based on contract
             $data['project_name'] = $contract->contract_name;
             $data['start_date'] = date('Y-m-d');
@@ -331,6 +331,11 @@ class ContractController extends Controller
             $project = ProjectModel::create($data);
             $contract->id_project = $project->id;
             $contract->save();
+
+            // update service id project
+            $service = Service::where('id_contract', $id)->first();
+            $service->id_project = $contract->id_project;
+            $service->save();
 
             return view('workspace.contracts.acceptpage');
         }
@@ -352,10 +357,16 @@ class ContractController extends Controller
         $data['user_id'] = $contract->id_user;
 
         ProjectModel::create($data);
+
+        // update service id project
+        $service = Service::where('id_contract', $id)->first();
+        $service->id_project = $contract->id_project;
+        $service->save();
         return view('workspace.contracts.acceptpage');
     }
 
-    public function deleteContract(Request $request, $id){
+    public function deleteContract(Request $request, $id)
+    {
         $contract = Contract::find($id);
         $service = Service::where('id_contract', $id)->first();
         $service->id_contract = 1;

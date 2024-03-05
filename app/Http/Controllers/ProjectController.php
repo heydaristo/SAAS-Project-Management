@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProjectModel;
-use App\Models\User;
 use App\Models\Client;
+use App\Models\User;
+use App\Models\Service;
+use App\Models\ServiceDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
+
 
 
 
@@ -33,30 +36,32 @@ class ProjectController extends Controller
         return view('workspace.projects.index', compact('projectmodels', 'clients'));
     }
 
-    public function create(){
-        return view('workspace.projects.create');
+    public function showadd(){
+        $userId = Auth::id();
+        $clients = Client::where('user_id', $userId)->get();
+        return view('workspace.projects.addproject', compact('clients'));
     }
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'project_name' => ['required'],
-            'start_date' => ['required'],
-            'end_date' => ['required'],
-            'status' => ['required'],
-            'id_client' => ['required'],
-            // 'user_id' => ['required'], user id tidak perlu di validasi
+            'project_name' => 'required|string',
+            'id_client' => 'required|exists:clients,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'final_invoice_date' => 'required|date',
         ]);
         if ($validator->fails()) {
             $error = "You have failed add new projeect.\n".strval($validator->errors());
             Alert::error('Failed Message', $error);
             return redirect()->route('workspace.projects');
         }
+
         $user = Auth::user();
 
         $data['project_name'] = $request->project_name;
         $data['start_date'] = $request->start_date;
         $data['end_date'] = $request->end_date;
-        $data['status'] = $request->status;
+        $data['status'] = 'ACTIVE';
         $data['id_client'] = $request->id_client;
         $data['user_id'] = $user->id;
 
@@ -85,32 +90,83 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id){
         $request->validate([
-            'project_name' => ['required'],
-          'start_date' => ['required'],
-           'end_date' => ['required'],
-         'status' => ['required'],
-           'id_client' => ['required'],
+            'project_name' => 'required|string',
+            'id_client' => 'required|exists:clients,id',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date',
+            'final_invoice_date' => 'required|date',
         ]);
         $user = Auth::user();
 
-        $data = [
-            'project_name' => $request->project_name,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'status' => $request->status,
-            'id_client' => $request->id_client,
-            'user_id' => $user->id,
-            
-        ];
-        if(!$data) {
-            Alert::error('Failed Message', 'You have failed to edit project.');
-            return redirect()->route('workspace.projects');
+        $project = new ProjectModel();
+        $project->project_name = $request->project_name;
+        $project->start_date = $request->start_date;
+        $project->status = "ACTIVE";
+        $project->id_client = $request->id_client;
+        $project->user_id = $user->id;
+        
+        if ($request->has('end_date')) {
+            $project->end_date = $request->input('end_date');
         } else {
-            Alert::success('Success Message', 'You have successfully to edit project.');
-            ProjectModel::find($id)->update($data);
-            return redirect()->route('workspace.projects');
-
+            $project->end_date = null;
         }
+
+        // deposit
+        // Check if deposit information is provided
+        if ($request->has('require_deposit')) {
+            // Validate deposit percentage
+            $request->validate([
+                'deposit_percentage' => 'required|numeric|min:0|max:100',
+            ]);
+
+            // Calculate deposit amount
+            $totalCost = 0;
+            $servicePrices = $request->input('service_price');
+            foreach ($servicePrices as $price) {
+                $totalCost += $price;
+            }
+            $depositPercentage = $request->input('deposit_percentage');
+            $depositAmount = ($depositPercentage / 100) * $totalCost;
+
+            // Update the quotation with deposit information
+            $project->require_deposit = true;
+            $project->deposit_percentage = $depositPercentage;
+            $project->deposit_amount = $depositAmount;
+            $project->client_agrees_deposit = $request->has('client_agrees_deposit');
+            $project->save();
+        } else {
+            $project->require_deposit = false;
+            $project->deposit_percentage = null;
+            $project->deposit_amount = null;
+            $project->client_agrees_deposit = false;
+            $project->save();
+        }
+
+        // Create each subscription
+        $service = new Service();
+        $service->id_project = $project->id;
+        $service->id_quotation = 1;
+        $service->id_contract = 1;
+        $service->save();
+
+        // create each subscription detail
+        $serviceNames = $request->input('service_name');
+        $servicePrices = $request->input('service_price');
+        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceDescriptions = $request->input('service_description');
+        foreach ($serviceNames as $index => $serviceName) {
+            $serviceDetail = new ServiceDetail();
+            $serviceDetail->id_service = $service->id;
+            $serviceDetail->service_name = $serviceName;
+            $serviceDetail->price = $servicePrices[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->description = $serviceDescriptions[$index];
+            $serviceDetail->save();
+        }
+
+        // Redirect to the quotation index page
+        Alert::success('Success Message', 'You have successfully updated the project.');
+        return redirect()->route('workspace.projects');
     }
 
 
@@ -119,5 +175,13 @@ class ProjectController extends Controller
 
         Alert::success('Success Message', 'You have successfully to delete project.');
         return redirect()->route('workspace.projects');
+    }
+
+    public function detail($id){
+        $project = ProjectModel::find($id);
+        $client = Client::find($project->id_client);
+        $services = Service::where('id_project', $id)->get();
+        $serviceDetails = ServiceDetail::all();
+        return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails'));
     }
 }

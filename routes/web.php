@@ -37,6 +37,9 @@ Route::get('workspace/contract/accepted/{id}', [ContractController::class,'accep
 Route::get('workspace/contract/successpaiddpcontract/{id}', [ContractController::class,'successpaiddpcontract'])->name('workspace.contract.successpaiddpcontract');
 Route::get('workspace/quotation/accepted/{id}', [QuotationController::class,'accepted'])->name('workspace.quotation.accepted');
 Route::get('workspace/quotation/successpaiddpcontract/{id}', [QuotationController::class,'successpaiddpcontract'])->name('workspace.quotation.successpaiddpcontract');
+Route::get('workspace/invoice/paynow/{id}', [InvoiceController::class,'paynow'])->name('workspace.invoice.successpaiddpcontract');
+Route::get('workspace/invoice/successpaid', [InvoiceController::class,'successpaid'])->name('workspace.invoice.succespaid');
+
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [UserController::class, 'login'])->name('/');
@@ -80,40 +83,24 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/clients/checklimit/{id}', [ClientController::class, 'checklimit'])->name('clients.checklimit');
 
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
-
-    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
-
-    // Route::get('/projects/edit/{id}', [ProjectController::class, 'edit'])->name('projects.edit');
-
     Route::put('/projects/update/{id}', [ProjectController::class, 'update'])->name('projects.update');
-
     Route::delete('/projects/delete/{id}', [ProjectController::class, 'destroy'])->name('projects.delete');
-
     Route::get('/projects/show/{id}', [ProjectController::class, 'show'])->name('projects.show');
-
     Route::post('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
-
+    Route::get('/projects/showadd', [ProjectController::class, 'showadd'])->name('projects.showadd');
+    Route::get('/projects/detail/{id}', [ProjectController::class, 'detail'])->name('projects.detail');
+    
     // quotations
-
     Route::get('/quotation', [QuotationController::class, 'index'])->name('quotation');
-
     Route::get('/quotation/showadd', [QuotationController::class, 'showadd'])->name('quotation.showadd');
-
     Route::get('/quotation/create', [QuotationController::class, 'create'])->name('quotation.create');
-
     Route::get('/quotation/edit/{id}', [QuotationController::class, 'edit'])->name('quotation.edit');
-
     Route::get('/quotation/update/{id}', [QuotationController::class, 'update'])->name('quotation.update');
-
     Route::get('/quotation/delete/{id}', [QuotationController::class, 'delete'])->name('quotation.delete');
-
     Route::get('/quotation/show/{id}', [QuotationController::class, 'show'])->name('quotation.show');
-
     Route::post('/quotation/store', [QuotationController::class, 'store'])->name('quotation.store');
     Route::get('/quotation/review/{id}', [QuotationController::class, 'review'])->name('quotation.review');
-
     Route::get('/quotation/pdf/{id}', [QuotationController::class, 'pdf'])->name('quotation.pdf');
-
     Route::post('/quotation/status/{id}', [QuotationController::class, 'status'])->name('quotation.pdf');
     Route::get('/quotation/editemail/{id}', [QuotationController::class, 'showEditEmail'])->name('quotation.editemail');
     Route::post('/quotation/finishemail/{id}', [QuotationController::class, 'finishemail'])->name('quotation.finishemail');
@@ -124,7 +111,6 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::delete('/quotation/deleteQuotation/{id}', [QuotationController::class,'deleteQuotation'])->name('quotation.deleteQuotation');
 
     // contract
-
     Route::get('/contract', [ContractController::class, 'index'])->name('contract');
     Route::get('/contract/showadd', [ContractController::class, 'showadd'])->name('contract.showadd');
     Route::post('/contract/store', [ContractController::class, 'store'])->name('contract.store');
@@ -137,25 +123,31 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::put('/contract/editterm/{id}', [ContractController::class,'editterm'])->name('contract.editterm');
     Route::delete('/contract/deleteContract/{id}', [ContractController::class, 'deleteContract'])->name('contract.deleteContract');    
     
-    
-    
     // invoice
-    
     Route::get('/invoice', [InvoiceController::class, 'index'])->name('invoice');
-
     Route::get('/invoice/show/{id}', [InvoiceController::class, 'showId'])->name('invoices.show');
-
     Route::post('/invoice/create', [InvoiceController::class, 'store'])->name('invoices.store');
-
     Route::put('/invoice/update/{id}', [InvoiceController::class, 'update'])->name('invoices.update');
+    Route::get('/invoice/create', [InvoiceController::class, 'createInvoiceShowStep1'])->name('invoices.createInvoiceShowStep1');
 
     Route::get('/invoice/create', [InvoiceController::class, 'showAdd'])->name('invoices.showAdd');
 
     Route::post('invoce/create', [InvoiceController::class, 'postShowAdd'])->name('invoices.postShowAdd');
 
     Route::post('/invoice/print', [InvoiceController::class, 'printPDF'])->name('invoices.print');
-
     Route::delete('/invoice/delete/{id}', [InvoiceController::class, 'destroy'])->name('invoices.delete');
+    Route::get('/invoice/createfromproject/{id}', [InvoiceController::class, 'showInvoiceFromProject'])->name('invoices.createfromproject');
+    // Post Create Invoice
+    Route::get('/invoice/create/preview', function () {
+        return view('workspace.invoices.previewstep.preview');
+    });
+    Route::get('/invoice/sendemail/{id}',[InvoiceController::class,'sendemail'])->name('invoice.sendemail');
+    Route::post('/invoice/finishemail/{id}', [InvoiceController::class, 'finishemail'])->name('invoice.finishemail');
+    
+    // Route::post('/invoice/create/')
+    // End Post
+
+    // settings
 
     Route::get('/invoice/review/', [InvoiceController::class, 'review'])->name('invoices.review');
     

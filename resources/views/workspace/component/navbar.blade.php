@@ -139,7 +139,7 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-            Dashboard
+            SAAS Management Project For Freelance
           </div>
           <h2 class="page-title">
             {{ $title ?? 'SAAS Management Project For Freelance' }}

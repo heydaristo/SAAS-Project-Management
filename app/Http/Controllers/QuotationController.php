@@ -347,6 +347,12 @@ class QuotationController extends Controller
             $data['user_id'] = $quotation->id_user;
 
             ProjectModel::create($data);
+
+            // update service id project
+            $service = Service::where('id_quotation', $id)->first();
+            $service->id_project = $quotation->id_project;
+            $service->save();
+
             return view('workspace.quotation.acceptpage');
         }
         // create project based on contract
@@ -356,7 +362,7 @@ class QuotationController extends Controller
     {
         $quotation = Quotation::find($id);
         $quotation->status = "APPROVED";
-        
+
 
         // create project based on contract
         $data['project_name'] = $quotation->quotation_name;
@@ -371,10 +377,16 @@ class QuotationController extends Controller
         $quotation->id_project = $project->id;
         $quotation->save();
 
+        // update service id project
+        $service = Service::where('id_quotation', $id)->first();
+        $service->id_project = $quotation->id_project;
+        $service->save();
+
         return view('workspace.quotation.acceptpage');
     }
 
-    public function deleteQuotation(Request $request, $id){
+    public function deleteQuotation(Request $request, $id)
+    {
         $quotation = Quotation::find($id);
         $service = Service::where('id_quotation', $id)->first();
         $service->id_quotation = 1;
