@@ -42,10 +42,11 @@
               <!-- Tambahkan opsi lain sesuai kebutuhan -->
           </select>
         </div>
-        <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
+        <a href="{{ route('workspace.invoices.showAdd') }}" class="btn btn-primary">Create Invoice</a>
+        {{-- <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
         data-bs-target="#tambah_invoice">
         Create Invoice
-        </button>
+        </button> --}}
         </div>
       </div>  
     <div class="table-responsive">

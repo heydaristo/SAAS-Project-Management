@@ -61,11 +61,11 @@
                                 <div class="service-row">
                                     Service Number:
                                     <span class="service-number">1</span>
-                                    <input type="text" class="form-control service-name" name="service_name[]"
+                                    <input type="text" class="form-control service-name mb-2 mt-2" name="service_name[]"
                                         placeholder="Service Name">
-                                    <input type="number" class="form-control service-price" name="service_price[]"
+                                    <input type="number" class="form-control service-price mb-2" name="service_price[]"
                                         placeholder="Price">
-                                    <select class="form-control service-fee-method" name="service_fee_method[]">
+                                    <select class="form-control service-fee-method mb-2" name="service_fee_method[]">
                                         <option value="fixed">Fixed</option>
                                         <option value="percentage">Percentage</option>
                                     </select>

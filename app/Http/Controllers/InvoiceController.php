@@ -162,8 +162,8 @@ class InvoiceController extends Controller
         }
     }
 
-    public function createInvoiceShowStep1()
-    {
+
+    public function showAdd() {
         $userId = Auth::id();
 
         $invoices = DB::table('invoices')
@@ -177,7 +177,39 @@ class InvoiceController extends Controller
         $project = ProjectModel::all();
         $clients = Client::all();
 
-        return view('workspace.invoices.createstep1', compact('invoices', 'project', 'clients'));
+        return view('workspace.invoices.showadd', compact('invoices', 'project', 'clients'));
+    }
+
+    public function postShowAdd(Request $request) {
+    // Validasi data formulir jika diperlukan
+    // $request->validate([
+    //     ''
+    // ]);
+
+    // Ambil nilai active_card dari request
+    $activeCard = $request->input('active_card');
+
+    // Lakukan sesuatu berdasarkan nilai active_card
+    switch ($activeCard) {
+        case 1:
+            // Lakukan sesuatu jika card 1 yang aktif
+            $invoice = new Invoice();
+            $invoice->id_project = $request->input('id_project');
+            return redirect()->route('workspace.invoices.review', $invoice->id);
+            break;
+        case 2:
+            // Lakukan sesuatu jika card 2 yang aktif
+            break;
+        case 3:
+            // Lakukan sesuatu jika card 3 yang aktif
+            break;
+        default:
+            // Handle jika tidak ada card yang aktif
+            break;
+    }
+}
+    public function review($id) {
+        return view('workspace.invoices.review');
     }
 
     public function update(Request $request, $id)

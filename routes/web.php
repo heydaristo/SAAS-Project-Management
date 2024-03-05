@@ -125,6 +125,11 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/invoice/create', [InvoiceController::class, 'store'])->name('invoices.store');
     Route::put('/invoice/update/{id}', [InvoiceController::class, 'update'])->name('invoices.update');
     Route::get('/invoice/create', [InvoiceController::class, 'createInvoiceShowStep1'])->name('invoices.createInvoiceShowStep1');
+
+    Route::get('/invoice/create', [InvoiceController::class, 'showAdd'])->name('invoices.showAdd');
+
+    Route::post('invoce/create', [InvoiceController::class, 'postShowAdd'])->name('invoices.postShowAdd');
+
     Route::post('/invoice/print', [InvoiceController::class, 'printPDF'])->name('invoices.print');
     Route::delete('/invoice/delete/{id}', [InvoiceController::class, 'destroy'])->name('invoices.delete');
     Route::get('/invoice/createfromproject/{id}', [InvoiceController::class, 'showInvoiceFromProject'])->name('invoices.createfromproject');
@@ -140,6 +145,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     // settings
 
+    Route::get('/invoice/review/', [InvoiceController::class, 'review'])->name('invoices.review');
+    
     // change password
 
     Route::get('/settings/changepassword', [UserController::class, 'changePasswordShow'])->name('settings.changepassword');

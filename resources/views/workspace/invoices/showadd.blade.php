@@ -8,6 +8,8 @@
     <div class="card-body">
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
+              <form action="{{ route('workspace.invoices.postShowAdd') }}" method="POST">
+                @csrf
               <a href="#" style="text-decoration: none;">
               <div class="card h-100 cardForm card1" onclick="setActiveCard(this)">
                 <div class="card-body">
@@ -69,6 +71,7 @@
         <p id="errorMessage" style="display: none;" class="text-danger">Please choose one!</p>
         <button id="nextButton" type="button" class="btn btn-primary"  onclick="sendData()" disabled>Next</button>
     </div>
+  </form>
   </div>
 
   <script>
@@ -80,7 +83,6 @@ function setActiveCard(card) {
     }
     card.classList.add('active');
     activeCard = card;
-
     checkInputValues();
 }
 
@@ -101,36 +103,6 @@ function checkInputValues() {
         }
     }
 }
-function sendData() {
-    const input1Value = document.getElementById('project_name').value;
-    const select2Value = document.getElementById('id_project').value;
-
-    if (activeCard !== null) {
-        let nextPage = '';
-        let dataToSend = {};
-
-        // Cek kartu yang aktif dan tambahkan data sesuai dengan input yang ada di kartu itu
-        if (activeCard.classList.contains('card1')) {
-            nextPage = '/page1'; // Sesuaikan dengan halaman yang sesuai dengan kartu 1
-            if (input1Value.trim() !== '') {
-                dataToSend.projectName = input1Value;
-            }
-            if (select2Value.trim() !== '') {
-                dataToSend.idProject = select2Value;
-            }
-        } else if (activeCard.classList.contains('card2')) {
-            nextPage = '{{ route('admin.dashboard') }}'; // Sesuaikan dengan halaman yang sesuai dengan kartu 2
-            // Tambahkan kondisi untuk input di kartu kedua jika ada
-        } else if (activeCard.classList.contains('card3')) {
-            nextPage = '/page3'; // Sesuaikan dengan halaman yang sesuai dengan kartu 3
-            // Tambahkan kondisi untuk input di kartu ketiga jika ada
-        }
-
-        // Redirect ke halaman berikutnya dengan data yang sesuai
-        window.location.href = nextPage + '?' + new URLSearchParams(dataToSend);
-    }
-}
-
   </script>
 
 @endsection
