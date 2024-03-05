@@ -73,6 +73,10 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/clients/show/{id}', [ClientController::class, 'show'])->name('clients.show');
 
+    Route::post('/clients/show/tasks/send/{id}', [ClientController::class, 'tasks'])->name('clients.send.tasks');
+
+    Route::delete('/clients/show/tasks/destroy/{id}', [ClientController::class, 'tasksDestroy'])->name('clients.tasks.destroy');
+
     Route::get('/clients/checklimit/{id}', [ClientController::class, 'checklimit'])->name('clients.checklimit');
 
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');

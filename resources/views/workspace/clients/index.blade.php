@@ -10,7 +10,7 @@
     <div class="row row-deck row-cards">
         @include('workspace.header')
         <div class="col-12">
-            <div class="card">
+               <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Search Filter</h3>
                 </div>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table card-table table-vcenter text-nowrap datatable">
+                    <table class="table card-table table-vcenter text-nowrap datatable table-hover">
                         <thead>
                             <tr>
                                 <th class="w-1">No.
@@ -79,7 +79,7 @@
                                 }
                             @endphp
                             @foreach ($client as $clients)
-                                <tr>
+                                <tr onclick="window.location='{{ route('workspace.clients.show', $clients->id) }}'" style="cursor: pointer;">
                                     <td>{{ $i++ }}</td>
                                     <td>{{ $clients->name }}</td>
                                     <td>{{ $clients->email }}</td>

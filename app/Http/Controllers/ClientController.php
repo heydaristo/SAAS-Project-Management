@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Models\TasksClient;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 
@@ -108,11 +109,35 @@ class ClientController extends Controller
         return redirect()->route('workspace.clients');
     }
 
+    public function tasks(Request $request, $id) {
+        $client = Client::find($id);
+        $user = Auth()->user()->id;
+        $data = [
+            'tasks' => $request->tasks,
+            'tasks_due_date' => $request->tasks_due_date,
+            'id_client' => $id,
+            'id_user' => $user
+        ];
+        
+        if (!$data) {
+            Alert::error('Failed Message', 'You have failed to add tasks.');
+            return redirect()->route('workspace.clients.show', $id);
+        } else {
+            TasksClient::create($data);
+            return redirect()->route('workspace.clients.show', $id);
+
+        }
+        return redirect()->route('workspace.clients.show', $client->id);
+    }
+
     public function show($id)
     {
-        $client = Client::find($id);
-
-        return view('workspace.clients.show', compact('client'));
+        $user = Auth::user();
+        $client = Client::where('user_id', $user->id)->findOrFail($id);
+        $tasks = TasksClient::where('id_client', $id)->get();
+    
+    
+        return view('workspace.clients.show', compact('client', 'tasks'));
     }
 
     public function destroy($id)
@@ -126,6 +151,12 @@ class ClientController extends Controller
         $client->delete();
         Alert::success('Success Message', 'You have successfully delete.');
         return redirect()->route('workspace.clients');
+    }
+
+    public function tasksDestroy($id){
+        $tasks = TasksClient::find($id);
+        $tasks->delete();
+        return redirect()->back();
     }
 
     public function checklimit($id)
