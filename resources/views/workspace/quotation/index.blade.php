@@ -1,5 +1,9 @@
 @extends('template')
 
+@php
+  $title= "Quotation";
+@endphp
+
 @section('body')
     <div class="row row-deck row-cards">
         <div class="col-12">
@@ -82,89 +86,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-                                {{-- Modals Edit --}}
-                                <div class="modal fade" id="modalEdit-{{ $quotation->id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modal2Label">quotation Name</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form
-                                                    action="{{ route('workspace.quotation.update', ['id' => $quotation->id]) }}"
-                                                    method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="mb-3">
-                                                        <label for="quotation_name">quotation Name</label>
-                                                        <input type="text" value="{{ $quotation->quotation_name }}"
-                                                            class="form-control mt-1" name="quotation_name"
-                                                            placeholder="Masukkan quotation name" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="start_date">Start Date</label>
-                                                        <input type="date" class="form-control mt-1"
-                                                            value="{{ $quotation->start_date }}" id="start_date"
-                                                            name="start_date" placeholder="Start Date" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="end_date">End Date</label>
-                                                        <input type="date" class="form-control mt-1"
-                                                            value="{{ $quotation->end_date }}" id="end_date"
-                                                            name="end_date" placeholder="Masukkan alamat" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="status">Status</label>
-                                                        <select class="form-control mt-1" name="status">
-                                                            <option value="Active"
-                                                                {{ $quotation->status == 'Active' ? 'selected' : '' }}>
-                                                                Active
-                                                            </option>
-                                                            <option value="Pending"
-                                                                {{ $quotation->status == 'Pending' ? 'selected' : '' }}>
-                                                                Pending</option>
-                                                            <option value="Inactive"
-                                                                {{ $quotation->status == 'Inactive' ? 'selected' : '' }}>
-                                                                Inactive</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="client">Nama Client</label>
-                                                        <select class="form-control mt-1" name="id_client" id="id_client">
-                                                            @foreach ($clients as $client)
-                                                                @if ($client->user_id == auth()->user()->id)
-                                                                    <option value="{{ $client->id }}"
-                                                                        {{ $quotation->id_client == $client->id ? 'selected' : '' }}>
-                                                                        {{ $client->name }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    {{-- <div class="mb-3">
-                        <label for="freelance">Nama Freelance</label>
-                        <select class="form-control mt-1" name="user_id" id="user_id">
-                          @foreach ($freelances as $freelance)
-                              <option value="{{ $freelance->id }}" {{ $quotation->user_id == $freelance->id ? 'selected' : '' }}>
-                                  {{ $freelance->fullname }}
-                              </option>
-                          @endforeach
-                      </select>
-                       </div> --}}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</a>
-                                                <button type="submit" class="btn btn-primary">Add quotation</button>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {{-- Modal Hapus --}}
                                 <div class="modal modal-blur fade" id="modalDelete-{{ $quotation->id }}"

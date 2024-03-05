@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InvoiceMail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ProjectModel;
 use App\Models\Client;
-use PDF; 
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use App\Models\ServiceDetail;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Mail;
 
 class InvoiceController extends Controller
 {
@@ -23,49 +25,69 @@ class InvoiceController extends Controller
         $userId = Auth::id();
 
         $invoices = DB::table('invoices')
-        ->where('invoices.user_id', $userId)
-        ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
-        ->join('clients', 'invoices.id_client', '=', 'clients.id')
-        ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
-        // ->get();
-        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
-    
+            ->where('invoices.user_id', $userId)
+            ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
+            ->join('clients', 'invoices.id_client', '=', 'clients.id')
+            ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
+            // ->get();
+            ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
+
         // Periksa dan ubah status invoice jika due date telah terlewati
         foreach ($invoices as $invoice) {
-        // Periksa apakah tanggal sekarang lebih besar dari due date pada invoice
-        if (Carbon::now()->greaterThan($invoice->due_date)) {
-            $invoice->status = 'Inactive'; // Jika melebihi, ubah status menjadi 'Inactive'
+            // Periksa apakah tanggal sekarang lebih besar dari due date pada invoice
+            if (Carbon::now()->greaterThan($invoice->due_date)) {
+                $invoice->status = 'Inactive'; // Jika melebihi, ubah status menjadi 'Inactive'
+            }
         }
-}
 
         $project = ProjectModel::all();
         $clients = Client::all();
-    
-        return view('workspace.invoices.index', compact('invoices', 'project', 'clients'));
 
+        return view('workspace.invoices.index', compact('invoices', 'project', 'clients'));
+    }
+
+    public function showInvoiceFromProject($id)
+    {
+        // $id milik project
+        $project = ProjectModel::find($id);
+        $client = Client::find($project->id_client);
+        $services = Service::where('id_project', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        // create invoice based on project
+        $invoice = new Invoice();
+        $invoice->id_project = $project->id;
+        $invoice->id_client = $client->id;
+        $invoice->status = 'CREATED';
+        $invoice->issued_date = Carbon::now();
+        $invoice->due_date = $project->final_invoice_date;
+
+        // calculate service detail
+        $total = 0;
+        foreach ($serviceDetails as $serviceDetail) {
+            $total += $serviceDetail->price;
+        }
+        $invoice->total = $total;
+        $invoice->user_id = Auth::id();
+        $invoice->invoice_pdf = '2';
+        $invoice->save();
+
+        return view('workspace.invoices.createfromproject', compact('invoice', 'project', 'client', 'services', 'serviceDetails'));
     }
 
     public function showId($id)
     {
         $userId = Auth::id();
-        
-        $invoice = DB::table('invoices')
-            ->where('invoices.user_id', $userId)
-            ->where('invoices.id', $id) // Filter berdasarkan ID invoice
-            ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
-            ->join('clients', 'invoices.id_client', '=', 'clients.id')
-            ->select('invoices.*', 'project_models.project_name as project_name', 'clients.*', 
-            'clients.id as id_client')
-            ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
-        
+
+        $invoice = Invoice::find($id);
+
         $client = Client::find($invoice->id_client); // Menggunakan find untuk mencari berdasarkan ID
-        
+
         $project = ProjectModel::findOrFail($invoice->id_project);
-        
+
         $services = Service::where('id_project', $project->id)->get();
-        
+
         $serviceDetails = ServiceDetail::where('id_service', $services->first()->id)->get();
-        
+
         // Simpan ID invoice yang dipilih
         $this->selectedInvoiceId = $id;
 
@@ -81,36 +103,28 @@ class InvoiceController extends Controller
 
     public function printPDF(Request $request)
     {
-        // $request->validate([
-        //     'invoice_id' => 'required|integer|exists:invoices,id'
-        // ]);
-    
         $invoiceId = $request->input('invoice_id');
-        // $invoiceId = $request->invoice->id;
         $userId = auth()->user()->id;
-        
-        $invoice = DB::table('invoices')
-            ->where('invoices.user_id', $userId)
-            ->where('invoices.id', $invoiceId) // Filter berdasarkan ID invoice
-            ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
-            ->join('clients', 'invoices.id_client', '=', 'clients.id')
-            ->select('invoices.*', 'project_models.project_name as project_name',
-                'clients.name as name', 'clients.address as address', 'clients.email as email')
-            ->first(); // Menggunakan first() karena Anda hanya ingin satu invoice
-    
+
+        $invoice = Invoice::find($invoiceId);
         if (!$invoice) {
             // Jika bukan pemiliknya, kembalikan response tidak diizinkan
             return abort(403, 'Not Found');
         }
-    
-        $pdf = PDF::loadView('workspace.invoices.print', compact('invoice'));
-    
+
+        $project = ProjectModel::find($invoice->id_project);
+        $client = Client::find($invoice->id_client);
+        $service = Service::where('id_project', $project->id)->first();
+        $serviceDetails = ServiceDetail::where('id_service', $service->id)->get();
+
+        $pdf = PDF::loadView('workspace.invoices.print', compact('invoice', 'project', 'client', 'serviceDetails'));
+
         // Mengatur nama file PDF
         $filename = 'invoice_' . $invoice->name . '_' . date('Ymd') . '.pdf';
-    
+
         // Kembalikan file PDF untuk diunduh
-        return $pdf->download($filename);
         Alert::success('Success Message', 'You have successfully download pdf.');
+        return $pdf->download($filename);
     }
     public function store(Request $request)
     {
@@ -122,7 +136,7 @@ class InvoiceController extends Controller
             'due_date' => 'required|date',
             'total' => 'required|numeric',
         ]);
-    
+
         $user = Auth::user();
         // Data yang akan disimpan
         $data = [
@@ -138,34 +152,36 @@ class InvoiceController extends Controller
         // Simpan data ke dalam database
         if (Invoice::create($data)) {
             // Jika berhasil, kembalikan dengan pesan sukses
-            return redirect()->route('workspace.invoice')->with('success', 'You have successfully added new invoice.');
             Alert::success('Success Message', 'You have successfully added new invoice.');
+            return redirect()->route('workspace.invoice')->with('success', 'You have successfully added new invoice.');
         } else {
             // Jika gagal, kembalikan dengan pesan gagal
-            return redirect()->route('workspace.invoice')->with('error', 'Failed to add new invoice.');
             Alert::error('Error Message', 'Failed to add new invoice.');
-            
+            return redirect()->route('workspace.invoice')->with('error', 'Failed to add new invoice.');
+
         }
     }
 
-    public function createInvoiceShowStep1() {
+    public function createInvoiceShowStep1()
+    {
         $userId = Auth::id();
 
         $invoices = DB::table('invoices')
-        ->where('invoices.user_id', $userId)
-        ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
-        ->join('clients', 'invoices.id_client', '=', 'clients.id')
-        ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
-        // ->get();
-        ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
-    
+            ->where('invoices.user_id', $userId)
+            ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
+            ->join('clients', 'invoices.id_client', '=', 'clients.id')
+            ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
+            // ->get();
+            ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
+
         $project = ProjectModel::all();
         $clients = Client::all();
 
         return view('workspace.invoices.createstep1', compact('invoices', 'project', 'clients'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'id_project' => ['required'],
             'id_client' => ['required'],
@@ -180,8 +196,8 @@ class InvoiceController extends Controller
             'due_date' => $request->due_date,
             'total' => $request->total,
         ];
-       
-        if(!$data) {
+
+        if (!$data) {
             Alert::error('Failed Message', 'You have failed to edit invoice.');
             return redirect()->route('workspace.invoice');
         } else {
@@ -191,23 +207,76 @@ class InvoiceController extends Controller
 
         }
     }
-    public function destroy(Request $request, $id){
-        $invoiceId = $this->invoice->id; // Mengambil ID invoice dari rute
-        dd($invoiceId);
-        $userId = auth()->id();
-        
-        // Menggunakan findOrFail untuk mencari invoice berdasarkan ID
-        $invoice = Invoice::findOrFail($invoiceId);
-        
-        // Memeriksa apakah pengguna memiliki izin untuk menghapus invoice
-        if ($invoice->user_id !== $userId) {
-            abort(403, 'Not Found.'); // Menggunakan pesan yang lebih deskriptif
+    public function destroy(Request $request, $id)
+    {
+        $invoice = Invoice::find($id);
+        if (!$invoice) {
+            Alert::error('Failed Message', 'You have failed to delete invoice.');
+            return redirect()->route('workspace.invoice');
+        } else {
+            $invoice->delete();
+            Alert::success('Success Message', 'You have successfully deleted.');
+            return redirect()->route('workspace.invoice');
         }
-        
-        $invoice->delete(); // Menghapus invoice
-        
-        Alert::success('Success Message', 'You have successfully deleted.'); // Perbaikan pesan
-        return redirect()->route('workspace.invoice'); // Redirect ke rute setelah penghapusan
     }
-    
+
+    public function sendemail($id)
+    {
+        $invoice = Invoice::find($id);
+        $client = Client::find($invoice->id_client);
+        $project = ProjectModel::find($invoice->id_project);
+
+        return view('workspace.invoices.sendmail', compact('invoice', 'project', 'client'));
+    }
+
+    public function finishemail(Request $request, $id)
+    {
+        $userId = User::find(Auth::id());
+        $invoice = Invoice::find($id);
+        $client = Client::find($invoice->id_client); // Menggunakan find untuk mencari berdasarkan ID
+        $project = ProjectModel::findOrFail($invoice->id_project);
+        $services = Service::where('id_project', $project->id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services->first()->id)->get();
+        Mail::to($request->recipient)->send(new InvoiceMail($invoice, $client, $userId, $project, $serviceDetails, $request->message, $request->subject));
+        Alert::success('Success Message', 'You have successfully send email.');
+        return redirect()->route('workspace.invoice');
+    }
+
+    public function paynow($id)
+    {
+        $invoice = Invoice::find($id);
+        $user = User::find($invoice->user_id);
+        $invoice->status = 'PAID';
+        // check if contract need to pay firstly or not
+        // page pembayaran
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+        // Set sanitization on (default)
+        \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
+        // Set 3DS transaction for credit card to true
+        \Midtrans\Config::$is3ds = config('midtrans.is3ds');
+
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => $invoice->total,
+            ),
+            'customer_details' => array(
+                'first_name' => $user->fullname,
+                'email' => $user->email,
+            ),
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+        $invoice->snap_token = $snapToken;
+        $invoice->save();
+        return view('workspace.invoices.paidacceptpage', compact('invoice'));
+    }
+
+    public function successpaid(){
+        return view('workspace.quotation.acceptpage');
+    }
 }

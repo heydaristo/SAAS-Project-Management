@@ -40,13 +40,14 @@
                                 <!-- Tambahkan opsi lain sesuai kebutuhan -->
                             </select>
                         </div>
-                        <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
-                            data-bs-target="#tambah_project">
-                            New Project
-                        </button>
+                        <a href="{{ route('workspace.projects.showadd') }}">
+                            <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal">
+                                New Project
+                            </button>
+                        </a>
                     </div>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive"  style="overflow: inherit;">
                     <table class="table card-table table-vcenter text-nowrap datatable">
                         <thead>
                             <tr>
@@ -96,11 +97,11 @@
                                                     aria-haspopup="true" aria-expanded="false">
                                                     Aksi
                                                 </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit-{{ $project->id }}">
-                                                        Edit
-                                                    </button>
+                                                <div class="dropdown-menu dropdown-menu-end z-index-2000">
+                                                    <a href={{ route('workspace.projects.detail', $project->id) }}><button
+                                                        class="dropdown-item">
+                                                        Detail
+                                                    </button></a>
                                                     <button class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#modalDelete-{{ $project->id }}">Delete</button>
                                                 </div>
@@ -108,89 +109,6 @@
                                         </div>
                                     </td>
                                 </tr>
-
-                                {{-- Modals Edit --}}
-                                <div class="modal fade" id="modalEdit-{{ $project->id }}" tabindex="-1"
-                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modal2Label">Project Name</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form
-                                                    action="{{ route('workspace.projects.update', ['id' => $project->id]) }}"
-                                                    method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <div class="mb-3">
-                                                        <label for="project_name">Project Name</label>
-                                                        <input type="text" value="{{ $project->project_name }}"
-                                                            class="form-control mt-1" name="project_name"
-                                                            placeholder="Masukkan Project name" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="start_date">Start Date</label>
-                                                        <input type="date" class="form-control mt-1"
-                                                            value="{{ $project->start_date }}" id="start_date"
-                                                            name="start_date" placeholder="Start Date" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="end_date">End Date</label>
-                                                        <input type="date" class="form-control mt-1"
-                                                            value="{{ $project->end_date }}" id="end_date"
-                                                            name="end_date" placeholder="Masukkan alamat" required />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="status">Status</label>
-                                                        <select class="form-control mt-1" name="status">
-                                                            <option value="ACTIVE"
-                                                                {{ $project->status == 'ACTIVE' ? 'selected' : '' }}>ACTIVE
-                                                            </option>
-                                                            <option value="PENDING"
-                                                                {{ $project->status == 'PENDING' ? 'selected' : '' }}>
-                                                                PENDING</option>
-                                                            <option value="ENDED"
-                                                                {{ $project->status == 'ENDED' ? 'selected' : '' }}>
-                                                                ENDED</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="client">Nama Client</label>
-                                                        <select class="form-control mt-1" name="id_client"
-                                                            id="id_client">
-                                                            @foreach ($clients as $client)
-                                                                @if ($client->user_id == auth()->user()->id)
-                                                                    <option value="{{ $client->id }}"
-                                                                        {{ $project->id_client == $client->id ? 'selected' : '' }}>
-                                                                        {{ $client->name }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    {{-- <div class="mb-3">
-                      <label for="freelance">Nama Freelance</label>
-                      <select class="form-control mt-1" name="user_id" id="user_id">
-                        @foreach ($freelances as $freelance)
-                            <option value="{{ $freelance->id }}" {{ $project->user_id == $freelance->id ? 'selected' : '' }}>
-                                {{ $freelance->fullname }}
-                            </option>
-                        @endforeach
-                    </select>
-                     </div> --}}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</a>
-                                                <button type="submit" class="btn btn-primary">Add Project</button>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 {{-- Modal Hapus --}}
                                 <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}"

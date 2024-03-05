@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('id_client')->references('id')->on('clients');
             $table->date('issued_date');
             $table->string('status');
-            $table->date('due_date');
+            $table->date('due_date')->nullable();
             $table->decimal('total');
             $table->string('invoice_pdf');
             $table->timestamps();
