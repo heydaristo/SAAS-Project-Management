@@ -36,7 +36,7 @@
                         role="tab">Address & Contact</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a href="#tabs-home-7" class="nav-link" data-bs-toggle="tab" aria-selected="true"
+                    <a href="#tabs-projects" class="nav-link" data-bs-toggle="tab" aria-selected="true"
                         role="tab">Project</a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -44,7 +44,7 @@
                         tabindex="-1">Invoice</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a href="#tabs-activity-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
+                    <a href="#notes" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                         role="tab" tabindex="-1">Notes</a>
                 </li>
             </ul>
@@ -104,13 +104,14 @@
                                                     <td></td>
                                                 </tr>
                                                 @endforeach
+                                                <form action="{{ route('workspace.clients.send.tasks', $client->id) }}" method="POST"> 
+                                                  @csrf
                                                 <tr>
                                                     <td></td>
-                                                    <form id="taskForm" class="hidden" action="{{ route('workspace.clients.send.tasks', $client->id) }}" method="POST"> 
-                                                        @csrf
                                                     <td><input class="form-control" type="text" name="tasks" placeholder="Title"></td>
                                                     <td><input type="date" class="form-control" name="tasks_due_date"></td>
                                                     <td><button class="btn btn-primary" type="submit">Save</button></td>
+                                                  </form>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -124,8 +125,11 @@
                 <div class="tab-pane fade" id="tabs-address" role="tabpanel">
                     <h3>Client Information</h3>
                     <div class="card-body">
-                        <h3 class="card-title">Edit Profile</h3>
                         <div class="row row-cards">
+                          <form action="{{ route('workspace.clients.update', ['id' => $client->id]) }}"
+                            method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
                           <div class="col-sm-6 col-md-6">
                             <div class="mb-3">
                               <label class="form-label">Company</label>
@@ -144,10 +148,22 @@
                               <textarea rows="3" class="form-control" name="address" placeholder="Here can be your description" value="Mike">{{ $client->address }}</textarea>
                             </div>
                           </div>
-                          <div class="col-md-5">
+                          <div class="col-sm-6 col-md-6">
+                            <div class="mb-3">
+                              <label class="form-label">No Telephone</label>
+                              <input type="number" class="form-control" name="no_telp" placeholder="No Telephone" value="{{ $client->no_telp }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-6 col-md-6">
                             <div class="mb-3">
                               <label class="form-label">State</label>
                               <input type="text" class="form-control" name="state" placeholder="State" value="{{ $client->state }}">
+                            </div>
+                          </div>
+                          <div class="col-md-5">
+                            <div class="mb-3">
+                              <label class="form-label">Province</label>
+                              <input type="text" class="form-control" name="region" placeholder="Province" value="{{ $client->region }}">
                             </div>
                           </div>
                           <div class="col-sm-6 col-md-4">
@@ -163,64 +179,79 @@
                             </div>
                           </div>
                         <button class="btn btn-primary">Save</button>
-                        </div>
+                      </div>
+                    </form>
                       </div>
                 </div>
-                <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
-                    <h4>Profile tab</h4>
-                    <div>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc
-                        amet, pellentesque id egestas velit sed</div>
-                </div>
-                <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
-                    <div class="card-body">
-                        <h2 class="mb-4">My Account</h2>
-                        <div class="row align-items-center">
-                            <div class="col-auto">
-                                <span class="avatar avatar-xl" id="previewAvatar">
-                                    @if (Auth::user()->photo_profile)
-                                        <img src="{{ asset('photo-user/' . Auth::user()->photo_profile) }}"
-                                            alt="Preview Image"
-                                            style="max-width: 100%; max-height: 100%; display: block;">
-                                    @else
-                                        <img src="{{ asset('photo-user/defaultphoto.jpg') }}" alt="Default Avatar"
-                                            style="max-width: 100%; max-height: 100%; display: block;">
+                <div class="tab-pane" id="tabs-projects">
+                  <div class="card">
+                    <div class="table-responsive"  style="overflow: inherit;">
+                        <table class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr>
+                                    <th class="w-1">No.
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M6 15l6 -6l6 6" />
+                                        </svg>
+                                    </th>
+                                    <th>Project Name</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Client</th>
+                                    {{-- <th>Freelancer</th> --}}
+                                    <th class="w-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                              @if($projectmodels->isEmpty())
+                              <tr>
+                                  <td class="text-center" colspan="7">Nothing data</td>
+                              </tr>
+                              @else 
+                                @php
+                                    // $i = 1;
+                                    $i = 1 + ($projectmodels->currentPage() - 1) * $projectmodels->perPage();
+                                @endphp
+                                @foreach ($projectmodels as $project)
+                              
+                                    <tr>
+                                        <td><span class="text-muted">{{ $i++ }}</span></td>
+                                        <td>{{ $project->project_name }}</td>
+                                        <td>{{ $project->start_date }}</td>
+                                        <td>{{ $project->end_date }}</td>
+                                        <td>
+                                            @if ($project->status == 'ACTIVE')
+                                                <span class="badge text-bg-success">{{ $project->status }}</span>
+                                            @elseif($project->status == 'PENDING')
+                                                <span class="badge text-bg-warning">{{ $project->status }}</span>
+                                            @elseif($project->status == 'ENDED')
+                                                <span class="badge text-bg-danger">{{ $project->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $client->name }}</td>
+                                    </tr>
+                                    @endforeach
                                     @endif
-                                </span>
-                            </div>
-
-                            <div class="col-auto">
-                                <form enctype="multipart/form-data" id="profileForm"
-                                    action="{{ route('workspace.settings.upload') }}" method="post">
-                                    @csrf
-                                    <input name="photo_profile" type="file" id="actual-btn" hidden
-                                        accept="image/*">
-                                    <label for="actual-btn" class="btn btn-primary">Change</label>
-                                </form>
-                            </div>
-
-                            <div class="col-auto">
-                                <form action="{{ route('workspace.settings.deleteProfile') }}" method="POST"
-                                    id="deleteForm">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" id="deleteButton" class="btn btn-ghost-danger"
-                                        onclick="deleteAvatar()">Delete Avatar</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="row g-3 mt-3">
-
-                        </div>
-                        </fieldset>
-                        <h3 class="card-title mt-4">Password</h3>
-                        <p class="card-subtitle">You can set a permanent password if you don't want to use temporary
-                            login codes.</p>
-                        <div>
-                            <a href="{{ route('workspace.settings.changepassword') }}" class="btn">
-                                Set new password
-                            </a>
-                        </div>
+    
+                            </tbody>
+                        </table>
                     </div>
+                    <div class="card-footer d-flex align-items-center ms-auto">
+                        {!! $projectmodels->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
+                    </div>
+                </div>
+                </div>
+                <div class="tab-pane" id="notes" role="tabpanel">
+                  <form action="{{ route('workspace.clients.update.notes', ['id' => $client->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <textarea rows="5" class="form-control" name="notes" placeholder="Add Notes...">{{ $client->notes }}</textarea>
+                    <button class="btn btn-primary mt-3">Save</button>
+                  </form>
                 </div>
             </div>
         </div>

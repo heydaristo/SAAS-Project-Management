@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\TasksClient;
+use App\Models\ProjectModel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 
@@ -80,33 +81,51 @@ class ClientController extends Controller
 
     public function update(Request $request, $id){
         $validator = Validator::make($request->all(), [
-            'name' => ['required'],
             'email' => ['required', 'email:dns', 'unique:clients,email'],
             'address' => ['required'],
             'no_telp' => ['required'],
+            'postal_code' => ['required'],
+            'state' => ['required'],
+            'city' => ['required'],
+            'region' => ['required'],
         ]);
         if ($validator->fails()) {
             Alert::error('Failed Message', 'You have failed to edit client.')->withErrors($validator);
-            return redirect()->route('workspace.clients');
+            return redirect()->back();
         }
         $data = [
-            'name' => $request->name,
             'email' => $request->email,
             'address' => $request->address,
             'no_telp' => $request->no_telp,
             'email' => $request->email,
+            'postal_code' => $request->postal_code,
+            'state' => $request->state,
+            'city' => $request->city,
+            'region' => $request->region,
         ];
-
         if (!$data) {
             Alert::error('Failed Message', 'You have failed to edit client.');
-            return redirect()->route('workspace.clients');
+            return redirect()->back();
         } else {
             Alert::success('Success Message', 'You have successfully to edit client.');
             Client::find($id)->update($data);
-            return redirect()->route('workspace.clients');
+            return redirect()->back();
 
         }
-        return redirect()->route('workspace.clients');
+        return redirect()->route('workspace.clients.show', ['tabs-address'], $id);
+    }
+
+    public function updateNotes(Request $request, $id) {
+        $client = Client::find($id);
+        if (!$client) {
+            return redirect()->back()->with('error', 'Client not found');
+        }
+    
+        $client->notes = $request->notes;
+        $client->save();
+    
+        Alert::success('Success Message', 'You have successfully changed the notes.');
+        return redirect()->back();
     }
 
     public function tasks(Request $request, $id) {
@@ -139,10 +158,11 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = Client::where('user_id', $user->id)->findOrFail($id);
+        $projectmodels = ProjectModel::where('id_client', $id)->paginate(10);
         $tasks = TasksClient::where('id_client', $id)->get();
     
     
-        return view('workspace.clients.show', compact('client', 'tasks'));
+        return view('workspace.clients.show', compact('client', 'tasks', 'projectmodels'));
     }
 
     public function destroy($id)
