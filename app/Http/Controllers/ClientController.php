@@ -118,16 +118,21 @@ class ClientController extends Controller
             'id_client' => $id,
             'id_user' => $user
         ];
-        
-        if (!$data) {
+        if($request->tasks === null || $request->tasks_due_date === null) {
             Alert::error('Failed Message', 'You have failed to add tasks.');
-            return redirect()->route('workspace.clients.show', $id);
+            return redirect()->back();
         } else {
-            TasksClient::create($data);
-            return redirect()->route('workspace.clients.show', $id);
-
+            if (!$data) {
+                Alert::error('Failed Message', 'You have failed to add tasks.');
+                return redirect()->route('workspace.clients.show', $id);
+            } else {
+                TasksClient::create($data);
+                return redirect()->route('workspace.clients.show', $id);
+    
+            }
+            return redirect()->route('workspace.clients.show', $client->id);
         }
-        return redirect()->route('workspace.clients.show', $client->id);
+        
     }
 
     public function show($id)
