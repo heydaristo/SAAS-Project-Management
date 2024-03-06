@@ -74,6 +74,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::put('/clients/show/update/notes/{id}', [ClientController::class, 'updateNotes'])->name('clients.update.notes');
 
+    Route::put('/clients/show/update/name/{id}', [ClientController::class, 'updateNameClient'])->name('clients.update.name');
+
     Route::delete('/clients/delete/{id}', [ClientController::class, 'destroy'])->name('clients.delete');
 
     Route::get('/clients/show/{id}', [ClientController::class, 'show'])->name('clients.show');

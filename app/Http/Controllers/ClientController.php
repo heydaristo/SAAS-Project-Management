@@ -112,7 +112,7 @@ class ClientController extends Controller
             return redirect()->back();
 
         }
-        return redirect()->route('workspace.clients.show', ['tabs-address'], $id);
+        return redirect()->route('workspace.clients.show', ['#tabs-address'], $id);
     }
 
     public function updateNotes(Request $request, $id) {
@@ -152,6 +152,20 @@ class ClientController extends Controller
             return redirect()->route('workspace.clients.show', $client->id);
         }
         
+    }
+
+    public function updateNameClient(Request $request, $id){
+        $client = Client::find($id);
+        if (!$client) {
+            return redirect()->back()->with('error', 'Client not found');
+        }
+    
+        $client->name = $request->name;
+        $client->save();
+    
+        Alert::success('Success Message', 'You have successfully changed the name.');
+        return redirect()->back();
+
     }
 
     public function show($id)
