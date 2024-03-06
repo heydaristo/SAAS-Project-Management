@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->hasMany(Quotation::class);
     }
 
+    public function tasksclient() : HasMany
+    {
+        return $this->hasMany(TasksClient::class);
+    }
+
     public function contract() : HasMany
     {
         return $this->hasMany(Contract::class);

@@ -10,7 +10,7 @@
     <div class="row row-deck row-cards">
         @include('workspace.header')
         <div class="col-12">
-            <div class="card">
+               <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Search Filter</h3>
                 </div>
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table card-table table-vcenter text-nowrap datatable">
+                    <table class="table card-table table-vcenter text-nowrap datatable table-hover">
                         <thead>
                             <tr>
                                 <th class="w-1">No.
@@ -79,133 +79,14 @@
                                 }
                             @endphp
                             @foreach ($client as $clients)
-                                <tr>
+                                <tr onclick="window.location='{{ route('workspace.clients.show', $clients->id) }}'" style="cursor: pointer;">
                                     <td>{{ $i++ }}</td>
                                     <td>{{ $clients->name }}</td>
                                     <td>{{ $clients->email }}</td>
                                     <td>{{ $clients->address }}</td>
                                     <td>{{ $clients->no_telp }}</td>
-                                    <td>
-                                        <div class="btn-group mb-1 dropleft ">
-                                            <div class="dropdown dropleft">
-                                                <button class="btn btn-primary dropdown-toggle me-1" type="button"
-                                                    id="dropdownMenuButtonIcon" data-bs-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    Aksi
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end">
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalEdit-{{ $clients->id }}">
-                                                        Edit
-                                                    </button>
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDelete-{{ $clients->id }}">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td></td>
                                 </tr>
-
-                                {{-- Edit Modals --}}
-                                <div class="modal modal-blur fade" id="modalEdit-{{ $clients->id }}" tabindex="-1"
-                                    role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <form action="{{ route('workspace.clients.update', ['id' => $clients->id]) }}"
-                                                method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Client</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Nama Client</label>
-                                                        <input type="text" name="name" class="form-control"
-                                                            placeholder="Masukkan Nama" value="{{ $clients->name }}">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="text" name="email" class="form-control"
-                                                            placeholder="Masukkan Email" value="{{ $clients->email }}">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">Alamat</label>
-                                                        <input type="text" name="address" class="form-control"
-                                                            placeholder="Masukkan Alamat" value="{{ $clients->address }}">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label">No Telp</label>
-                                                        <input type="text" name="no_telp" class="form-control"
-                                                            placeholder="Masukan Jurusan" value="{{ $clients->no_telp }}">
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <a href="#" class="btn btn-link link-secondary"
-                                                        data-bs-dismiss="modal">
-                                                        Cancel
-                                                    </a>
-                                                    <button type="submit" class="btn btn-primary mr-2"
-                                                        data-bs-dismiss="modal">
-                                                        Edit Client
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Modal Hapus --}}
-
-                                <div class="modal modal-blur fade" id="modalDelete-{{ $clients->id }}" tabindex="-1"
-                                    role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                            <div class="modal-status bg-danger"></div>
-                                            <div class="modal-body text-center py-4">
-                                                <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="icon mb-2 text-danger icon-lg" width="24" height="24"
-                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M12 9v4"></path>
-                                                    <path
-                                                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                                    </path>
-                                                    <path d="M12 16h.01"></path>
-                                                </svg>
-                                                <h3>Are you sure?</h3>
-                                                <div class="text-secondary">Do you really want to remove client
-                                                    {{ $clients->name }}? What you've done cannot be undone.</div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <div class="w-100">
-                                                    <div class="row">
-                                                        <form
-                                                            action="{{ route('workspace.clients.delete', ['id' => $clients->id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <div class="col"><a href="#" class="btn w-100"
-                                                                    data-bs-dismiss="modal">
-                                                                    Cancel
-                                                                </a></div>
-                                                            <div class="col"><button class="btn btn-danger w-100"
-                                                                    data-bs-dismiss="modal">
-                                                                    Delete
-                                                                </button></div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endforeach
 
 
