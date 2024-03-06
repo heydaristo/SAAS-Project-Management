@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Client;
@@ -174,7 +175,12 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/subscriptions/bayar/{transactionid}', [SubscriptionController::class, 'bayar'])->name('subscriptions.bayar');
     Route::get('/subscriptions/success/{transactionid}', [SubscriptionController::class, 'success'])->name('subscriptions.success');
 
-    // email
+    // transaction management
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.show');
+    Route::post('/transactions/create', [TransactionController::class, 'store'])->name('transaction.create');
+    Route::delete('/transactions/delete/{id}', [TransactionController::class, 'destroy'])->name('transaction.delete');
+    Route::put('/transactions/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
+
 
 });
 
