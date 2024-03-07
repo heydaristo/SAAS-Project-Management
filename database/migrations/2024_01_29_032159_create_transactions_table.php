@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_project');
             $table->foreign('id_project')->references('id')->on('project_models');
-            $table->unsignedBigInteger('id_invoice');
+            $table->unsignedBigInteger('id_invoice')->nullable();
             $table->foreign('id_invoice')->references('id')->on('invoices');
-            $table->unsignedBigInteger('id_payment');
+            $table->unsignedBigInteger('id_payment')->nullable();
             $table->foreign('id_payment')->references('id')->on('payments');
             $table->boolean('is_income');
             $table->string('source');
             $table->string('description');
             $table->string('category');
-            $table->decimal('amount');
+            $table->bigInteger('amount');
             $table->timestamps();
         });
     }

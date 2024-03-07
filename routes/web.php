@@ -179,6 +179,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     // transaction management
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.show');
     Route::post('/transactions/create', [TransactionController::class, 'store'])->name('transaction.create');
+    Route::post('/transactions/createincome', [TransactionController::class, 'createincome'])->name('transaction.createincome');
     Route::delete('/transactions/delete/{id}', [TransactionController::class, 'destroy'])->name('transaction.delete');
     Route::put('/transactions/update/{id}', [TransactionController::class, 'update'])->name('transaction.update');
 

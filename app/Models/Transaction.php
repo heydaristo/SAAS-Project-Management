@@ -14,17 +14,21 @@ class Transaction extends Model
     protected $fillable=[
         'id_project',
         'id_invoice',
+        'id_payment',
+        'id_user',
+        'created_date',
         'is_income',
         'source',
         'description',
         'category',
-        'created_at',
         'amount',
+        'created_at',
+        'updated_at',
     ];
 
     public function project() : BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(ProjectModel::class);
     }
 
     public function invoice() : BelongsTo
