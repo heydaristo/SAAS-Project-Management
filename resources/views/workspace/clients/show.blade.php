@@ -220,7 +220,7 @@
                             <tbody>
                               @if($projectmodels->isEmpty())
                               <tr>
-                                  <td class="text-center" colspan="7">Nothing data</td>
+                                  <td class="text-center" colspan="7">Nothing to show project</td>
                               </tr>
                               @else 
                                 @php

@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="table-responsive"  style="overflow: inherit;">
-                    <table class="table card-table table-vcenter text-nowrap datatable">
+                    <table class="table card-table table-vcenter text-nowrap datatable table-hover">
                         <thead>
                             <tr>
                                 <th class="w-1">No.
@@ -73,7 +73,7 @@
                                 $i = 1 + ($projectmodels->currentPage() - 1) * $projectmodels->perPage();
                             @endphp
                             @foreach ($projectmodels as $project)
-                                <tr>
+                            <tr onclick="window.location='{{ route('workspace.projects.detail', $project->id) }}'" style="cursor: pointer;">
                                     <td><span class="text-muted">{{ $i++ }}</span></td>
                                     <td>{{ $project->project_name }}</td>
                                     <td>{{ $project->start_date }}</td>
@@ -88,75 +88,9 @@
                                         @endif
                                     </td>
                                     <td>{{ $project->name }}</td>
+                                    <td></td>
                                     {{-- <td>{{ $project->fullname }}</td> --}}
-                                    <td>
-                                        <div class="btn-group mb-1 dropleft ">
-                                            <div class="dropdown dropleft">
-                                                <button class="btn btn-primary dropdown-toggle me-1" type="button"
-                                                    id="dropdownMenuButtonIcon" data-bs-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    Aksi
-                                                </button>
-                                                <div class="dropdown-menu dropdown-menu-end z-index-2000">
-                                                    <a href={{ route('workspace.projects.detail', $project->id) }}><button
-                                                        class="dropdown-item">
-                                                        Detail
-                                                    </button></a>
-                                                    <button class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#modalDelete-{{ $project->id }}">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
                                 </tr>
-
-                                {{-- Modal Hapus --}}
-                                <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                            <div class="modal-status bg-danger"></div>
-                                            <div class="modal-body text-center py-4">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="icon mb-2 text-danger icon-lg" width="24" height="24"
-                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <path d="M12 9v4"></path>
-                                                    <path
-                                                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                                    </path>
-                                                    <path d="M12 16h.01"></path>
-                                                </svg>
-                                                <h3>Are you sure?</h3>
-                                                <div class="text-secondary">Do you really want to remove project
-                                                    {{ $project->project_name }}? What you've done cannot be undone.</div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <div class="w-100">
-                                                    <div class="row">
-                                                        <form
-                                                            action="{{ route('workspace.projects.delete', ['id' => $project->id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <div class="col">
-                                                                <a href="#" class="btn w-100"
-                                                                    data-bs-dismiss="modal">Cancel</a>
-                                                            </div>
-                                                            <div class="col">
-                                                                <button class="btn btn-danger w-100"
-                                                                    data-bs-dismiss="modal">Delete</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endforeach
 
                         </tbody>
