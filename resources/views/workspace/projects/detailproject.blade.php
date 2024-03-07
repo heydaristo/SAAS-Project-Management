@@ -1,32 +1,6 @@
 @extends('template')
 
 @section('body')
-<style>
-.dropdown-menu {
-    display: none;
-}
-
-.dropdown.active .dropdown-menu {
-    display: block;
-}
-
-
-
-</style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-function showDropdown() {
-    document.getElementById('myDropdown').classList.add('active');
-}
-
-function hideDropdown() {
-    document.getElementById('myDropdown').classList.remove('active');
-}
-
-function selectOption(option) {
-        document.getElementById('inputField').value = option;
-    }
-</script>
 <div class="row">
     <div class="col">
         <span class="fs-2">Project / <strong>{{ $project->project_name }}</strong></span>
