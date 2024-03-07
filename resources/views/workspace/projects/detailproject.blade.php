@@ -1,11 +1,28 @@
 @extends('template')
 
 @section('body')
-    <div class="col-md">
-        {{-- add button to add invoice --}}
-        <button type="button" class="btn" data-bs-toggle="modal">
+<div class="row">
+    <div class="col">
+        <span class="fs-2">Project / <strong>{{ $project->project_name }}</strong></span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+           {{-- add button to add invoice --}}
+           <button type="button" class="btn mt-2" data-bs-toggle="modal">
             <a href="{{ route('workspace.invoices.createfromproject',['id'=>$project->id]) }}">Add Invoice</a>
-        </button>   
+        </button>  
+        <a href="#" class="btn btn-secondary dropdown-toggle mt-2" data-bs-toggle="dropdown" aria-expanded="false">More</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+            data-bs-target="#modalEdit-{{ $project->id }}">Edit Project</a></li>
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+            data-bs-target="#modalDelete-{{ $project->id }}">Delete Project</a></li>
+        </ul>
+            <input type="text" name="id_client" id="inputField" class="form-control mt-2" value="{{ $client->name }}" onfocus="showDropdown()" onblur="hideDropdown()" style="width: 190px;" disabled>
+    </div>
+  </div>
+    <div class="col-md">
         <div class="card mt-2">
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
@@ -100,4 +117,83 @@
             </div>
         </div>
     </div>
+                {{-- Modal Hapus --}}
+                <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                            <div class="modal-status bg-danger"></div>
+                            <div class="modal-body text-center py-4">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon mb-2 text-danger icon-lg" width="24" height="24"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 9v4"></path>
+                                    <path
+                                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                                    </path>
+                                    <path d="M12 16h.01"></path>
+                                </svg>
+                                <h3>Are you sure?</h3>
+                                <div class="text-secondary">Do you really want to remove project
+                                    {{ $project->project_name }}? What you've done cannot be undone.</div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="w-100">
+                                    <div class="row">
+                                        <form
+                                            action="{{ route('workspace.projects.delete', ['id' => $project->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="col">
+                                                <a href="#" class="btn w-100 mb-2"
+                                                    data-bs-dismiss="modal">Cancel</a>
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-danger w-100"
+                                                    data-bs-dismiss="modal">Delete</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- Modals Edit --}}
+<div class="modal modal-blur fade" id="modalEdit-{{ $client->id }}" tabindex="-1"
+    role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="{{ route('workspace.projects.update.name', ['id' => $project->id]) }}"
+                method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Project</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <input type="text" name="project_name" class="form-control"
+                            placeholder="Masukkan Nama" value="{{ $project->project_name }}">
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn btn-link link-secondary"
+                      data-bs-dismiss="modal" style="text-decoration: none;">
+                      Cancel
+                  </a>
+                  <button type="submit" class="btn btn-primary mr-2"
+                      data-bs-dismiss="modal">
+                      Edit Client
+                  </button>
+              </div>
+            </form>
+        </div>
+    </div>
+  </div>
 @endsection

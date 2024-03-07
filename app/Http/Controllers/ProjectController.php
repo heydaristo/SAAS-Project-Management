@@ -184,4 +184,18 @@ class ProjectController extends Controller
         $serviceDetails = ServiceDetail::all();
         return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails'));
     }
+    public function updateName(Request $request, $id){
+        $project = ProjectModel::find($id);
+        if (!$project) {
+            return redirect()->back()->with('error', 'Project not found');
+        }
+    
+        $project->project_name = $request->project_name;
+        $project->save();
+    
+        Alert::success('Success Message', 'You have successfully changed the name.');
+        return redirect()->back();
+
+    }
+
 }
