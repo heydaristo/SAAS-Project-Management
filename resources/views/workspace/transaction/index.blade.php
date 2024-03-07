@@ -39,10 +39,16 @@
                                 <!-- Tambahkan opsi lain sesuai kebutuhan -->
                             </select>
                         </div>
-                        <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
-                            data-bs-target="#tambah_transaction">
-                            New Expense
-                        </button>
+                        <div class="col col-lg-auto">
+                            <button type="button" class="btn fontambah_incomet-weight-bolder" data-bs-toggle="modal"
+                                data-bs-target="#tambah_income">
+                                New Income
+                            </button>
+                            <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
+                                data-bs-target="#tambah_transaction">
+                                New Expense
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -63,7 +69,32 @@
                             @foreach ($transactions as $transaction)
                                 <tr>
                                     <td><span class="text-muted">{{ $loop->iteration }}</span></td>
-                                    <td>{{ $transaction->description }}</td>
+                                    <td>
+                                        @if ($transaction->is_income == 1)
+                                            <span class="badge bg-success"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-arrow-narrow-up" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M16 9l-4 -4" />
+                                                    <path d="M8 9l4 -4" />
+                                                </svg></span>
+                                        @else
+                                            <span class="badge bg-danger"><svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="icon icon-tabler icon-tabler-arrow-narrow-down" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M12 5l0 14" />
+                                                    <path d="M16 15l-4 4" />
+                                                    <path d="M8 15l4 4" />
+                                                </svg></span>
+                                        @endif
+                                        {{ $transaction->description }}
+                                    </td>
                                     <td>{{ $transaction->source }}</td>
                                     <td>{{ $transaction->category }}</td>
                                     <td>{{ $transaction->created_at }}</td>
@@ -90,37 +121,151 @@
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Edit transaction</h5>
+                                                    <h5 class="modal-title">Edit Transaction</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
                                                     <div class="mb-3">
-                                                        <label class="form-label required">Created Date</label>
-                                                        <input type="date" class="form-control" name="created_at"
-                                                            value="{{ $transaction->created_at }}" required>
+                                                        <label
+                                                            class="form-label">Assign To Project</label>
+                                                        <select class="form-select" name="project_id">
+                                                            @foreach ($projectlist as $project)
+                                                                <option value="{{ $project->id }}"
+                                                                    {{ $project->id == $transaction->project_id ? 'selected' : '' }}>
+                                                                    {{ $project->project_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label
+                                                            class="form-label
+                                                            required">Created Date</label>
+                                                        <input type="date" class="form-control" name="created_date"
+                                                            value="{{ $transaction->created_date }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label class="form-label required">Amount</label>
+                                                        <label
+                                                            class="form-label
+                                                            required">Amount</label>
                                                         <input type="number" class="form-control" name="amount"
                                                             value="{{ $transaction->amount }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label class="form-label required">Description</label>
+                                                        <label
+                                                            class="form-label
+                                                            required">Description</label>
                                                         <input type="text" class="form-control" name="description"
                                                             value="{{ $transaction->description }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label class="form-label required">Source</label>
+                                                        <label
+                                                            class="form-label
+                                                            required">Source</label>
                                                         <input type="text" class="form-control" name="source"
                                                             value="{{ $transaction->source }}" required>
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label class="form-label required">Category</label>
-                                                        <input type="text" class="form-control" name="category"
-                                                            value="{{ $transaction->category }}" required>
+                                                        <label
+                                                            class="form-label  
+                                                            required">Category</label>
+                                                        <select class="form-select" name="category" required>
+                                                            <option value="advertising"
+                                                                {{ $transaction->category == 'advertising' ? 'selected' : '' }}>
+                                                                Advertising</option>
+                                                            <option value="bank_charges"
+                                                                {{ $transaction->category == 'bank_charges' ? 'selected' : '' }}>
+                                                                Bank Charges</option>
+                                                            <option value="carriage"
+                                                                {{ $transaction->category == 'carriage' ? 'selected' : '' }}>
+                                                                Carriage</option>
+                                                            <option value="commission"
+                                                                {{ $transaction->category == 'commission' ? 'selected' : '' }}>
+                                                                Commission</option>
+                                                            <option value="consultancy"
+                                                                {{ $transaction->category == 'consultancy' ? 'selected' : '' }}>
+                                                                Consultancy</option>
+                                                            <option value="depreciation"
+                                                                {{ $transaction->category == 'depreciation' ? 'selected' : '' }}>
+                                                                Depreciation</option>
+                                                            <option value="discount"
+                                                                {{ $transaction->category == 'discount' ? 'selected' : '' }}>
+                                                                Discount</option>
+                                                            <option value="electricity"
+                                                                {{ $transaction->category == 'electricity' ? 'selected' : '' }}>
+                                                                Electricity</option>
+                                                            <option value="entertainment"
+                                                                {{ $transaction->category == 'entertainment' ? 'selected' : '' }}>
+                                                                Entertainment</option>
+                                                            <option value="equipment"
+                                                                {{ $transaction->category == 'equipment' ? 'selected' : '' }}>
+                                                                Equipment</option>
+                                                            <option value="fuel"
+                                                                {{ $transaction->category == 'fuel' ? 'selected' : '' }}>
+                                                                Fuel</option>
+                                                            <option value="insurance"
+                                                                {{ $transaction->category == 'insurance' ? 'selected' : '' }}>
+                                                                Insurance</option>
+                                                            <option value="interest"
+                                                                {{ $transaction->category == 'interest' ? 'selected' : '' }}>
+                                                                Interest</option>
+                                                            <option value="legal"
+                                                                {{ $transaction->category == 'legal' ? 'selected' : '' }}>
+                                                                Legal</option>
+                                                            <option value="maintenance"
+                                                                {{ $transaction->category == 'maintenance' ? 'selected' : '' }}>
+                                                                Maintenance</option>
+                                                            <option value="materials"
+                                                                {{ $transaction->category == 'materials' ? 'selected' : '' }}>
+                                                                Materials</option>
+                                                            < option value="office"
+                                                                {{ $transaction->category == 'office' ? 'selected' : '' }}>
+                                                                Office</option>
+                                                                <option value="packaging"
+                                                                    {{ $transaction->category == 'packaging' ? 'selected' : '' }}>
+                                                                    Packaging</option>
+                                                                <option value="postage"
+                                                                    {{ $transaction->category == 'postage' ? 'selected' : '' }}>
+                                                                    Postage</option>
+                                                                <option value="printing"
+                                                                    {{ $transaction->category == 'printing' ? 'selected' : '' }}>
+                                                                    Printing</option>
+                                                                <option value="rent"
+                                                                    {{ $transaction->category == 'rent' ? 'selected' : '' }}>
+                                                                    Rent</option>
+                                                                <option value="repairs"
+                                                                    {{ $transaction->category == 'repairs' ? 'selected' : '' }}>
+                                                                    Repairs</option>
+                                                                <option value="salaries"
+                                                                    {{ $transaction->category == 'salaries' ? 'selected' : '' }}>
+                                                                    Salaries</option>
+                                                                <option value="stationery"
+                                                                    {{ $transaction->category == 'stationery' ? 'selected' : '' }}>
+                                                                    Stationery</option>
+                                                                <option value="subsistence"
+                                                                    {{ $transaction->category == 'subsistence' ? 'selected' : '' }}>
+                                                                    Subsistence</option>
+                                                                <option value="telephone"
+                                                                    {{ $transaction->category == 'telephone' ? 'selected' : '' }}>
+                                                                    Telephone</option>
+                                                                <option value="training"
+                                                                    {{ $transaction->category == 'training' ? 'selected' : '' }}>
+                                                                    Training</option>
+                                                                <option value="travel"
+                                                                    {{ $transaction->category == 'travel' ? 'selected' : '' }}>
+                                                                    Travel</option>
+                                                                <option value="wages"
+                                                                    {{ $transaction->category == 'wages' ? 'selected' : '' }}>
+                                                                    Wages</option>
+                                                                <option value="waste"
+                                                                    {{ $transaction->category == 'waste' ? 'selected' : '' }}>
+                                                                    Waste</option>
+                                                                <option value="other"
+                                                                    {{ $transaction->category == 'other' ? 'selected' : '' }}>
+                                                                    Other</option>
+                                                        </select>
                                                     </div>
-
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a href="#" class="btn btn-link link-secondary"
@@ -129,16 +274,16 @@
                                                     </a>
                                                     <button type="submit" class="btn btn-primary mr-2"
                                                         data-bs-dismiss="modal">
-                                                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon"
                                                             width="24" height="24" viewBox="0 0 24 24"
                                                             stroke-width="2" stroke="currentColor" fill="none"
                                                             stroke-linecap="round" stroke-linejoin="round">
                                                             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                             <path d="M12 5l0 14" />
-                                                            <path d="M5 12l14 0" />
+                                                            <path d="M16 9l-4 -4" />
+                                                            <path d="M8 9l4 -4" />
                                                         </svg>
-                                                        Edit transaction
+                                                        Update Transaction
                                                     </button>
                                                 </div>
                                             </form>
@@ -174,7 +319,7 @@
                                                 <div class="w-100">
                                                     <div class="row">
                                                         <form
-                                                            action="{{ route('admin.transaction.delete', ['id' => $transaction->id]) }}"
+                                                            action="{{ route('workspace.transaction.delete', ['id' => $transaction->id]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
@@ -219,8 +364,17 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
+                            <label class="form-label">Assign To Project</label>
+                            <select class="form-select" name="project_id">
+                                <option value="">Select Project</option>
+                                @foreach ($projectlist as $project)
+                                    <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label required">Created Date</label>
-                            <input type="date" class="form-control" name="created_at" required>
+                            <input type="date" class="form-control" name="created_date" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Amount</label>
@@ -236,7 +390,40 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label required">Category</label>
-                            <input type="text" class="form-control" name="category" required>
+                            <select class="form-select" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="advertising">Advertising</option>
+                                <option value="bank_charges">Bank Charges</option>
+                                <option value="carriage">Carriage</option>
+                                <option value="commission">Commission</option>
+                                <option value="consultancy">Consultancy</option>
+                                <option value="depreciation">Depreciation</option>
+                                <option value="discount">Discount</option>
+                                <option value="electricity">Electricity</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="equipment">Equipment</option>
+                                <option value="fuel">Fuel</option>
+                                <option value="insurance">Insurance</option>
+                                <option value="interest">Interest</option>
+                                <option value="legal">Legal</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="materials">Materials</option>
+                                <option value="office">Office</option>
+                                <option value="packaging">Packaging</option>
+                                <option value="postage">Postage</option>
+                                <option value="printing">Printing</option>
+                                <option value="rent">Rent</option>
+                                <option value="repairs">Repairs</option>
+                                <option value="salaries">Salaries</option>
+                                <option value="stationery">Stationery</option>
+                                <option value="subsistence">Subsistence</option>
+                                <option value="telephone">Telephone</option>
+                                <option value="training">Training</option>
+                                <option value="travel">Travel</option>
+                                <option value="wages">Wages</option>
+                                <option value="waste">Waste</option>
+                                <option value="other">Other</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -252,6 +439,76 @@
                                 <path d="M5 12l14 0" />
                             </svg>
                             Create new Expense
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- add income --}}
+    <div class="modal modal-blur fade" id="tambah_income" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form action="{{ route('workspace.transaction.createincome') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Income</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label ">Assign To Project</label>
+                            <select class="form-select" name="project_id" >
+                                <option value="">Select Project</option>
+                                @foreach ($projectlist as $project)
+                                    <option value="{{ $project->id }}">{{ $project->project_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Created Date</label>
+                            <input type="date" class="form-control" name="created_date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Amount</label>
+                            <input type="number" class="form-control" name="amount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Description</label>
+                            <input type="text" class="form-control" name="description" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Client/Source</label>
+                            <input type="text" class="form-control" name="source" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Category</label>
+                            <select class="form-select" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="divident_income">Divident Income</option>
+                                <option value="interest_income">Interest Income</option>
+                                <option value="rental_income">Rental Income</option>
+                                <option value="royalty_income">Royalty Income</option>
+                                <option value="wages_income">Wages Income</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary mr-2" data-bs-dismiss="modal">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
+                            </svg>
+                            Create new Income
                         </button>
                     </div>
                 </form>
