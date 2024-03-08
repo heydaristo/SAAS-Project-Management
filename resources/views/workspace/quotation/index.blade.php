@@ -19,7 +19,7 @@
                         </button>
                     </a>
                 </div>
-                <div class="table-responsive">
+                <div> 
                     <table class="table card-table table-vcenter text-nowrap datatable">
                         <thead>
                             <tr>

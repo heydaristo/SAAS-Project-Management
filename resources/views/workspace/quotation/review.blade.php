@@ -9,7 +9,7 @@
             <h3 class="card-title">Review Quotation</h3>
         </div>
         <div class="col d-flex justify-content-end">
-            <form action="{{ route('workspace.quotation.editemail', $quotation->id) }}" method="post" class="mt-4">
+            <form action="{{ route('workspace.quotation.editemail', $quotation->id) }}" class="mt-4">
                 @csrf
                 <button type="submit" class="btn btn-primary">Continue</button>
             </form>

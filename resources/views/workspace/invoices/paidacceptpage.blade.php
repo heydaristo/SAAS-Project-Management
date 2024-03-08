@@ -18,7 +18,7 @@
                 </div>
                 <!-- Page body -->
                 <div class="page-body">
-                    Anda melakukan pembayaran sebesar Rp. {{ $invoice->total }}. Silahkan
+                    Anda melakukan pembayaran sebesar Rp. {{ $invoice->total }}. Untuk memulai proyek ini. Silahkan
                     melakukan pembayaran :
                     <button id="pay-button" type="button" class="btn btn-primary" data-bs-toggle="modal"
                         data-bs-target="#exampleModal">
@@ -39,8 +39,8 @@
                 // Optional
                 onSuccess: function(result) {
                     /* You may add your own js here, this is just example */
-                    window.location.href = '{{ route('workspace.invoice.succespaid') }}'
-                }
+                    window.location.href = '{{ route('workspace.invoice.succespaid', $invoice->id) }}'
+                },
                 // Optional
                 onPending: function(result) {
                     /* You may add your own js here, this is just example */

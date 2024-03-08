@@ -1,95 +1,105 @@
-
 @extends('template')
 
 @php
-  $title= "Invoice";
+    $title = 'Invoice';
 @endphp
 
 
-@section('body') 
+@section('body')
+    <div class="row row-deck row-cards">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Invoice</h3>
+                </div>
 
-<div class="row row-deck row-cards">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Invoice</h3>
-      </div>
-    
-      <div class="card-body border-bottom py-3">
-        <div class="d-flex">
-          <div class="text-muted">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Select Plan</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
-          <div class="text-muted ms-3">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Select Plan</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
-          <div class="ms-auto me-3">
-            <select class="form-select" id="select">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <!-- Tambahkan opsi lain sesuai kebutuhan -->
-          </select>
-        </div>
-        <a href="{{ route('workspace.invoices.showAdd') }}" class="btn btn-primary">Create Invoice</a>
-        {{-- <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
+                <div class="card-body border-bottom py-3">
+                    <div class="d-flex">
+                        <div class="text-muted">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Select Plan</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="text-muted ms-3">
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Select Plan</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="ms-auto me-3">
+                            <select class="form-select" id="select">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <!-- Tambahkan opsi lain sesuai kebutuhan -->
+                            </select>
+                        </div>
+                        <a href="{{ route('workspace.invoices.showAdd') }}" class="btn btn-primary">Create Invoice</a>
+                        {{-- <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
         data-bs-target="#tambah_invoice">
         Create Invoice
         </button> --}}
-        </div>
-      </div>  
-    <div class="table-responsive">
-      <table class="table card-table table-vcenter text-nowrap datatable table-hover">
-        <thead>
-          <tr>
-            <th class="w-1">No.
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 15l6 -6l6 6" /></svg>
-            </th>
-            <th>Project Name</th>
-            <th>Client</th>
-            <th>Tanggal buat</th>
-            <th>Status</th>
-            <th>Kadarluarsa</th>
-            <th>Total</th>
-            {{-- <th class="w-1"></th> --}}
-          </tr>
-        </thead>
-        <tbody>
-            @php
-            $i = 1 + (($invoices->currentPage()-1) * $invoices->perPage());
-            @endphp
-            @foreach($invoices as $invoice)
-            <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'" style="cursor: pointer;">
-              <td><span class="text-muted">{{ $i++ }}</span></td>
-              <td>{{ $invoice->project_name}}</td>
-              <td>{{ $invoice->name }}</td>
-              <td>{{ $invoice->issued_date }}</td>
-              <td>
-                @if($invoice->status == 'Active')
-                    <span class="badge text-bg-success">{{ $invoice->status }}</span>
-                @elseif($invoice->status == 'Pending')
-                    <span class="badge text-bg-warning">{{ $invoice->status }}</span>
-                @elseif($invoice->status == 'Inactive')
-                    <span class="badge text-bg-danger">{{ $invoice->status }}</span>
-                @endif
-            </td>
-              <td>{{ $invoice->due_date }}</td>
-              <td>@currency($invoice->total)</td>
-            </tr>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable table-hover">
+                        <thead>
+                            <tr>
+                                <th class="w-1">No.
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M6 15l6 -6l6 6" />
+                                    </svg>
+                                </th>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Tanggal buat</th>
+                                <th>Status</th>
+                                <th>Kadarluarsa</th>
+                                <th>Total</th>
+                                {{-- <th class="w-1"></th> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $i = 1 + ($invoices->currentPage() - 1) * $invoices->perPage();
+                            @endphp
+                            @foreach ($invoices as $invoice)
+                                <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'"
+                                    style="cursor: pointer;">
+                                    <td><span class="text-muted">{{ $i++ }}</span></td>
+                                    <td>{{ $invoice->project_name }}</td>
+                                    <td>{{ $invoice->name }}</td>
+                                    <td>{{ $invoice->issued_date }}</td>
+                                    <td>
+                                        @if ($invoice->status == 'SENT')
+                                            <span class="badge text-bg-success">{{ $invoice->status }}</span>
+                                        @elseif($invoice->status == 'PENDING')
+                                            <span class="badge text-bg-warning">{{ $invoice->status }}</span>
+                                        @elseif($invoice->status == 'PAID')
+                                            <span class="badge text-bg-danger">{{ $invoice->status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($invoice->due_date)
+                                            {{ $invoice->due_date }}
+                                        @else
+                                            <span class="badge text-bg-success">Open Date</span>
+                                        @endif
+                                    </td>
+                                    <td>@currency($invoice->total)</td>
+                                </tr>
 
-          {{-- Modals Edit --}}
-          {{-- <div class="modal fade" id="modalEdit-{{$invoice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                {{-- Modals Edit --}}
+                                {{-- <div class="modal fade" id="modalEdit-{{$invoice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -104,7 +114,7 @@
                       <label for="Project">Project Name</label>
                       <select class="form-control mt-1" name="id_project" id="user_id">
                         <option value="">Select Project</option>
-                        @foreach ($project as  $projectmodels)
+                        @foreach ($project as $projectmodels)
                         <option value="{{ $projectmodels->id }}" {{ $invoice->id_project == $projectmodels->id ? 'selected' : '' }}>
                           {{ $projectmodels->project_name}}</option>
                         @endforeach
@@ -150,9 +160,9 @@
             </div>
           </div>
            --}}
-           
-{{-- Modal Hapus --}}
-{{-- <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}" aria-hidden="true">
+
+                                {{-- Modal Hapus --}}
+                                {{-- <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -186,105 +196,112 @@
       </div>
   </div>
 </div> --}}
+                            @endforeach
 
-          @endforeach
-
-        </tbody>
-      </table>
-    </div>
-    <div class="card-footer d-flex align-items-center ms-auto">
-      {!! $invoices->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
-    </div>
-  </div>
-</div>
-</div>
-
-{{-- Modals Tambah --}}
-<div class="modal fade" id="tambah_invoice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modal2Label">Create Invoice</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    </div>
-      <div class="modal-body">
-        <h1>What do you want to invoice?</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <div class="col">
-            <a href="#" style="text-decoration: none;">
-            <div class="card h-100 cardForm card1" onclick="setActiveCard(this)">
-              <div class="card-body">
-                <h5 class="card-title">An existing project</h5>
-                <p class="card-text">Choose an existing project and client to populate your invoice. If you used time tracking, you can invoice your tracked time.</p>
-              </div>
-              <div class="card-footer">
-                <div class="position-relative">
-                  <select class="form-control mt-1" name="id_project" id="id_project" onchange="checkInputValues()">
-                    <option value="">Select Project</option>
-                    @foreach ($project as $projectmodels)
-                        @if ($projectmodels->user_id == auth()->user()->id)
-                            <option value="{{ $projectmodels->id }}">{{ $projectmodels->project_name }}</option>
-                        @endif
-                    @endforeach
-                </select>
-                    <div class="position-absolute end-0 top-50 translate-middle-y">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M12 14L6.80385 9.5L17.1962 9.5L12 14Z" fill="#222325"></path>
-                      </svg>
-                  </div>
+                        </tbody>
+                    </table>
                 </div>
-              </div>
-
+                <div class="card-footer d-flex align-items-center ms-auto">
+                    {!! $invoices->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
+                </div>
             </div>
-            </a>
-          </div>
-          <a href="#" style="text-decoration: none;">
-          <div class="col">
-            <div class="card h-100 cardForm card2" onclick="setActiveCard(this)">
-              <div class="card-body">
-                <h5 class="card-title">A new project</h5>
-                <p class="card-text">Create an invoice and set up a new project and client based on the info. This way you can better keep track of your work and send future invoices more easily.</p>
-              </div>
-              <div class="card-footer">
-                <input type="text" class="form-control" name="project_name" id="project_name" placeholder="Project Name" oninput="checkInputValues()" onblur="checkInputValues()">
-              </div>
-            </div>
-          </div>
-          </a>
-          <a href="#" style="text-decoration: none;">
-          <div class="col">
-            <div class="card h-100 cardForm card3"  onclick="setActiveCard(this)">
-            
-              <div class="card-body">
-                {{-- <h5 class="card-title">Card title</h5> --}}
-                <h5 class="card-title">Just a quick invoice</h5>
-                <p class="card-text">Create an invoice from scratch without creating a project to track time or expenses. Just add some line items and you are good to go.</p>
-              </div>
-              <div class="card-footer">
-                <small class="text-body-secondary"></small>
-              </div>
-            </div> 
-          </div>
-          </a>
         </div>
-      </div>
-      <div class="modal-footer">
-        <p id="errorMessage" style="display: none;" class="text-danger">Please choose one!</p>
-        <button id="nextButton" type="button" class="btn btn-primary"  onclick="sendData()" disabled>Next</button>
-      </div>
-      </div>
     </div>
-  </div>
-</div>
 
+    {{-- Modals Tambah --}}
+    <div class="modal fade" id="tambah_invoice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal2Label">Create Invoice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h1>What do you want to invoice?</h1>
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <a href="#" style="text-decoration: none;">
+                                <div class="card h-100 cardForm card1" onclick="setActiveCard(this)">
+                                    <div class="card-body">
+                                        <h5 class="card-title">An existing project</h5>
+                                        <p class="card-text">Choose an existing project and client to populate your invoice.
+                                            If you used time tracking, you can invoice your tracked time.</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="position-relative">
+                                            <select class="form-control mt-1" name="id_project" id="id_project"
+                                                onchange="checkInputValues()">
+                                                <option value="">Select Project</option>
+                                                @foreach ($project as $projectmodels)
+                                                    @if ($projectmodels->user_id == auth()->user()->id)
+                                                        <option value="{{ $projectmodels->id }}">
+                                                            {{ $projectmodels->project_name }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            <div class="position-absolute end-0 top-50 translate-middle-y">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 14L6.80385 9.5L17.1962 9.5L12 14Z" fill="#222325"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </a>
+                        </div>
+                        <a href="#" style="text-decoration: none;">
+                            <div class="col">
+                                <div class="card h-100 cardForm card2" onclick="setActiveCard(this)">
+                                    <div class="card-body">
+                                        <h5 class="card-title">A new project</h5>
+                                        <p class="card-text">Create an invoice and set up a new project and client based on
+                                            the info. This way you can better keep track of your work and send future
+                                            invoices more easily.</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <input type="text" class="form-control" name="project_name" id="project_name"
+                                            placeholder="Project Name" oninput="checkInputValues()"
+                                            onblur="checkInputValues()">
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" style="text-decoration: none;">
+                            <div class="col">
+                                <div class="card h-100 cardForm card3" onclick="setActiveCard(this)">
+
+                                    <div class="card-body">
+                                        {{-- <h5 class="card-title">Card title</h5> --}}
+                                        <h5 class="card-title">Just a quick invoice</h5>
+                                        <p class="card-text">Create an invoice from scratch without creating a project to
+                                            track time or expenses. Just add some line items and you are good to go.</p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-body-secondary"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p id="errorMessage" style="display: none;" class="text-danger">Please choose one!</p>
+                    <button id="nextButton" type="button" class="btn btn-primary" onclick="sendData()"
+                        disabled>Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
 @endsection
 
 @section('sweetalert')
-<script>
-    // Auto-close the alert messages after 3 seconds (3000 milliseconds)
-    setTimeout(function() {
-        $('.swal2-popup').fadeOut();
-    }, 3000);
-
-</script>
+    <script>
+        // Auto-close the alert messages after 3 seconds (3000 milliseconds)
+        setTimeout(function() {
+            $('.swal2-popup').fadeOut();
+        }, 3000);
+    </script>
 @endsection

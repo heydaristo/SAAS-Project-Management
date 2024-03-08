@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ProjectModel;
 use App\Models\Client;
+use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,7 @@ class InvoiceController extends Controller
             ->join('project_models', 'invoices.id_project', '=', 'project_models.id')
             ->join('clients', 'invoices.id_client', '=', 'clients.id')
             ->select('invoices.*', 'project_models.project_name as project_name', 'clients.name as name')
+            ->orderBy('invoices.created_at', 'desc')
             // ->get();
             ->paginate(5); // Menggunakan paginate dengan 10 item per halaman
 
@@ -57,7 +59,7 @@ class InvoiceController extends Controller
         $invoice = new Invoice();
         $invoice->id_project = $project->id;
         $invoice->id_client = $client->id;
-        $invoice->status = 'CREATED';
+        $invoice->status = 'PENDING';
         $invoice->issued_date = Carbon::now();
         $invoice->due_date = $project->final_invoice_date;
 
@@ -163,7 +165,8 @@ class InvoiceController extends Controller
     }
 
 
-    public function showAdd() {
+    public function showAdd()
+    {
         $userId = Auth::id();
 
         $invoices = DB::table('invoices')
@@ -180,35 +183,37 @@ class InvoiceController extends Controller
         return view('workspace.invoices.showadd', compact('invoices', 'project', 'clients'));
     }
 
-    public function postShowAdd(Request $request) {
-    // Validasi data formulir jika diperlukan
-    // $request->validate([
-    //     ''
-    // ]);
+    public function postShowAdd(Request $request)
+    {
+        // Validasi data formulir jika diperlukan
+        // $request->validate([
+        //     ''
+        // ]);
 
-    // Ambil nilai active_card dari request
-    $activeCard = $request->input('active_card');
+        // Ambil nilai active_card dari request
+        $activeCard = $request->input('active_card');
 
-    // Lakukan sesuatu berdasarkan nilai active_card
-    switch ($activeCard) {
-        case 1:
-            // Lakukan sesuatu jika card 1 yang aktif
-            $invoice = new Invoice();
-            $invoice->id_project = $request->input('id_project');
-            return redirect()->route('workspace.invoices.review', $invoice->id);
-            break;
-        case 2:
-            // Lakukan sesuatu jika card 2 yang aktif
-            break;
-        case 3:
-            // Lakukan sesuatu jika card 3 yang aktif
-            break;
-        default:
-            // Handle jika tidak ada card yang aktif
-            break;
+        // Lakukan sesuatu berdasarkan nilai active_card
+        switch ($activeCard) {
+            case 1:
+                // Lakukan sesuatu jika card 1 yang aktif
+                $invoice = new Invoice();
+                $invoice->id_project = $request->input('id_project');
+                return redirect()->route('workspace.invoices.review', $invoice->id);
+                break;
+            case 2:
+                // Lakukan sesuatu jika card 2 yang aktif
+                break;
+            case 3:
+                // Lakukan sesuatu jika card 3 yang aktif
+                break;
+            default:
+                // Handle jika tidak ada card yang aktif
+                break;
+        }
     }
-}
-    public function review($id) {
+    public function review($id)
+    {
         return view('workspace.invoices.review');
     }
 
@@ -265,6 +270,8 @@ class InvoiceController extends Controller
     {
         $userId = User::find(Auth::id());
         $invoice = Invoice::find($id);
+        $invoice->status = 'SENT';
+        $invoice->save();
         $client = Client::find($invoice->id_client); // Menggunakan find untuk mencari berdasarkan ID
         $project = ProjectModel::findOrFail($invoice->id_project);
         $services = Service::where('id_project', $project->id)->get();
@@ -278,8 +285,10 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::find($id);
         $user = User::find($invoice->user_id);
-        $invoice->status = 'PAID';
+        $invoice->status = 'PENDING';
         // check if contract need to pay firstly or not
+        // page pembayaran
+
         // page pembayaran
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -308,7 +317,25 @@ class InvoiceController extends Controller
         return view('workspace.invoices.paidacceptpage', compact('invoice'));
     }
 
-    public function successpaid(){
+    public function successpaid($id)
+    {
+        $invoice = Invoice::find($id);
+        $project = ProjectModel::find($invoice->id_project);
+        $invoice->status = 'PAID';
+
+        // create new transaction
+        $transaction = new Transaction();
+        $transaction->id_project = $invoice->id_project;
+        $transaction->id_invoice = $invoice->id;
+        $transaction->id_user = $invoice->user_id;
+        $transaction->is_income = 1;
+        $transaction->source = $invoice->id_client;
+        $transaction->description = 'Invoice ' . $project->project_name;
+        $transaction->category = 'Invoice';
+        $transaction->amount = $invoice->total;
+        $transaction->created_date = Carbon::now();
+        $transaction->save();
+
         return view('workspace.quotation.acceptpage');
     }
 }
