@@ -4,7 +4,7 @@
       <ul class="list-inline list-inline-dots mb-0">
         <li class="list-inline-item">
           Copyright &copy; 2024
-          <a href="." class="link-secondary">Tim Magang Techarea</a>.
+          <a href="https://github.com/heydaristo/SAAS-Project-Management/commits/main/" class="link-secondary" target="_blank">Tim Magang Techarea</a>.
           All rights reserved.
         </li>
         <li class="list-inline-item">

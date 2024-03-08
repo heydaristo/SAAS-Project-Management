@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href="." class="text-center" style="text-decoration: none;">
+            <a href="{{ route('workspace.dashboard') }}" class="text-center" style="text-decoration: none;">
                 SAAS <br class="fs-4"> Workspace
             </a>
         </h1>
