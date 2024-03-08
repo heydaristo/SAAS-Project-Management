@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-md d-none d-lg-flex d-print-none navbar-transparent" >
+<header class="navbar navbar-expand-md d-none d-lg-flex d-print-none" >
     <div class="container-xl">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -142,7 +142,7 @@
             SAAS Management Project For Freelance
           </div>
           <h2 class="page-title">
-            {{ $title ?? 'SAAS Management Project For Freelance' }}
+            {{ isset($title) ? $title : 'SAAS Management Project For Freelance' }}
           </h2>
         </div>
       </div>

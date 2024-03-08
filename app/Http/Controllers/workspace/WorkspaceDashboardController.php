@@ -23,6 +23,7 @@ class WorkspaceDashboardController extends Controller
     
         // Hitung jumlah total klien
         $clientCount = Client::count();
+        
     
         // Mengirimkan data ke tampilan Blade
         return view('workspace.dashboard', [
