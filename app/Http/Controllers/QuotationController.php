@@ -26,6 +26,7 @@ class QuotationController extends Controller
             ->where('quotations.id_user', $userId) // Filter berdasarkan user_id
             ->join('clients', 'quotations.id_client', '=', 'clients.id')
             ->select('quotations.*', 'clients.name as name')
+            ->orderBy('quotations.created_at', 'desc')
             ->paginate(5);
 
 
