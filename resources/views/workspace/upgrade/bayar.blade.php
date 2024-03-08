@@ -1,33 +1,31 @@
 @extends('template')
 
 @section('body')
-    <div class="col-md">
-        <div class="card">
-            <div class="page-wrapper">
-                <!-- Page header -->
-                <div class="page-header d-print-none">
-                    <div class="container-xl">
-                        <div class="row g-2 align-items-center">
-                            <div class="col">
-                                <h2 class="page-title">
-                                    Halaman Pembayaran
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Page body -->
-                <div class="page-body">
-                    Anda Melakukan Upgrade ke Paket Premium Freelancer sebesar Rp. {{ $transaction->amount }}. Silahkan
-                    melakukan pembayaran :
-                    <button id="pay-button" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
-                        Bayar Sekarang
-                    </button>
-                </div>
-            </div>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+    <div class="page page-center">
+        <div class="text-center text-secondary mt-3">
+            Powered by Midtrans and Tim Magang Techarea 2024 
+          </div>
+      <div class="container container-tight py-4">
+        <div class="card card-md">
+            <div class="card-status-top bg-green"></div>
+          <div class="card-body">
+            <h3 class="h3 text-center mb-4">Do you want to pay this (Paket Premium) ?</h3>
+            <p style="text-align: center;" class="fs-3">
+              You will upgrade to the Premium Package at a price Rp. {{ $transaction->amount }}.
+            </p>
+          </div>
+          <div class="card-footer">
+            <div style="display: flex; justify-content: space-between;">
+                <a href="{{ route('workspace.subscriptions.upgradeshow') }}" class="btn btn-danger">No, I want back</a>
+                <a href="#" class="btn btn-success" id="pay-button">Yes, I want to pay</a>
+              </div>
+          </div>
         </div>
+        
+      </div>
     </div>
+  </div>
 @endsection
 
 @section('script')

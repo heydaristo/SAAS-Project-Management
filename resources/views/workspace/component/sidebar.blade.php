@@ -1,11 +1,11 @@
-<aside class="navbar navbar-vertical navbar-expand-lg">
+<aside class="navbar navbar-vertical navbar-expand-lg sidebar">
     <div class="container-fluid sidebar-divider">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
             aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href="." class="text-center">
+            <a href="." class="text-center" style="text-decoration: none;">
                 SAAS <br class="fs-4"> Workspace
             </a>
         </h1>
