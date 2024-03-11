@@ -13,7 +13,7 @@ class WorkspaceDashboardController extends Controller
 {
     public function index()
     {
-        $tasks = TasksClient::where('id_user', Auth()->user()->id)->get();
+        $tasks = TasksClient::where('id_user', Auth()->user()->id)->paginate(10);
         return view('workspace.dashboard', compact('tasks'));
     }
     public function storeTasks(Request $request) {

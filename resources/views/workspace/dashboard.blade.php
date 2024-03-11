@@ -123,15 +123,19 @@
                 <div class="card-body">
                   <div class="tab-content">
                     <div class="tab-pane fade active show" id="tabs-to-do" role="tabpanel">
+                      <div class="table-responsive">
                         <table class="table card-table table-vcenter text-nowrap datatable table-hover">
                             <thead>
                                 <tr>
-                                    <th class="w-1"></th>
+                                    <th class="w-1">No.</th>
                                     <th class="text-start">Title</th>
                                     <th class="w-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
+                              @php
+                              $i = 1 + ($tasks->currentPage() - 1) * $tasks->perPage();
+                          @endphp
                                 @foreach ($tasks as $task)
                                 <tr>
                                     <td></td>
@@ -158,6 +162,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="card-footer d-flex align-items-center ms-auto">
+                          {!! $tasks->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
+                      </div>
+                      </div>
                     </div>
                   </div>
                 </div>
