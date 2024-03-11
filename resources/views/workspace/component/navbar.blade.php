@@ -105,7 +105,7 @@
             <span class="avatar avatar-sm">
               {{-- <img src="public/photo-user/Auth::user()->photo_profile }}" alt=""> --}}
               <img src="{{ asset('/photo-user/'.Auth::user()->photo_profile)}}" alt="profile">
-
+              <span class="badge bg-pink badge-notification"></span>
             </span>
             <div class="d-none d-xl-block ps-2">
               <div>{{ Auth::user()->fullname }}</div>
@@ -126,13 +126,23 @@
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <a href="#" class="dropdown-item">Status</a>
+            <a href="#" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Status</a>
+            <ul class="dropdown-menu">
+                <li><a href="#" class="dropdown-item">Active</a></li>
+                <li><a href="#" class="dropdown-item">Busy</a></li>
+                <li><a href="#" class="dropdown-item">Offline</a></li>
+            </ul>
             <a href="{{ route('workspace.settings', ['#tabs-activity-7']) }}" class="dropdown-item">Profile</a>
-            <a href="#" class="dropdown-item">Feedback</a>
             <div class="dropdown-divider"></div>
             <a href="{{ route('workspace.settings') }}" class="dropdown-item">Settings</a>
-            <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
-          </div>
+            <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
+            <div class="dropdown-divider"></div>
+            {{-- upgrade to premium, make this button at button --}}
+            @if (Auth::user()->id_role == 3)
+            <a href="{{ route('workspace.subscriptions.upgradeshow') }}" class="dropdown-item" style="background-color: #003cbe; color:white; width: 100px; height:35px;">Upgrade to Premium</a>
+            @endif
+        </div>
+        
         </div>
       </div>
       <div class="collapse navbar-collapse" id="navbar-menu">
