@@ -10,7 +10,7 @@
     <div class="col">
            {{-- add button to add invoice --}}
            <button type="button" class="btn mt-2" data-bs-toggle="modal">
-            <a href="{{ route('workspace.invoices.createfromproject',['id'=>$project->id]) }}">Add Invoice</a>
+            <a href="{{ route('workspace.invoices.createfromproject',['id'=>$project->id]) }}" style="text-decoration: none;">Add Invoice</a>
         </button>  
         <a href="#" class="btn btn-secondary dropdown-toggle mt-2" data-bs-toggle="dropdown" aria-expanded="false">More</a>
         <ul class="dropdown-menu">

@@ -65,6 +65,10 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/dashboard', [WorkspaceDashboardController::class, 'index'])->name('dashboard');
 
+    Route::post('/send/tasks', [WorkspaceDashboardController::class, 'storeTasks'])->name('dashboard.storeTasks');
+
+    Route::delete('/delete/tasks/{id}', [WorkspaceDashboardController::class, 'destroyTasks'])->name('dashboard.destroyTasks');
+
     Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 
     Route::post('/clients/create', [ClientController::class, 'store'])->name('clients.store');

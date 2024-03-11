@@ -1,3 +1,8 @@
+<style>
+    .nav-item.active {
+    background-color: rgba(0, 0, 255, 0.3); /* Warna biru dengan opacity 0.3 */
+}
+</style>
 <aside class="navbar navbar-vertical navbar-expand-lg sidebar">
     <div class="container-fluid sidebar-divider">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
@@ -192,7 +197,7 @@
                                 <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Home
                         </span>
                     </a>
@@ -211,7 +216,7 @@
                                 <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Client
                         </span>
                     </a>
@@ -228,7 +233,7 @@
                                     d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Project
                         </span>
                     </a>
@@ -249,7 +254,7 @@
                                 <path d="M10 7h4" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Quotation
                         </span>
                     </a>
@@ -270,7 +275,7 @@
                                 <path d="M10 7h4" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Contract
                         </span>
                     </a>
@@ -292,7 +297,7 @@
                                 <path d="M12 6v10" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Invoice
                         </span>
                     </a>
@@ -311,7 +316,7 @@
                                 <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Transaction
                         </span>
                     </a>
@@ -321,7 +326,7 @@
                     <li class="nav-item">
                         <a href="{{ route('workspace.subscriptions.upgradeshow') }}" class="nav-link">
                             {{-- make button --}}
-                            <button class="btn btn-primary btn-block">
+                            <button class="btn btn-primary btn-block" style="width: 250px; height: 40px;">
                                 Upgrade to Premium
                             </button>
                         </a>

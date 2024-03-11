@@ -336,22 +336,22 @@ class UserController extends Controller
     }
 
     public function uploadProfile(Request $request){
-        // $validator = Validator::make($request->all(), [
-        //     'fullname' => ['required'],
-        //     'email' => ['required', 'email:dns'],
-        //     'address' => ['required'],
-        //     'profession' => ['required'],
-        //     'experience_level' => ['required'],
-        //     'organization' => ['required'],
-        // ]);
+        $validator = Validator::make($request->all(), [
+            'fullname' => ['required'],
+            'email' => ['required', 'email:dns'],
+            'address' => ['required'],
+            'profession' => ['required'],
+            'experience_level' => ['required'],
+            'organization' => ['required'],
+        ]);
 
 
-        // if ($validator->fails()) {
-        //     Alert::error('Failed Message', 'You have failed update profile.'.strval($validator->errors()));
-        //     return redirect()->route('workspace.settings', ['tabs-activity-7'])
-        //                 ->withErrors($validator)
-        //                 ->withInput();
-        // }
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed update profile.'.strval($validator->errors()));
+            return redirect()->route('workspace.settings', ['tabs-activity-7'])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         $data = [
             'fullname' => $request->fullname,

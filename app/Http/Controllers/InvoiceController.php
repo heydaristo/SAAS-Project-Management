@@ -54,7 +54,15 @@ class InvoiceController extends Controller
         $project = ProjectModel::find($id);
         $client = Client::find($project->id_client);
         $services = Service::where('id_project', $id)->get();
-        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        // Memeriksa apakah array $services memiliki elemen atau tidak
+        if (count($services) > 0) {
+            // Jika array memiliki elemen, lanjutkan dengan query ke database
+            $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        } else {
+            // Jika array kosong, redirect ke halaman sebelumnya
+            Alert::error('Failed Message', 'Services null.');
+            return redirect()->back();
+        }
         // create invoice based on project
         $invoice = new Invoice();
         $invoice->id_project = $project->id;
