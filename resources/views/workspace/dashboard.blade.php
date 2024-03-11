@@ -15,11 +15,50 @@
       /* color:black; */
     }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      var element = document.getElementById('typed-output');
+      var text = "{{ explode(' ', Auth()->user()->fullname)[0] }}";
+
+      function typeText() {
+          var i = 0;
+          var typing = setInterval(function () {
+              if (i < text.length) {
+                  element.innerHTML += text.charAt(i);
+                  i++;
+              } else {
+                  clearInterval(typing);
+                  setTimeout(function () {
+                      deleteText();
+                  }, 3000); // Jeda sebelum menghapus teks
+              }
+          }, 50); // Kecepatan pengetikan (ms)
+      }
+
+      function deleteText() {
+          var i = element.innerHTML.length - 1;
+          var deleting = setInterval(function () {
+              if (i >= 0) {
+                  element.innerHTML = element.innerHTML.slice(0, i);
+                  i--;
+              } else {
+                  clearInterval(deleting);
+                  setTimeout(function () {
+                      typeText();
+                  }, 1000); // Jeda sebelum memulai kembali pengetikan
+              }
+          }, 50); // Kecepatan penghapusan (ms)
+      }
+
+      typeText(); // Memulai animasi pengetikan saat dokumen dimuat
+  });
+</script>
 <div class="row row-deck row-cards">
     <div class="contabiner d-flex justify-content-center align-items-center mt-5">
         <div class="row">
           <div class="col-md-12 text-center">
-            <h1>Welcome, {{ explode(' ', Auth()->user()->fullname)[0] }}</h1>
+            <h1>Welcome, <span id="typed-output"></span></h1>
             <p class="fs-2">Let’s get you set up with This Workspace.</p>
           </div>
           <div class="row row-cols-1 row-cols-md-3 g-4">
