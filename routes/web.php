@@ -147,6 +147,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/invoice/print', [InvoiceController::class, 'printPDF'])->name('invoices.print');
     Route::delete('/invoice/delete/{id}', [InvoiceController::class, 'destroy'])->name('invoices.delete');
     Route::get('/invoice/createfromproject/{id}', [InvoiceController::class, 'showInvoiceFromProject'])->name('invoices.createfromproject');
+    Route::get('/invoice/createfromclient/{id}', [InvoiceController::class, 'showInvoiceFromClient'])->name('invoices.createfromclient');
     // Post Create Invoice
     Route::get('/invoice/create/preview', function () {
         return view('workspace.invoices.previewstep.preview');

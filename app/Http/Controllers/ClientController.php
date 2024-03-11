@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\TasksClient;
+use App\Models\Invoice;
 use App\Models\ProjectModel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
@@ -172,11 +173,12 @@ class ClientController extends Controller
     {
         $user = Auth::user();
         $client = Client::where('user_id', $user->id)->findOrFail($id);
+        $invoices = Invoice::where('id_client', $client->id)->paginate(5);
         $projectmodels = ProjectModel::where('id_client', $id)->paginate(10);
         $tasks = TasksClient::where('id_client', $id)->get();
     
     
-        return view('workspace.clients.show', compact('client', 'tasks', 'projectmodels'));
+        return view('workspace.clients.show', compact('client', 'tasks', 'projectmodels', 'invoices'));
     }
 
     public function destroy($id)

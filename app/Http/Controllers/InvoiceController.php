@@ -84,6 +84,42 @@ class InvoiceController extends Controller
         return view('workspace.invoices.createfromproject', compact('invoice', 'project', 'client', 'services', 'serviceDetails'));
     }
 
+    public function showInvoiceFromClient($id)
+    {
+        // $id milik client
+        $client = Client::find($id);
+        $project = ProjectModel::find($client->id_project);
+        $services = Service::where('id_project', $id)->get();
+        // Memeriksa apakah array $services memiliki elemen atau tidak
+        if (count($services) > 0) {
+            // Jika array memiliki elemen, lanjutkan dengan query ke database
+            $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        } else {
+            // Jika array kosong, redirect ke halaman sebelumnya
+            Alert::error('Failed Message', 'Services null.');
+            return redirect()->back();
+        }
+        // create invoice based on project
+        $invoice = new Invoice();
+        $invoice->id_project = $project->id;
+        $invoice->id_client = $client->id;
+        $invoice->status = 'PENDING';
+        $invoice->issued_date = Carbon::now();
+        $invoice->due_date = $project->final_invoice_date;
+
+        // calculate service detail
+        $total = 0;
+        foreach ($serviceDetails as $serviceDetail) {
+            $total += $serviceDetail->price;
+        }
+        $invoice->total = $total;
+        $invoice->user_id = Auth::id();
+        $invoice->invoice_pdf = '2';
+        $invoice->save();
+
+        return view('workspace.invoices.createfromclient', compact('invoice', 'project', 'client', 'services', 'serviceDetails'));
+    }
+
     public function showId($id)
     {
         $userId = Auth::id();

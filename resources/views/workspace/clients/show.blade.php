@@ -25,7 +25,7 @@
 <div class="col-md">
  <div class="col">
   <span class="fs-2">Client / <strong>{{ $client->name }}</strong></span> <br/>
-  <a href="#" class="btn btn-primary mt-3">Invoice Client</a>
+  <a href="{{ route('workspace.invoices.createfromclient',['id'=>$client->id]) }}" class="btn btn-primary mt-3">Invoice Client</a>
   <a href="#" class="btn btn-secondary mt-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">More</a>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
@@ -51,7 +51,7 @@
                         role="tab">Project</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a href="#tabs-profile-7" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
+                    <a href="#tabs-invoices" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
                         tabindex="-1">Invoice</a>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -254,6 +254,63 @@
                     <div class="card-footer d-flex align-items-center ms-auto">
                         {!! $projectmodels->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
                     </div>
+                </div>
+                </div>
+                <div class="tab-pane" id="tabs-invoices" role="tabpanel">
+                    <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable table-hover">
+                        <thead>
+                            <tr>
+                                <th class="w-1">No.
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M6 15l6 -6l6 6" />
+                                    </svg>
+                                </th>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Tanggal buat</th>
+                                <th>Status</th>
+                                <th>Kadarluarsa</th>
+                                <th>Total</th>
+                                {{-- <th class="w-1"></th> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $i = 1 + ($invoices->currentPage() - 1) * $invoices->perPage();
+                            @endphp
+                            @foreach ($invoices as $invoice)
+                                <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'"
+                                    style="cursor: pointer;">
+                                    <td><span class="text-muted">{{ $i++ }}</span></td>
+                                    <td>{{ $invoice->project_name }}</td>
+                                    <td>{{ $invoice->name }}</td>
+                                    <td>{{ $invoice->issued_date }}</td>
+                                    <td>
+                                        @if ($invoice->status == 'SENT')
+                                            <span class="badge text-bg-success">{{ $invoice->status }}</span>
+                                        @elseif($invoice->status == 'PENDING')
+                                            <span class="badge text-bg-warning">{{ $invoice->status }}</span>
+                                        @elseif($invoice->status == 'PAID')
+                                            <span class="badge text-bg-danger">{{ $invoice->status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($invoice->due_date)
+                                            {{ $invoice->due_date }}
+                                        @else
+                                            <span class="badge text-bg-success">Open Date</span>
+                                        @endif
+                                    </td>
+                                    <td>@currency($invoice->total)</td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
                 </div>
                 </div>
                 <div class="tab-pane" id="notes" role="tabpanel">
