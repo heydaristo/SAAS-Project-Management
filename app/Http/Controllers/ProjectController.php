@@ -28,6 +28,7 @@ class ProjectController extends Controller
             ->where('project_models.user_id', $userId) // Filter berdasarkan user_id
             ->join('clients', 'project_models.id_client', '=', 'clients.id')
             ->select('project_models.*', 'clients.name as name')
+            ->orderBy('project_models.created_at', 'desc')
             ->paginate(5);
     
         // Mengambil klien yang dimiliki oleh pengguna yang sedang login

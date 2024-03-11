@@ -39,7 +39,7 @@ Route::get('workspace/contract/successpaiddpcontract/{id}', [ContractController:
 Route::get('workspace/quotation/accepted/{id}', [QuotationController::class,'accepted'])->name('workspace.quotation.accepted');
 Route::get('workspace/quotation/successpaiddpcontract/{id}', [QuotationController::class,'successpaiddpcontract'])->name('workspace.quotation.successpaiddpcontract');
 Route::get('workspace/invoice/paynow/{id}', [InvoiceController::class,'paynow'])->name('workspace.invoice.successpaiddpcontract');
-Route::get('workspace/invoice/successpaid', [InvoiceController::class,'successpaid'])->name('workspace.invoice.succespaid');
+Route::get('workspace/invoice/successpaid/{id}', [InvoiceController::class,'successpaid'])->name('workspace.invoice.succespaid');
 
 
 Route::middleware(['guest'])->group(function () {

@@ -13,7 +13,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::where('id_user', Auth::user()->id)->paginate(5);
+        $transactions = Transaction::where('id_user', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
         $projectlist = ProjectModel::where('user_id', Auth::user()->id)->get();
         return view('workspace.transaction.index', compact('transactions', 'projectlist'));
     }
