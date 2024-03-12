@@ -179,7 +179,8 @@ class ProjectController extends Controller
     }
 
     public function detail($id){
-        $project = ProjectModel::find($id);
+        $user = Auth::user();
+        $project = ProjectModel::where('user_id', $user->id)->findOrFail($id);
         $client = Client::find($project->id_client);
         $services = Service::where('id_project', $id)->get();
         $serviceDetails = ServiceDetail::all();
