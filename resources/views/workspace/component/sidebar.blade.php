@@ -164,9 +164,9 @@
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                     aria-label="Open user menu">
-                    <span class="avatar avatar-sm"
-                        style="background-image: url({('static/avatars/000m.jpg')}})"></span>
-                    {{-- <img class="avatar avatar-sm" src="background-image: url({('static/avatars/000m.jpg')}})" alt=""> --}}
+                    {{-- <span class="avatar avatar-sm"
+                        style="background-image: url({('static/avatars/000m.jpg')}})"></span> --}}
+                    <img class="avatar avatar-sm" src="{{ asset('/photo-user/'.Auth::user()->photo_profile)}}" alt="">
                     <div class="d-none d-xl-block ps-2">
                         <div>Paweł Kuna</div>
                         <div class="mt-1 small text-muted">UI Designer</div>
