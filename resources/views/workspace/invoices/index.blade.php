@@ -112,11 +112,3 @@
     </div>
 @endsection
 
-@section('sweetalert')
-    <script>
-        // Auto-close the alert messages after 3 seconds (3000 milliseconds)
-        setTimeout(function() {
-            $('.swal2-popup').fadeOut();
-        }, 3000);
-    </script>
-@endsection
