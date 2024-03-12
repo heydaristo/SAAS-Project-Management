@@ -1,99 +1,202 @@
+@extends('template')
 
-          {{-- Edit Modals --}}
-          <div class="modal modal-blur fade" id="modalEdit-{{ $project->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Edit Project</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form action="{{ route('workspace.projects.update',['id' => $project->id]) }}" method="POST" enctype="multipart/form-data">
+@section('body')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{{ route('workspace.projects.update', $project->id) }}" method="post">
                     @csrf
                     @method('PUT')
-                    <div class="mb-3">
-                      <label for="project_name">Project Name</label>
-                        <input type="text" value="{{ $project->project_name }}" class="form-control mt-1" name="project_name" placeholder="Masukkan Project name" required />
-                    <div class="mb-3">
-                      <label for="start_date">Start Date</label>
-                      <input type="date" value="{{ $project->start_date }}" class="form-control mt-1" id="start_date" name="start_date" placeholder="Start Date" required />
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h3 class="card-title">Edit Your Project</h3>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                      <label for="end_date">End Date</label>
-                      <input type="date" value="{{ $project->end_date }}" class="form-control mt-1" id="end_date" name="end_date" placeholder="Masukkan alamat" required />
-                    </div>
-                    <div class="mb-3">
-                      <label for="status">Status</label>
-                      <select class="form-control mt-1" name="status">
-                          <option value="Active" {{ $project->status == 'Active' ? 'selected' : '' }}>Active</option>
-                          <option value="Pending" {{ $project->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                          <option value="Inactive" {{ $project->status == 'Inactive' ? 'selected' : '' }}>Inactive</option>
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                      <label for="client">Nama Client</label>
-                        <select class="form-control mt-1" name="id_client" id="id_client">
-                          @foreach ($clients as $client)
-                              <option value="{{ $client->id }}" {{ $project->id_client == $client->id ? 'selected' : '' }}>
-                                  {{ $client->name }}
-                              </option>
-                          @endforeach
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                      <label for="freelance">Nama Freelance</label>
-                        <select class="form-control mt-1" name="user_id" id="user_id">
-                          @foreach ($freelances as $freelance)
-                              <option value="{{ $freelance->id }}" {{ $project->user_id == $freelance->id ? 'selected' : '' }}>
-                                  {{ $freelance->fullname }}
-                              </option>
-                          @endforeach
-                      </select>
-                    </div>
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Cancel
-                  </a>
-                  <button href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                    Edit Project
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+                    <div class="card-body">
+                        {{-- project detail --}}
+                        <fieldset class="form-fieldset">
+                            <legend>Project Details</legend>
+                            <div class="mb-3">
+                                <label class="form-label required">Name Your Project</label>
+                                <input type="text" class="form-control" name="project_name"
+                                    value="{{ $project->project_name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Client Name</label>
+                                <select class="form-control" name="id_client">
+                                    <option value="">Select Client</option>
+                                    @foreach ($clients as $client)
+                                        <option value="{{ $client->id }}"
+                                            @if ($client->id == $project->id_client) selected @endif>
+                                            {{ $client->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Start Date</label>
+                                <input type="date" class="form-control" name="start_date"
+                                    value="{{ $project->start_date }}">
+                            </div>
 
-  
-          {{-- Modal Hapus --}}
+                            <div class="mb-3">
+                                <label class="form-label">End Date</label>
+                                <div>
+                                    <input type="date" class="form-control" name="end_date"
+                                        value="{{ $project->end_date }}">
+                                    {{-- tambahakan small message --}}
+                                    <small>Empty the date if open date.</small>
+                                </div>
+                            </div>
+                        </fieldset>
 
-          <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-              <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <div class="modal-status bg-danger"></div>
-                <div class="modal-body text-center py-4">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 9v4"></path><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path><path d="M12 16h.01"></path></svg>
-                  <h3>Are you sure?</h3>
-                  <div class="text-secondary">Do you really want to remove client {{$project->project_name}}? What you've done cannot be undone.</div>
-                </div>
-                <div class="modal-footer">
-                  <div class="w-100">
-                    <div class="row">
-                      <form action="{{ route('workspace.projects.delete',['id' => $project->id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                      <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">
-                          Cancel
-                        </a></div>
-                      <div class="col"><button class="btn btn-danger w-100" data-bs-dismiss="modal">
-                          Delete
-                        </button></div>
-                        </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        <fieldset class="form-fieldset">
+                            <legend>Services</legend>
+                            <div id="serviceContainer">
+                                @foreach ($serviceDetails as $service)
+                                    <div class="service-row">
+                                        Service Number: <span class="service-number">{{ $loop->iteration }}</span>
+                                        <input type="text" class="form-control service-name" name="service_name[]"
+                                            placeholder="Service Name" value="{{ $service->service_name }}">
+                                        <input type="number" class="form-control service-price" name="service_price[]"
+                                            placeholder="Price" value="{{ $service->price }}">
+                                        <select class="form-control service-fee-method" name="service_fee_method[]">
+                                            <option value="fixed" {{ $service->pay_method == 'fixed' ? 'selected' : '' }}>
+                                                Fixed</option>
+                                            <option value="percentage"
+                                                {{ $service->pay_method == 'percentage' ? 'selected' : '' }}>Percentage
+                                            </option>
+                                        </select>
+                                        <input type="text" class="form-control service-description"
+                                            name="service_description[]" placeholder="Description"
+                                            value="{{ $service->description }}">
+                                    </div>
+                                    @if (!$loop->last)
+                                        <div class="service-separator"></div>
+                                    @endif
+                                @endforeach
+                            </div>
+                            <button type="button" id="addService" class="btn btn-primary mt-2">Add Another Service</button>
+                        </fieldset>
+                        <fieldset class="form-fieldset">
+                            <legend>Billing Schedule</legend>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="requireDeposit" name="require_deposit"
+                                    {{ $project->require_deposit ? 'checked' : '' }}>
+                                <label class="form-check-label" for="requireDeposit">Require Deposit?</label>
+                            </div>
+                            <div id="depositFields"
+                                style="{{ $project->require_deposit ? 'display: block;' : 'display: none;' }}">
+                                <div class="mb-3">
+                                    <label class="form-label">Deposit Percentage</label>
+                                    <input type="number" class="form-control" id="depositPercentage"
+                                        name="deposit_percentage" placeholder="Percentage"
+                                        value="{{ $project->deposit_percentage }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Deposit Amount</label>
+                                    <input type="text" class="form-control" id="depositAmount" name="deposit_amount"
+                                        readonly value="{{ $project->deposit_amount }}">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="clientAgreesDeposit"
+                                        name="client_agrees_deposit"
+                                        {{ $project->client_agrees_deposit ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="clientAgreesDeposit">Make deposit payment mandatory
+                                        for approval?</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Final Invoice Date</label>
+                                <input type="date" class="form-control" name="final_invoice_date"
+                                    value="{{ $project->final_invoice_date }}">
+                            </div>
+                        </fieldset>
+
+                        {{-- ganti jadi dinamis aja --}}
+                        <div class="card-footer text-end">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="form-label">Total Service Price: <span id="totalCost">0</span></label>
+                                </div>
+                            </div>
+                        </div>
+                </form>
             </div>
-          </div>
+        </div>
+        {{-- add new service column --}}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                calculateTotalCost();
+                $('#addService').click(function() {
+                    var lastServiceRow = $('.service-row').last();
+                    var newServiceRow = lastServiceRow.clone();
+                    var newServiceNumber = parseInt(lastServiceRow.find('.service-number').text()) + 1;
+
+                    newServiceRow.find('.service-number').text(newServiceNumber);
+                    newServiceRow.find('input, select').val(''); // Clear input values
+
+                    // Add delete button for services starting from the third one
+                    if (newServiceNumber >= 2) {
+                        newServiceRow.append('<button class="btn btn-danger delete-service">Hapus</button>');
+                    }
+
+                    $('#serviceContainer').append('<div class="service-separator"></div>'); // Add separator
+                    $('#serviceContainer').append(newServiceRow);
+                });
+
+                $(document).on('click', '.delete-service', function() {
+                    $(this).closest('.service-row').next('.service-separator').remove(); // Remove separator
+                    $(this).closest('.service-row').remove(); // Remove service row
+                    updateServiceNumbers();
+                    calculateTotalCost();
+                });
+
+                $(document).on('input', '.service-price, .service-fee-method', function() {
+                    calculateTotalCost();
+                });
+
+
+                $('#requireDeposit').change(function() {
+                    if (this.checked) {
+                        $('#depositFields').show();
+                    } else {
+                        $('#depositFields').hide();
+                    }
+                });
+
+                $('#depositPercentage').on('input', function() {
+                    var depositPercentage = parseFloat($(this).val()) || 0;
+                    var totalCost = parseFloat($('#totalCost').text()) || 0;
+                    var depositAmount = (depositPercentage / 100) * totalCost;
+                    $('#depositAmount').val(depositAmount.toFixed(2));
+                });
+
+
+                function calculateTotalCost() {
+                    var total = 0;
+                    $('.service-row').each(function() {
+                        var price = parseFloat($(this).find('.service-price').val()) || 0;
+                        var feeMethod = $(this).find('.service-fee-method').val();
+
+                        if (feeMethod === 'percentage') {
+                            total += price * 0.01; // Convert percentage to decimal
+                        } else {
+                            total += price;
+                        }
+                    });
+
+                    $('#totalCost').text(total.toFixed(2));
+                }
+
+                function updateServiceNumbers() {
+                    $('.service-row').each(function(index) {
+                        $(this).find('.service-number').text(index + 1);
+                    });
+                }
+            });
+        </script>
+    @endsection

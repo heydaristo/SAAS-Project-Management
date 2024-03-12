@@ -22,31 +22,32 @@
                                 <label class="form-label required">Name Your Project</label>
                                 <div>
                                     <input type="text" class="form-control" placeholder="Project Name"
-                                        name="project_name">
+                                        name="project_name" value="{{ old('project_name') }}">
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label required">Client Name</label>
-                                <select class="form-control mt-1" name="id_client" id="id_client">
-                                    <option value="">Select client</option>
-                                    @foreach ($clients as $client)
-                                        @if ($client->user_id == auth()->user()->id)
-                                            <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
+                                <div>
+                                    <select class="form-control" name="id_client">
+                                        <option value="">Select Client</option>
+                                        @foreach ($clients as $client)
+                                            @if ($client->user_id == auth()->user()->id)
+                                                <option value="{{ $client->id }}">{{ $client->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label required">Start Date</label>
                                 <div>
-                                    <input type="date" class="form-control" name="start_date">
+                                    <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}">
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">End Date</label>
                                 <div>
-                                    <input type="date" class="form-control" name="end_date">
+                                    <input type="date" class="form-control" name="end_date" value="{{ old('end_date') }}">
                                     {{-- tambahakan small message --}}
                                     <small>Empty the date if open date.</small>
                                 </div>
