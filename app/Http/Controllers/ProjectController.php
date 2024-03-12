@@ -217,6 +217,7 @@ class ProjectController extends Controller
         return redirect()->route('workspace.projects');
     }
 
+  
     public function detail($id)
     {
         $project = ProjectModel::find($id);

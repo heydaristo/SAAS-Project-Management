@@ -114,6 +114,13 @@
                         <div class="row">
                             <div class="col">
                                 <h3>Billing Schedule</h3>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
+                                data-bs-target="#modalEdit-{{ $project->id }}">
+                                    <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
+                                </a>
+                            </div>
                                 <p class="fs-3">Set dates to get invoice reminders.</p>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <p class="me-5 fs-3">Start Date</p>
@@ -127,8 +134,41 @@
                                     <p class="me-5 fs-3">I Will Bill</p>
                                     <p class="fs-3">Once</p>
                                 </div>
+                        </div>     
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="mt-2 fs-3">Project Services</h3>
                             </div>
-                        </div>                        
+                            <div class="col-auto">
+                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
+                                data-bs-target="#modalEdit-{{ $project->id }}">
+                                    <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
+                                </a>
+                            </div>  
+                        </div>   
+                        <hr>
+                        <div class="row">
+                            <div class="col">
+                                <p class="text-success fs-3 mt-2">Currency : IDR</p>
+                            </div>
+                            <div class="col-auto">
+                                <h1 class="text-secondary">Rp. 0,00</h1>
+                            </div>    
+                        </div>  
+                        <hr>  
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="mt-2 fs-3">Deposit</h3>
+                                <p class="fs-3 mt-2">Deposit Not Required</p>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
+                                data-bs-target="#modalEdit-{{ $project->id }}">
+                                    <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
+                                </a>
+                            </div>    
+                        </div>           
                     </div>
                     <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
                         <h4>Profile tab</h4>

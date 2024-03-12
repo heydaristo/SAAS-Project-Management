@@ -62,15 +62,15 @@
                                 <div class="service-row">
                                     Service Number:
                                     <span class="service-number">1</span>
-                                    <input type="text" class="form-control service-name" name="service_name[]"
-                                        placeholder="Service Name" value="{{ old('service_name') }}">
-                                    <input type="number" class="form-control service-price" name="service_price[]"
-                                        placeholder="Price" value="{{ old('service_price') }}">
-                                    <select class="form-control service-fee-method" name="service_fee_method[]">
+                                    <input type="text" class="form-control service-name mt-2" name="service_name[]"
+                                        placeholder="Service Name">
+                                    <input type="number" class="form-control service-price mt-2" name="service_price[]"
+                                        placeholder="Price">
+                                    <select class="form-control service-fee-method mt-2" name="service_fee_method[]">
                                         <option value="fixed">Fixed</option>
                                         <option value="percentage">Percentage</option>
                                     </select>
-                                    <input type="text" class="form-control service-description"
+                                    <input type="text" class="form-control service-description mt-2"
                                         name="service_description[]" placeholder="Description">
                                 </div>
                             </div>
