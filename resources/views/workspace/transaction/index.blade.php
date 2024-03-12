@@ -517,12 +517,3 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 @endsection
-
-@section('sweetalert')
-    <script>
-        // Auto-close the alert messages after 3 seconds (3000 milliseconds)
-        setTimeout(function() {
-            $('.swal2-popup').fadeOut();
-        }, 3000);
-    </script>
-@endsection
