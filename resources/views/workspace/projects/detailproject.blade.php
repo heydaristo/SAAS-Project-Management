@@ -10,7 +10,7 @@
     <div class="col">
            {{-- add button to add invoice --}}
            <button type="button" class="btn mt-2" data-bs-toggle="modal">
-            <a href="{{ route('workspace.invoices.createfromproject',['id'=>$project->id]) }}">Add Invoice</a>
+            <a href="{{ route('workspace.invoices.createfromproject',['id'=>$project->id]) }}" style="text-decoration: none;">Add Invoice</a>
         </button>  
         <a href="#" class="btn btn-secondary dropdown-toggle mt-2" data-bs-toggle="dropdown" aria-expanded="false">More</a>
         <ul class="dropdown-menu">
@@ -27,8 +27,8 @@
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a href="#tabs-term-7" class="nav-link active" data-bs-toggle="tab" aria-selected="true"
-                            role="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                        <a href="#tabs-term" class="nav-link active" data-bs-toggle="tab" aria-selected="true"
+                            role="tab">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-2"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -40,7 +40,7 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <a href="#tabs-invoice-7" class="nav-link" data-bs-toggle="tab" aria-selected="true"
-                            role="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                            role="tab">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-timeline"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -55,7 +55,7 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <a href="#tabs-transaction-7" class="nav-link" data-bs-toggle="tab" aria-selected="true"
-                            role="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                            role="tab">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-report-money"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -99,10 +99,37 @@
             </div>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane active show" id="tabs-home-7" role="tabpanel">
-                        <h4>Home tab</h4>
-                        <div>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at
-                            sed facilisis lacus pellentesque purus nibh</div>
+                    <div class="tab-pane active show" id="tabs-term" role="tabpanel">
+                        <div class="row">
+                            <div class="col">
+                                <h2>{{ $project->project_name }}</h2>
+                            </div>
+                            <div class="col-auto">
+                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
+                                data-bs-target="#modalEdit-{{ $project->id }}">
+                                    <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
+                                </a>
+                            </div>
+                        </div>
+                        <hr style="position: relative; bottom: 20px;">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Billing Schedule</h3>
+                                <p class="fs-3">Set dates to get invoice reminders.</p>
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <p class="me-5 fs-3">Start Date</p>
+                                    <p class="fs-3">{{ $project->start_date }}</p>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <p class="me-5 fs-3">End Date</p>
+                                    <p class="fs-3">{{ $project->end_date }}</p>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <p class="me-5 fs-3">I Will Bill</p>
+                                    <p class="fs-3">Once</p>
+                                </div>
+                            </div>
+                        </div>                        
                     </div>
                     <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
                         <h4>Profile tab</h4>

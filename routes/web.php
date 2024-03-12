@@ -65,6 +65,12 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::get('/dashboard', [WorkspaceDashboardController::class, 'index'])->name('dashboard');
 
+    Route::put('/dashboard/status/{id}', [WorkspaceDashboardController::class, 'storeStatus'])->name('dashboard.storeStatus');
+
+    Route::post('/send/tasks', [WorkspaceDashboardController::class, 'storeTasks'])->name('dashboard.storeTasks');
+
+    Route::delete('/delete/tasks/{id}', [WorkspaceDashboardController::class, 'destroyTasks'])->name('dashboard.destroyTasks');
+
     Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 
     Route::post('/clients/create', [ClientController::class, 'store'])->name('clients.store');
@@ -143,6 +149,7 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::post('/invoice/print', [InvoiceController::class, 'printPDF'])->name('invoices.print');
     Route::delete('/invoice/delete/{id}', [InvoiceController::class, 'destroy'])->name('invoices.delete');
     Route::get('/invoice/createfromproject/{id}', [InvoiceController::class, 'showInvoiceFromProject'])->name('invoices.createfromproject');
+    Route::get('/invoice/createfromclient/{id}', [InvoiceController::class, 'showInvoiceFromClient'])->name('invoices.createfromclient');
     // Post Create Invoice
     Route::get('/invoice/create/preview', function () {
         return view('workspace.invoices.previewstep.preview');

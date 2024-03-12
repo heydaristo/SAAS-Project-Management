@@ -8,9 +8,6 @@
     <div class="row row-deck row-cards">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">contracts</h3>
-                </div>
                 <div class="card-body border-bottom py-3">
                     <a href="{{ route('workspace.contract.showadd') }}">
                         <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal">

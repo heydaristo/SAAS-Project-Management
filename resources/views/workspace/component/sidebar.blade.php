@@ -1,3 +1,8 @@
+<style>
+    .nav-item.active {
+    background-color: rgba(0, 0, 255, 0.3); /* Warna biru dengan opacity 0.3 */
+}
+</style>
 <aside class="navbar navbar-vertical navbar-expand-lg sidebar">
     <div class="container-fluid sidebar-divider">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu"
@@ -158,9 +163,9 @@
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                     aria-label="Open user menu">
-                    <span class="avatar avatar-sm"
-                        style="background-image: url({('static/avatars/000m.jpg')}})"></span>
-                    {{-- <img class="avatar avatar-sm" src="background-image: url({('static/avatars/000m.jpg')}})" alt=""> --}}
+                    {{-- <span class="avatar avatar-sm"
+                        style="background-image: url({('static/avatars/000m.jpg')}})"></span> --}}
+                    <img class="avatar avatar-sm" src="{{ asset('/photo-user/'.Auth::user()->photo_profile)}}" alt="">
                     <div class="d-none d-xl-block ps-2">
                         <div>Paweł Kuna</div>
                         <div class="mt-1 small text-muted">UI Designer</div>
@@ -169,7 +174,6 @@
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <a href="#" class="dropdown-item">Status</a>
                     <a href="./profile.html" class="dropdown-item">Profile</a>
-                    <a href="#" class="dropdown-item">Feedback</a>
                     <div class="dropdown-divider"></div>
                     <a href="./settings.html" class="dropdown-item">Settings</a>
                     <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
@@ -191,7 +195,7 @@
                                 <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Home
                         </span>
                     </a>
@@ -210,7 +214,7 @@
                                 <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Client
                         </span>
                     </a>
@@ -227,7 +231,7 @@
                                     d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Project
                         </span>
                     </a>
@@ -248,7 +252,7 @@
                                 <path d="M10 7h4" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Quotation
                         </span>
                     </a>
@@ -269,7 +273,7 @@
                                 <path d="M10 7h4" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Contract
                         </span>
                     </a>
@@ -291,7 +295,7 @@
                                 <path d="M12 6v10" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Invoice
                         </span>
                     </a>
@@ -310,7 +314,7 @@
                                 <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" />
                             </svg>
                         </span>
-                        <span class="nav-link-title">
+                        <span class="nav-link-title fs-3">
                             Transaction
                         </span>
                     </a>
@@ -320,7 +324,7 @@
                     <li class="nav-item">
                         <a href="{{ route('workspace.subscriptions.upgradeshow') }}" class="nav-link">
                             {{-- make button --}}
-                            <button class="btn btn-primary btn-block">
+                            <button class="btn btn-primary btn-block" style="width: 250px; height: 40px;">
                                 Upgrade to Premium
                             </button>
                         </a>
