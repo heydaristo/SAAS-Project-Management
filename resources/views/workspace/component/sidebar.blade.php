@@ -9,7 +9,6 @@
                 SAAS <br class="fs-4"> Workspace
             </a>
         </h1>
-        </a>
         <div class="navbar-nav flex-row d-lg-none">
             <div class="nav-item d-none d-lg-flex me-3">
 
