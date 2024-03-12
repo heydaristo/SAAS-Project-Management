@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\TasksClient;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Client;
 use Carbon\Carbon;
 
@@ -14,7 +15,8 @@ class WorkspaceDashboardController extends Controller
     public function index()
     {
         $tasks = TasksClient::where('id_user', Auth()->user()->id)->paginate(10);
-        return view('workspace.dashboard', compact('tasks'));
+        $user = User::where('status', Auth()->user()->status);
+        return view('workspace.dashboard', compact('tasks', 'user'));
     }
     public function storeTasks(Request $request) {
         // Ambil data dari request
@@ -43,6 +45,23 @@ class WorkspaceDashboardController extends Controller
     public function destroyTasks($id) {
         $tasks = TasksClient::find($id);
         $tasks->delete();
+        return redirect()->back();
+    }
+
+    public function storeStatus($id,Request $request) {
+         // Validasi request
+         $request->validate([
+            'status' => 'required|in:Active,Busy,Offline', // Pastikan status yang dipilih adalah salah satu dari Active, Busy, atau Offline
+        ]);
+        $data = [
+            'status' => $request->status,
+        ];
+        // dd($data);
+        User::find($id)->update($data);
+
+        // Redirect atau kembali ke halaman sebelumnya
+        Alert::success('Success Message', 'You have successfully to set status.');
+        
         return redirect()->back();
     }
     

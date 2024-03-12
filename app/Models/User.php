@@ -33,6 +33,7 @@ class User extends Authenticatable
         'experience_level',
         'organization',
         'photo_profile',
+        'status',
         'last_activity'
     ];
 

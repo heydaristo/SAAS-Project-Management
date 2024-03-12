@@ -169,6 +169,7 @@ class UserController extends Controller
         $data['profession'] = "notset";
         $data['experience_level'] = 0;
         $data['organization'] = "notset";
+        $data['status'] = "Active";
         $data['photo_profile'] = $defaultProfilePath;
         
 
