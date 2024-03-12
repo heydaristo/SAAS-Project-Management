@@ -13,6 +13,7 @@ use App\Models\ServiceDetail;
 use App\Models\User;
 use App\Models\ProjectModel;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
@@ -165,7 +166,7 @@ class ContractController extends Controller
     public function showUpdate($id)
     {
         $contract = Contract::findOrFail($id);
-        $clients = Client::all();
+        $clients = Client::where('user_id', Auth::id())->get();
         $user = User::find($contract->id_user);
         $services = Service::where('id_contract', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
@@ -174,8 +175,9 @@ class ContractController extends Controller
 
     public function update(Request $request, $id)
     {
+        dd($request->all());
         // Validate the request data
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'project_name' => 'required|string',
             'id_client' => 'required|exists:clients,id',
             'start_date' => 'required|date',
@@ -183,6 +185,13 @@ class ContractController extends Controller
             'final_invoice_date' => 'required|date',
             // Add more validation rules as needed
         ]);
+
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed update contract.');
+            return redirect()->route('workspace.contract.showupdate', $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         // Find the contract to update
         $contract = Contract::findOrFail($id); // assuming $id is the contract ID being updated

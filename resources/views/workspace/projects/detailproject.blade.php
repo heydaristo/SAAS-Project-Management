@@ -14,8 +14,7 @@
         </button>  
         <a href="#" class="btn btn-secondary dropdown-toggle mt-2" data-bs-toggle="dropdown" aria-expanded="false">More</a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-            data-bs-target="#modalEdit-{{ $project->id }}">Edit Project</a></li>
+          <li><a class="dropdown-item" href="{{route('workspace.projects.edit', $project->id)}}">Edit Project</a></li>
           <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
             data-bs-target="#modalDelete-{{ $project->id }}">Delete Project</a></li>
         </ul>

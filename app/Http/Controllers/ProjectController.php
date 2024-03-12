@@ -22,7 +22,7 @@ class ProjectController extends Controller
     {
         // Mendapatkan ID pengguna yang sedang login
         $userId = Auth::id();
-    
+
         // Mengambil proyek yang dimiliki oleh pengguna yang sedang login
         $projectmodels = DB::table('project_models')
             ->where('project_models.user_id', $userId) // Filter berdasarkan user_id
@@ -30,31 +30,35 @@ class ProjectController extends Controller
             ->select('project_models.*', 'clients.name as name')
             ->orderBy('project_models.created_at', 'desc')
             ->paginate(5);
-    
+
         // Mengambil klien yang dimiliki oleh pengguna yang sedang login
         $clients = Client::where('user_id', $userId)->get();
-    
+
         return view('workspace.projects.index', compact('projectmodels', 'clients'));
     }
 
-    public function showadd(){
+    public function showadd()
+    {
         $userId = Auth::id();
         $clients = Client::where('user_id', $userId)->get();
         return view('workspace.projects.addproject', compact('clients'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'project_name' => 'required|string',
             'id_client' => 'required|exists:clients,id',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'final_invoice_date' => 'required|date',
+            'service_name' => 'required|array',
         ]);
+
         if ($validator->fails()) {
-            $error = "You have failed add new projeect.\n".strval($validator->errors());
+            $error = "You have failed add new projeect.\n" . strval($validator->errors());
             Alert::error('Failed Message', $error);
-            return redirect()->route('workspace.projects');
+            return redirect()->route('workspace.projects.addproject')->withInput();
         }
 
         $user = Auth::user();
@@ -66,37 +70,71 @@ class ProjectController extends Controller
         $data['id_client'] = $request->id_client;
         $data['user_id'] = $user->id;
 
-        if(!$data){
-            $error = "You have failed add new projeect.\n".strval($validator->errors());
+        if (!$data) {
+            $error = "You have failed add new projeect.\n" . strval($validator->errors());
             Alert::error('Failed Message', $error);
             return redirect()->route('workspace.projects');
-        }else{
-            // dd($data);
+        } else {
             $result = ProjectModel::create($data);
-            if($result){
+            if ($result) {
+
+                // Create each subscription
+                $service = new Service();
+                $service->id_quotation = 1;
+                $service->id_project = $result->id;
+                $service->id_contract = 1;
+                $service->save();
+
+                // create each subscription detail
+                $serviceNames = $request->input('service_name');
+                $servicePrices = $request->input('service_price');
+                $serviceFeeMethods = $request->input('service_fee_method');
+                $serviceDescriptions = $request->input('service_description');
+                foreach ($serviceNames as $index => $serviceName) {
+                    $serviceDetail = new ServiceDetail();
+                    $serviceDetail->id_service = $service->id;
+                    $serviceDetail->service_name = $serviceName;
+                    $serviceDetail->price = $servicePrices[$index];
+                    $serviceDetail->pay_method = $serviceFeeMethods[$index];
+                    $serviceDetail->description = $serviceDescriptions[$index];
+                    $serviceDetail->save();
+                }
+
                 Alert::success('Success Message', 'You have successfully add new project.');
                 return redirect()->route('workspace.projects');
-            }else{
+            } else {
                 Alert::error('Failed Message', 'You have failed add new project.');
                 return redirect()->route('workspace.projects');
             }
         }
     }
 
-    public function edit($id){
-        $client = Client::find($id);
-
-        return view('workspace.clients.edit', compact('client'));
+    public function edit($id)
+    {
+        $project = ProjectModel::find($id);
+        $clients = Client::where('user_id', Auth::id())->get();
+        $user = User::find($project->user_id);
+        $services = Service::where('id_contract', $id)->get();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        return view('workspace.projects.edit', compact('project', 'clients', 'user', 'services', 'serviceDetails'));
     }
 
-    public function update(Request $request, $id){
-        $request->validate([
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
             'project_name' => 'required|string',
             'id_client' => 'required|exists:clients,id',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'final_invoice_date' => 'required|date',
+            'service_name' => 'required|array',
         ]);
+
+        if($validator->fails()){
+            Alert::error('Failed Message', 'You have failed update project.'.$validator->errors());
+            return redirect()->back()->with('error', $validator->errors());
+        }
+
         $user = Auth::user();
 
         $project = new ProjectModel();
@@ -105,7 +143,7 @@ class ProjectController extends Controller
         $project->status = "ACTIVE";
         $project->id_client = $request->id_client;
         $project->user_id = $user->id;
-        
+
         if ($request->has('end_date')) {
             $project->end_date = $request->input('end_date');
         } else {
@@ -171,29 +209,32 @@ class ProjectController extends Controller
     }
 
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         ProjectModel::find($id)->delete();
 
         Alert::success('Success Message', 'You have successfully to delete project.');
         return redirect()->route('workspace.projects');
     }
 
-    public function detail($id){
+    public function detail($id)
+    {
         $project = ProjectModel::find($id);
         $client = Client::find($project->id_client);
         $services = Service::where('id_project', $id)->get();
         $serviceDetails = ServiceDetail::all();
         return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails'));
     }
-    public function updateName(Request $request, $id){
+    public function updateName(Request $request, $id)
+    {
         $project = ProjectModel::find($id);
         if (!$project) {
             return redirect()->back()->with('error', 'Project not found');
         }
-    
+
         $project->project_name = $request->project_name;
         $project->save();
-    
+
         Alert::success('Success Message', 'You have successfully changed the name.');
         return redirect()->back();
 

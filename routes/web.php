@@ -94,13 +94,14 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/clients/checklimit/{id}', [ClientController::class, 'checklimit'])->name('clients.checklimit');
 
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
-    Route::put('/projects/update/{id}', [ProjectController::class, 'update'])->name('projects.update');
     Route::delete('/projects/delete/{id}', [ProjectController::class, 'destroy'])->name('projects.delete');
     Route::get('/projects/show/{id}', [ProjectController::class, 'show'])->name('projects.show');
     Route::put('/projects/show/update/name/{id}', [ProjectController::class, 'updateName'])->name('projects.update.name');
     Route::post('/projects/store', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('/projects/showadd', [ProjectController::class, 'showadd'])->name('projects.showadd');
     Route::get('/projects/detail/{id}', [ProjectController::class, 'detail'])->name('projects.detail');
+    Route::get('/projects/edit/{id}', [ProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/update/{id}', [ProjectController::class, 'update'])->name('projects.update');
     
     // quotations
     Route::get('/quotation', [QuotationController::class, 'index'])->name('quotation');
