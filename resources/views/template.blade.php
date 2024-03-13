@@ -15,6 +15,7 @@
     {{-- <title>@yield('title')</title> --}}
     <title>SAAS Management Project For Freelancer</title>
     <!-- CSS files -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="{{ asset('dist/css/tabler.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('dist/css/tabler-flags.min.css?1684106062') }}" rel="stylesheet" />

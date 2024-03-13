@@ -67,6 +67,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
 
     Route::put('/dashboard/status/{id}', [WorkspaceDashboardController::class, 'storeStatus'])->name('dashboard.storeStatus');
 
+    Route::put('/dashboard/tasks/{id}', [WorkspaceDashboardController::class, 'storeTasksStatus'])->name('dashboard.storeTasksStatus');
+
     Route::post('/send/tasks', [WorkspaceDashboardController::class, 'storeTasks'])->name('dashboard.storeTasks');
 
     Route::delete('/delete/tasks/{id}', [WorkspaceDashboardController::class, 'destroyTasks'])->name('dashboard.destroyTasks');

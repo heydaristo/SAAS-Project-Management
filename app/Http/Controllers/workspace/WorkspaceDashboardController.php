@@ -14,7 +14,7 @@ class WorkspaceDashboardController extends Controller
 {
     public function index()
     {
-        $tasks = TasksClient::where('id_user', Auth()->user()->id)->paginate(10);
+        $tasks = TasksClient::where('id_user', Auth()->user()->id,)->paginate(10);
         $user = User::where('status', Auth()->user()->status);
         return view('workspace.dashboard', compact('tasks', 'user'));
     }
@@ -58,6 +58,22 @@ class WorkspaceDashboardController extends Controller
         ];
         // dd($data);
         User::find($id)->update($data);
+
+        // Redirect atau kembali ke halaman sebelumnya
+        Alert::success('Success Message', 'You have successfully to set status.');
+        
+        return redirect()->back();
+    }
+
+    public function storeTasksStatus() {
+        $request->validate([
+            'status' => 'required|in:Done,On Going, Off', // Pastikan status yang dipilih adalah salah satu dari Active, Busy, atau Offline
+        ]);
+        $data = [
+            'status' => $request->status,
+        ];
+        // dd($data);
+        TasksClient::find($id)->update($data);
 
         // Redirect atau kembali ke halaman sebelumnya
         Alert::success('Success Message', 'You have successfully to set status.');

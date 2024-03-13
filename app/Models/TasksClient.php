@@ -14,6 +14,7 @@ class TasksClient extends Model
     protected $fillable=[
         'tasks',
         'tasks_due_date',
+        'status',
         'id_client',
         'id_user'
     ];

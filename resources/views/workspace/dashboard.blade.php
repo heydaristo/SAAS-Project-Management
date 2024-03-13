@@ -129,7 +129,8 @@
                                 <tr>
                                     <th class="w-1">No.</th>
                                     <th class="text-start">Title</th>
-                                    <th class="w-1"></th>
+                                    <th>Status</th>
+                                    <th class="w-1">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -140,7 +141,10 @@
                                 <tr>
                                     <td></td>
                                     <td class="text-start fs-3">{{ $task->tasks }}</td>
-                                    
+                                    <td>
+                                      <a href="#" class="text-warning dropdown-toggle">On Progress</a>
+                                      
+                                    </td>
                                     <td>
                                       <form action="{{ route('workspace.dashboard.destroyTasks', $task->id) }}" method="POST">
                                         @csrf

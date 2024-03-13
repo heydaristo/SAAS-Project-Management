@@ -222,6 +222,7 @@ class ProjectController extends Controller
     {
         $project = ProjectModel::find($id);
         $client = Client::find($project->id_client);
+        // $invoices = Invoice::where('id_client', $client->id)->paginate(5);
         $services = Service::where('id_project', $id)->get();
         $serviceDetails = ServiceDetail::all();
         return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails'));
