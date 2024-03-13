@@ -3,7 +3,7 @@
 @section('body')
 <div class="row">
     <div class="col">
-        <span class="fs-2">Project / <strong>{{ $project->project_name }}</strong></span>
+        <span class="fs-2"><a href="{{ route('workspace.projects') }}" style="text-decoration: none; color:black;"> Project </a>/ <strong>{{ $project->project_name }}</strong></span>
     </div>
   </div>
   <div class="row">
@@ -101,11 +101,10 @@
                     <div class="tab-pane active show" id="tabs-term" role="tabpanel">
                         <div class="row">
                             <div class="col">
-                                <h2>{{ $project->project_name }}</h2>
+                                <h2 class="mt-2">{{ $project->project_name }}</h2>
                             </div>
-                            <div class="col-auto">
-                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
-                                data-bs-target="#modalEdit-{{ $project->id }}">
+                            <div class="col-auto mt-2">
+                                <a href="{{route('workspace.projects.edit', $project->id)}}" class="text-secondary fs-3" style="text-decoration: none;">
                                     <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
                                 </a>
                             </div>
@@ -116,8 +115,7 @@
                                 <h3>Billing Schedule</h3>
                             </div>
                             <div class="col-auto">
-                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
-                                data-bs-target="#modalEdit-{{ $project->id }}">
+                                <a href="{{route('workspace.projects.edit', $project->id)}}" class="text-secondary fs-3" style="text-decoration: none;">
                                     <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
                                 </a>
                             </div>
@@ -136,24 +134,25 @@
                                 </div>
                         </div>     
                         <hr>
+                        @foreach ($serviceDetails as $SD)                           
                         <div class="row">
                             <div class="col">
-                                <h3 class="mt-2 fs-3">Project Services</h3>
+                                <h2 class="fs-3">Project Services</h2>
                             </div>
                             <div class="col-auto">
-                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
-                                data-bs-target="#modalEdit-{{ $project->id }}">
-                                    <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
+                                <a href="{{route('workspace.projects.edit', $project->id)}}" class=" text-secondary fs-3">
+                                <h3 class="text-secondary">{{ $SD->service_name }}</h3>
                                 </a>
-                            </div>  
-                        </div>   
+                            </div>    
+                        </div>  
                         <hr>
                         <div class="row">
                             <div class="col">
                                 <p class="text-success fs-3 mt-2">Currency : IDR</p>
                             </div>
                             <div class="col-auto">
-                                <h1 class="text-secondary">Rp. 0,00</h1>
+                                <h1 class="text-secondary">Rp. {{ $SD->price }}</h1>
+                                @endforeach
                             </div>    
                         </div>  
                         <hr>  
@@ -163,8 +162,7 @@
                                 <p class="fs-3 mt-2">Deposit Not Required</p>
                             </div>
                             <div class="col-auto">
-                                <a href="#" class="text-secondary fs-3" style="text-decoration: none;" data-bs-toggle="modal"
-                                data-bs-target="#modalEdit-{{ $project->id }}">
+                                <a href="{{route('workspace.projects.edit', $project->id)}}" style="text-decoration: none;" class="text-secondary fs-3">
                                     <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
                                 </a>
                             </div>    
@@ -230,36 +228,4 @@
                         </div>
                     </div>
                 </div>
-                {{-- Modals Edit --}}
-<div class="modal modal-blur fade" id="modalEdit-{{ $client->id }}" tabindex="-1"
-    role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form action="{{ route('workspace.projects.update.name', ['id' => $project->id]) }}"
-                method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Project</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                        <input type="text" name="project_name" class="form-control"
-                            placeholder="Masukkan Nama" value="{{ $project->project_name }}">
-                </div>
-                <div class="modal-footer">
-                  <a href="#" class="btn btn-link link-secondary"
-                      data-bs-dismiss="modal" style="text-decoration: none;">
-                      Cancel
-                  </a>
-                  <button type="submit" class="btn btn-primary mr-2"
-                      data-bs-dismiss="modal">
-                      Edit Client
-                  </button>
-              </div>
-            </form>
-        </div>
-    </div>
-  </div>
 @endsection

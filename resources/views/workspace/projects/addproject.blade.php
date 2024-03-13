@@ -22,13 +22,13 @@
                                 <label class="form-label required">Name Your Project</label>
                                 <div>
                                     <input type="text" class="form-control" placeholder="Project Name"
-                                        name="project_name" value="{{ old('project_name') }}">
+                                        name="project_name" value="{{ old('project_name') }}" required>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label required">Client Name</label>
                                 <div>
-                                    <select class="form-control" name="id_client">
+                                    <select class="form-control" name="id_client" required>
                                         <option value="">Select Client</option>
                                         @foreach ($clients as $client)
                                             @if ($client->user_id == auth()->user()->id)
@@ -40,7 +40,7 @@
                             <div class="mb-3">
                                 <label class="form-label required">Start Date</label>
                                 <div>
-                                    <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}">
+                                    <input type="date" class="form-control" name="start_date" value="{{ old('start_date') }}" required>
                                 </div>
                             </div>
 
@@ -63,15 +63,15 @@
                                     Service Number:
                                     <span class="service-number">1</span>
                                     <input type="text" class="form-control service-name mt-2" name="service_name[]"
-                                        placeholder="Service Name">
+                                        placeholder="Service Name" required>
                                     <input type="number" class="form-control service-price mt-2" name="service_price[]"
-                                        placeholder="Price">
-                                    <select class="form-control service-fee-method mt-2" name="service_fee_method[]">
+                                        placeholder="Price" required>
+                                    <select class="form-control service-fee-method mt-2" name="service_fee_method[]" required>
                                         <option value="fixed">Fixed</option>
                                         <option value="percentage">Percentage</option>
                                     </select>
                                     <input type="text" class="form-control service-description mt-2"
-                                        name="service_description[]" placeholder="Description">
+                                        name="service_description[]" placeholder="Description" required>
                                 </div>
                             </div>
                             <button type="button" id="addService" class="btn btn-primary mt-2">Add Other Service</button>

@@ -58,7 +58,7 @@ class ProjectController extends Controller
         if ($validator->fails()) {
             $error = "You have failed add new projeect.\n" . strval($validator->errors());
             Alert::error('Failed Message', $error);
-            return redirect()->route('workspace.projects.addproject')->withInput();
+            return redirect()->back()->withInput();
         }
 
         $user = Auth::user();
@@ -114,8 +114,16 @@ class ProjectController extends Controller
         $project = ProjectModel::find($id);
         $clients = Client::where('user_id', Auth::id())->get();
         $user = User::find($project->user_id);
-        $services = Service::where('id_contract', $id)->get();
-        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        $services = Service::where('id_project', $id)->get();
+         // Memeriksa apakah array $services memiliki elemen atau tidak
+         if (count($services) > 0) {
+            // Jika array memiliki elemen, lanjutkan dengan query ke database
+            $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
+        } else {
+            // Jika array kosong, redirect ke halaman sebelumnya
+            Alert::error('Failed Message', 'Can`t edit project because services null. Please contact administration.');
+            return redirect()->back();
+        }
         return view('workspace.projects.edit', compact('project', 'clients', 'user', 'services', 'serviceDetails'));
     }
 
@@ -224,7 +232,7 @@ class ProjectController extends Controller
         $client = Client::find($project->id_client);
         // $invoices = Invoice::where('id_client', $client->id)->paginate(5);
         $services = Service::where('id_project', $id)->get();
-        $serviceDetails = ServiceDetail::all();
+        $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
         return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails'));
     }
     public function updateName(Request $request, $id)

@@ -355,7 +355,6 @@ class ContractController extends Controller
     {
         $contract = Contract::find($id);
         $contract->status = "APPROVED";
-        $contract->save();
 
         // create project based on contract
         $data['project_name'] = $contract->contract_name;
@@ -365,7 +364,10 @@ class ContractController extends Controller
         $data['id_client'] = $contract->id_client;
         $data['user_id'] = $contract->id_user;
 
-        ProjectModel::create($data);
+         $contract = ProjectModel::create($data);
+
+        $contract->id_project = $contract->id;
+        $contract->save();
 
         // update service id project
         $service = Service::where('id_contract', $id)->first();

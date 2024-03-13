@@ -338,7 +338,6 @@ class QuotationController extends Controller
         } else if ($quotation->client_agrees_deposit == false) {
             // page terimakasih
             $quotation->status = "APPROVED";
-            $quotation->save();
             // create project based on contract
             $data['project_name'] = $quotation->quotation_name;
             $data['start_date'] = date('Y-m-d');
@@ -347,7 +346,12 @@ class QuotationController extends Controller
             $data['id_client'] = $quotation->id_client;
             $data['user_id'] = $quotation->id_user;
 
-            ProjectModel::create($data);
+            // update id project on quotation become a new one
+
+            $project = ProjectModel::create($data);
+
+            $quotation->id_project = $project->id;
+            $quotation->save();
 
             // update service id project
             $service = Service::where('id_quotation', $id)->first();
