@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Service;
 use App\Models\ServiceDetail;
 use Illuminate\Support\Facades\DB;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
@@ -225,15 +226,28 @@ class ProjectController extends Controller
         return redirect()->route('workspace.projects');
     }
 
+    public function updateNotes(Request $request, $id) {
+        $project = ProjectModel::find($id);
+        if (!$project) {
+            return redirect()->back()->with('error', 'Project not found');
+        }
+    
+        $project->notes = $request->notes;
+        $project->save();
+    
+        Alert::success('Success Message', 'You have successfully changed the notes.');
+        return redirect()->back();
+    }
+
   
     public function detail($id)
     {
         $project = ProjectModel::find($id);
         $client = Client::find($project->id_client);
-        // $invoices = Invoice::where('id_client', $client->id)->paginate(5);
+        $invoices = Invoice::where('id_client', $client->id)->paginate(5);
         $services = Service::where('id_project', $id)->get();
         $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
-        return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails'));
+        return view('workspace.projects.detailproject', compact('project', 'client', 'services', 'serviceDetails', 'invoices'));
     }
     public function updateName(Request $request, $id)
     {

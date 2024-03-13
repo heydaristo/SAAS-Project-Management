@@ -38,7 +38,7 @@
                             Terms</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a href="#tabs-invoice-7" class="nav-link" data-bs-toggle="tab" aria-selected="true"
+                        <a href="#tabs-invoices" class="nav-link" data-bs-toggle="tab" aria-selected="true"
                             role="tab">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-timeline"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -84,7 +84,7 @@
                             Files</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a href="#tabs-note-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
+                        <a href="#tabs-notes" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                             role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -168,15 +168,75 @@
                             </div>    
                         </div>           
                     </div>
-                    <div class="tab-pane" id="tabs-profile-7" role="tabpanel">
-                        <h4>Profile tab</h4>
-                        <div>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc
-                            amet, pellentesque id egestas velit sed</div>
+                    <div class="tab-pane" id="tabs-invoices" role="tabpanel">
+                        <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="w-1">No.
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24"
+                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M6 15l6 -6l6 6" />
+                                        </svg>
+                                    </th>
+                                    <th>Project Name</th>
+                                    <th>Client</th>
+                                    <th>Tanggal buat</th>
+                                    <th>Status</th>
+                                    <th>Kadarluarsa</th>
+                                    <th>Total</th>
+                                    {{-- <th class="w-1"></th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $i = 1 + ($invoices->currentPage() - 1) * $invoices->perPage();
+                                @endphp
+                                @foreach ($invoices as $invoice)
+                                    <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'"
+                                        style="cursor: pointer;">
+                                        <td><span class="text-muted">{{ $i++ }}</span></td>
+                                        <td>{{ $project->project_name }}</td>
+                                        <td>{{ $client->name }}</td>
+                                        <td>{{ $invoice->issued_date }}</td>
+                                        <td>
+                                            @if ($invoice->status == 'SENT')
+                                                <span class="badge text-bg-success">{{ $invoice->status }}</span>
+                                            @elseif($invoice->status == 'PENDING')
+                                                <span class="badge text-bg-warning">{{ $invoice->status }}</span>
+                                            @elseif($invoice->status == 'PAID')
+                                                <span class="badge text-bg-danger">{{ $invoice->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($invoice->due_date)
+                                                {{ $invoice->due_date }}
+                                            @else
+                                                <span class="badge text-bg-success">Open Date</span>
+                                            @endif
+                                        </td>
+                                        <td>@currency($invoice->total)</td>
+                                    </tr>
+                                @endforeach
+    
+                            </tbody>
+                        </table>
+                    </div>
                     </div>
                     <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
                         <h4>Activity tab</h4>
                         <div>Ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed</div>
                     </div>
+                    <div class="tab-pane" id="tabs-notes" role="tabpanel">
+                        <form action="{{ route('workspace.projects.update.notes', ['id' => $project->id]) }}" method="POST">
+                          @csrf
+                          @method('PUT')
+                          <textarea rows="5" class="form-control" name="notes" placeholder="Add Notes...">{{ $project->notes }}</textarea>
+                          <button class="btn btn-primary mt-3">Save</button>
+                        </form>
+                      </div>
                 </div>
             </div>
         </div>
