@@ -1,14 +1,14 @@
 @extends('template')
 
 @php
-    $title = 'Client List';
+    $title = "Daftar Klien";
+    $pretitle = "klien/list";
 @endphp
 
 
 @section('body')
     @include('workspace.component.letsupgrade')
     <div class="row row-deck row-cards">
-        @include('workspace.header')
         <div class="col-12">
                <div class="card">
                 <div class="card-header">

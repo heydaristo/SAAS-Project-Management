@@ -50,6 +50,7 @@ class InvoiceController extends Controller
 
     public function showInvoiceFromProject($id)
     {
+        // dd($id);
         // $id milik project
         $project = ProjectModel::find($id);
         $client = Client::find($project->id_client);
@@ -87,6 +88,7 @@ class InvoiceController extends Controller
     public function showInvoiceFromClient($id)
     {
         // $id milik client
+        dd($id);
         $client = Client::find($id);
         $project = ProjectModel::find($client->id_project);
         $services = Service::where('id_project', $id)->get();

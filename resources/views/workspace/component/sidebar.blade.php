@@ -11,7 +11,7 @@
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
             <a href="{{ route('workspace.dashboard') }}" class="text-center" style="text-decoration: none;">
-                SAAS <br class="fs-4"> Workspace
+                <img src="{{ asset('images/polalogo.png') }}" alt="pola logo" style="width: 50%;">
             </a>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">
@@ -215,7 +215,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Client
+                            Klien
                         </span>
                     </a>
                 </li>
@@ -232,7 +232,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Project
+                            Proyek
                         </span>
                     </a>
                 </li>
@@ -253,7 +253,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Quotation
+                            Penawaran
                         </span>
                     </a>
                 </li>
@@ -274,7 +274,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Contract
+                            Kontrak
                         </span>
                     </a>
                 </li>
@@ -315,7 +315,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Transaction
+                            Transaksi
                         </span>
                     </a>
                 </li>

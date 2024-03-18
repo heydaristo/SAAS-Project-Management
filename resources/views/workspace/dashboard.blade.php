@@ -1,8 +1,10 @@
 @extends('template')
 
 @php
-    $title = "My deks";
+    $title = "Home";
+    $pretitle = "Home";
 @endphp
+
 
 @section('body')
 <style>

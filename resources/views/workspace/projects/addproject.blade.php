@@ -1,3 +1,8 @@
+@php
+    $title = "Proyek";
+    $pretitle = "proyek/add";
+@endphp
+
 @extends('template')
 
 @section('body')

@@ -1,3 +1,8 @@
+@php
+    $title = "Invoice";
+    $pretitle = "invoice/paidacceptpage";
+@endphp
+
 @extends('clienttemplate')
 
 @section('body')

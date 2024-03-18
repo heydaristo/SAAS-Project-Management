@@ -116,8 +116,8 @@ class ProjectController extends Controller
         $clients = Client::where('user_id', Auth::id())->get();
         $user = User::find($project->user_id);
         $services = Service::where('id_project', $id)->get();
-         // Memeriksa apakah array $services memiliki elemen atau tidak
-         if (count($services) > 0) {
+        // Memeriksa apakah array $services memiliki elemen atau tidak
+        if (count($services) > 0) {
             // Jika array memiliki elemen, lanjutkan dengan query ke database
             $serviceDetails = ServiceDetail::where('id_service', $services[0]->id)->get();
         } else {
@@ -139,19 +139,18 @@ class ProjectController extends Controller
             'service_name' => 'required|array',
         ]);
 
-        if($validator->fails()){
-            Alert::error('Failed Message', 'You have failed update project.'.$validator->errors());
+        if ($validator->fails()) {
+            Alert::error('Failed Message', 'You have failed update project.' . $validator->errors());
             return redirect()->back()->with('error', $validator->errors());
         }
 
         $user = Auth::user();
 
-        $project = new ProjectModel();
+        $project = ProjectModel::find($id);
         $project->project_name = $request->project_name;
-        $project->start_date = $request->start_date;
-        $project->status = "ACTIVE";
         $project->id_client = $request->id_client;
-        $project->user_id = $user->id;
+        $project->start_date = $request->start_date;
+        $project->final_invoice_date = $request->final_invoice_date;
 
         if ($request->has('end_date')) {
             $project->end_date = $request->input('end_date');
@@ -213,33 +212,60 @@ class ProjectController extends Controller
         }
 
         // Redirect to the quotation index page
-        Alert::success('Success Message', 'You have successfully updated the project.');
+        Alert::success('Pesan Berhasil', 'Anda berhasil mengubah proyek.');
         return redirect()->route('workspace.projects');
     }
 
 
     public function destroy($id)
     {
+        // change service project id to 1
+        $services = Service::where('id_project', $id)->get();
+        foreach ($services as $service) {
+            if ($service->id_quotation == 1 && $service->id_contract == 1) {
+                // delete all service detailand services
+                $service->id_project = 1;
+                $service->save();
+                $serviceDetails = ServiceDetail::where('id_service', $service->id)->get();
+                foreach ($serviceDetails as $serviceDetail) {
+                    $serviceDetail->delete();
+                }
+                $service->delete();
+            }else{
+                $service->id_project = 1;
+                $service->save();
+            }
+        }
+
+        // connected invoices change to NotsetProject
+        $invoices = Invoice::where('id_project', $id)->get();
+        foreach ($invoices as $invoice) {
+            $invoice->id_project = 1;
+            $invoice->save();
+        }
+
+
         ProjectModel::find($id)->delete();
 
-        Alert::success('Success Message', 'You have successfully to delete project.');
+        Alert::success('Pesan Berhasil', 'Anda berhasil menghapus proyek.');
         return redirect()->route('workspace.projects');
     }
 
-    public function updateNotes(Request $request, $id) {
+    public function updateNotes(Request $request, $id)
+    {
         $project = ProjectModel::find($id);
         if (!$project) {
             return redirect()->back()->with('error', 'Project not found');
         }
-    
+
         $project->notes = $request->notes;
         $project->save();
-    
+
         Alert::success('Success Message', 'You have successfully changed the notes.');
         return redirect()->back();
     }
 
-  
+
     public function detail($id)
     {
         $project = ProjectModel::find($id);

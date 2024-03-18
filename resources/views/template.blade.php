@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     {{-- <title>@yield('title')</title> --}}
-    <title>SAAS Management Project For Freelancer</title>
+    <title>POLA | Kelola Proyek Freelance </title>
     <!-- CSS files -->
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">

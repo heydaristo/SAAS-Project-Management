@@ -1,3 +1,8 @@
+@php
+    $title = "Contract";
+    $pretitle = "contract/customermail";
+@endphp
+
 @extends('clienttemplate')
 
 @section('body')

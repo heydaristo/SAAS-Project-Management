@@ -1,5 +1,9 @@
-@extends('clienttemplate')
+@php
+    $title = "Quotation";
+    $pretitle = "quotation/paidacceptpage";
+@endphp
 
+@extends('clienttemplate')
 @section('body')
     <div class="col-md">
         <div class="card">

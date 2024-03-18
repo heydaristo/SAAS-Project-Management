@@ -1,3 +1,8 @@
+@php
+    $title = "Quotation";
+    $pretitle = "quotation/customermail";
+@endphp
+
 @extends('clienttemplate')
 
 @section('body')
