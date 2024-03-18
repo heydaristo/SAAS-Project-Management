@@ -1,3 +1,8 @@
+@php
+    $title = "Setting";
+    $pretitle = "setting/changepasssword";
+@endphp
+
 @extends('template')
 
 @section('body')

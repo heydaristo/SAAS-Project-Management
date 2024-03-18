@@ -67,10 +67,10 @@
         <div class="col">
           <!-- Page pre-title -->
           <div class="page-pretitle">
-            SAAS Management Project For Freelance
+            {{ $pretitle ?? "POLA | Kelola Proyek Freelance" }}
           </div>
           <h2 class="page-title">
-            {{ isset($title) ? $title : 'SAAS Management Project For Freelance' }}
+            {{ isset($title) ? $title : 'POLA | Kelola Proyek Freelance' }}
           </h2>
         </div>
       </div>

@@ -1,5 +1,9 @@
-@extends('template')
+@php
+    $title = "Proyek";
+    $pretitle = "proyek/edit";
+@endphp
 
+@extends('template')
 @section('body')
     <div class="container">
         <div class="row">

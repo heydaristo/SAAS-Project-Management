@@ -1,3 +1,8 @@
+@php
+    $title = "Contract";
+    $pretitle = "contract/sendmail";
+@endphp
+
 @extends('template')
 
 @section('body')

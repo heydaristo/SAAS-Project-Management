@@ -1,3 +1,8 @@
+@php
+    $title = "Quotation";
+    $pretitle = "quotation/acceptpage";
+@endphp
+
 @extends('clienttemplate')
 
 @section('body')

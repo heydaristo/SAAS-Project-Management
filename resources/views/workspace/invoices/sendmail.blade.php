@@ -1,3 +1,8 @@
+@php
+    $title = "Invoice";
+    $pretitle = "invoice/sendemail";
+@endphp
+
 @extends('template')
 
 @section('body')

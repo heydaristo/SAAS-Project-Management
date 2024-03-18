@@ -1,26 +1,36 @@
+@php
+    $title = "Proyek";
+    $pretitle = "proyek/detail";
+@endphp
+
 @extends('template')
 
 @section('body')
-<div class="row">
-    <div class="col">
-        <span class="fs-2"><a href="{{ route('workspace.projects') }}" style="text-decoration: none; color:black;"> Project </a>/ <strong>{{ $project->project_name }}</strong></span>
+    <div class="row">
+        <div class="col">
+            <span class="fs-2"><a href="{{ route('workspace.projects') }}" style="text-decoration: none; color:black;">
+                    Project </a>/ <strong>{{ $project->project_name }}</strong></span>
+        </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-           {{-- add button to add invoice --}}
-           <button type="button" class="btn mt-2" data-bs-toggle="modal">
-            <a href="{{ route('workspace.invoices.createfromproject',['id'=>$project->id]) }}" style="text-decoration: none;">Add Invoice</a>
-        </button>  
-        <a href="#" class="btn btn-secondary dropdown-toggle mt-2" data-bs-toggle="dropdown" aria-expanded="false">More</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="{{route('workspace.projects.edit', $project->id)}}">Edit Project</a></li>
-          <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-            data-bs-target="#modalDelete-{{ $project->id }}">Delete Project</a></li>
-        </ul>
-            <input type="text" name="id_client" id="inputField" class="form-control mt-2" value="{{ $client->name }}" onfocus="showDropdown()" onblur="hideDropdown()" style="width: 190px;" disabled>
+    <div class="row">
+        <div class="col">
+            {{-- add button to add invoice --}}
+            <button type="button" class="btn mt-2" data-bs-toggle="modal">
+                <a href="{{ route('workspace.invoices.createfromproject', ['id' => $project->id]) }}"
+                    style="text-decoration: none;">Add Invoice</a>
+            </button>
+            <a href="#" class="btn btn-secondary dropdown-toggle mt-2" data-bs-toggle="dropdown"
+                aria-expanded="false">More</a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ route('workspace.projects.edit', $project->id) }}">Edit Project</a>
+                </li>
+                <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                        data-bs-target="#modalDelete-{{ $project->id }}">Delete Project</a></li>
+            </ul>
+            <input type="text" name="id_client" id="inputField" class="form-control mt-2" value="{{ $client->name }}"
+                onfocus="showDropdown()" onblur="hideDropdown()" style="width: 190px;" disabled>
+        </div>
     </div>
-  </div>
     <div class="col-md">
         <div class="card mt-2">
             <div class="card-header">
@@ -38,8 +48,7 @@
                             Terms</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a href="#tabs-invoices" class="nav-link" data-bs-toggle="tab" aria-selected="true"
-                            role="tab">
+                        <a href="#tabs-invoices" class="nav-link" data-bs-toggle="tab" aria-selected="true" role="tab">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-timeline"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -71,8 +80,8 @@
                         <a href="#tabs-file-7" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
                             tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/user -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell-filled"
-                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                 <path
                                     d="M14.235 19c.865 0 1.322 1.024 .745 1.668a3.992 3.992 0 0 1 -2.98 1.332a3.992 3.992 0 0 1 -2.98 -1.332c-.552 -.616 -.158 -1.579 .634 -1.661l.11 -.006h4.471z"
@@ -85,7 +94,8 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <a href="#tabs-notes" class="nav-link" data-bs-toggle="tab" aria-selected="false"
-                            role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
+                            role="tab"
+                            tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
@@ -104,7 +114,8 @@
                                 <h2 class="mt-2">{{ $project->project_name }}</h2>
                             </div>
                             <div class="col-auto mt-2">
-                                <a href="{{route('workspace.projects.edit', $project->id)}}" class="text-secondary fs-3" style="text-decoration: none;">
+                                <a href="{{ route('workspace.projects.edit', $project->id) }}" class="text-secondary fs-3"
+                                    style="text-decoration: none;">
                                     <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
                                 </a>
                             </div>
@@ -115,177 +126,175 @@
                                 <h3>Billing Schedule</h3>
                             </div>
                             <div class="col-auto">
-                                <a href="{{route('workspace.projects.edit', $project->id)}}" class="text-secondary fs-3" style="text-decoration: none;">
+                                <a href="{{ route('workspace.projects.edit', $project->id) }}" class="text-secondary fs-3"
+                                    style="text-decoration: none;">
                                     <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
                                 </a>
                             </div>
-                                <p class="fs-3">Set dates to get invoice reminders.</p>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <p class="me-5 fs-3">Start Date</p>
-                                    <p class="fs-3">{{ $project->start_date }}</p>
-                                </div>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <p class="me-5 fs-3">End Date</p>
-                                    <p class="fs-3">{{ $project->end_date }}</p>
-                                </div>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <p class="me-5 fs-3">I Will Bill</p>
-                                    <p class="fs-3">Once</p>
-                                </div>
-                        </div>     
+                            <p class="fs-3">Set dates to get invoice reminders.</p>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <p class="me-5 fs-3">Start Date</p>
+                                <p class="fs-3">{{ $project->start_date }}</p>
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <p class="me-5 fs-3">End Date</p>
+                                <p class="fs-3">{{ $project->end_date }}</p>
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <p class="me-5 fs-3">I Will Bill</p>
+                                <p class="fs-3">Once</p>
+                            </div>
+                        </div>
                         <hr>
-                        @foreach ($serviceDetails as $SD)                           
-                        <div class="row">
-                            <div class="col">
-                                <h2 class="fs-3">Project Services</h2>
+                        @foreach ($serviceDetails as $SD)
+                            <div class="row">
+                                <div class="col">
+                                    <h2 class="fs-3">Project Services</h2>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="{{ route('workspace.projects.edit', $project->id) }}"
+                                        class=" text-secondary fs-3">
+                                        <h3 class="text-secondary">{{ $SD->service_name }}</h3>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-auto">
-                                <a href="{{route('workspace.projects.edit', $project->id)}}" class=" text-secondary fs-3">
-                                <h3 class="text-secondary">{{ $SD->service_name }}</h3>
-                                </a>
-                            </div>    
-                        </div>  
-                        <hr>
-                        <div class="row">
-                            <div class="col">
-                                <p class="text-success fs-3 mt-2">Currency : IDR</p>
-                            </div>
-                            <div class="col-auto">
-                                <h1 class="text-secondary">Rp. {{ $SD->price }}</h1>
-                                @endforeach
-                            </div>    
-                        </div>  
-                        <hr>  
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="mt-2 fs-3">Deposit</h3>
-                                <p class="fs-3 mt-2">Deposit Not Required</p>
-                            </div>
-                            <div class="col-auto">
-                                <a href="{{route('workspace.projects.edit', $project->id)}}" style="text-decoration: none;" class="text-secondary fs-3">
-                                    <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
-                                </a>
-                            </div>    
-                        </div>           
+                            <hr>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="text-success fs-3 mt-2">Currency : IDR</p>
+                                </div>
+                                <div class="col-auto">
+                                    <h1 class="text-secondary">Rp. {{ $SD->price }}</h1>
+                        @endforeach
                     </div>
-                    <div class="tab-pane" id="tabs-invoices" role="tabpanel">
-                        <div class="table-responsive">
-                        <table class="table card-table table-vcenter text-nowrap datatable table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="w-1">No.
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24"
-                                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M6 15l6 -6l6 6" />
-                                        </svg>
-                                    </th>
-                                    <th>Project Name</th>
-                                    <th>Client</th>
-                                    <th>Tanggal buat</th>
-                                    <th>Status</th>
-                                    <th>Kadarluarsa</th>
-                                    <th>Total</th>
-                                    {{-- <th class="w-1"></th> --}}
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="mt-2 fs-3">Deposit</h3>
+                        <p class="fs-3 mt-2">Deposit Not Required</p>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{{ route('workspace.projects.edit', $project->id) }}" style="text-decoration: none;"
+                            class="text-secondary fs-3">
+                            <i class="bi bi-pencil-fill text-secondary me-2"></i>Edit
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tabs-invoices" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable table-hover">
+                        <thead>
+                            <tr>
+                                <th class="w-1">No.
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M6 15l6 -6l6 6" />
+                                    </svg>
+                                </th>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Tanggal buat</th>
+                                <th>Status</th>
+                                <th>Kadarluarsa</th>
+                                <th>Total</th>
+                                {{-- <th class="w-1"></th> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $i = 1 + ($invoices->currentPage() - 1) * $invoices->perPage();
+                            @endphp
+                            @foreach ($invoices as $invoice)
+                                <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'"
+                                    style="cursor: pointer;">
+                                    <td><span class="text-muted">{{ $i++ }}</span></td>
+                                    <td>{{ $project->project_name }}</td>
+                                    <td>{{ $client->name }}</td>
+                                    <td>{{ $invoice->issued_date }}</td>
+                                    <td>
+                                        @if ($invoice->status == 'SENT')
+                                            <span class="badge text-bg-success">{{ $invoice->status }}</span>
+                                        @elseif($invoice->status == 'PENDING')
+                                            <span class="badge text-bg-warning">{{ $invoice->status }}</span>
+                                        @elseif($invoice->status == 'PAID')
+                                            <span class="badge text-bg-danger">{{ $invoice->status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($invoice->due_date)
+                                            {{ $invoice->due_date }}
+                                        @else
+                                            <span class="badge text-bg-success">Open Date</span>
+                                        @endif
+                                    </td>
+                                    <td>@currency($invoice->total)</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $i = 1 + ($invoices->currentPage() - 1) * $invoices->perPage();
-                                @endphp
-                                @foreach ($invoices as $invoice)
-                                    <tr onclick="window.location='{{ route('workspace.invoices.show', $invoice->id) }}'"
-                                        style="cursor: pointer;">
-                                        <td><span class="text-muted">{{ $i++ }}</span></td>
-                                        <td>{{ $project->project_name }}</td>
-                                        <td>{{ $client->name }}</td>
-                                        <td>{{ $invoice->issued_date }}</td>
-                                        <td>
-                                            @if ($invoice->status == 'SENT')
-                                                <span class="badge text-bg-success">{{ $invoice->status }}</span>
-                                            @elseif($invoice->status == 'PENDING')
-                                                <span class="badge text-bg-warning">{{ $invoice->status }}</span>
-                                            @elseif($invoice->status == 'PAID')
-                                                <span class="badge text-bg-danger">{{ $invoice->status }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($invoice->due_date)
-                                                {{ $invoice->due_date }}
-                                            @else
-                                                <span class="badge text-bg-success">Open Date</span>
-                                            @endif
-                                        </td>
-                                        <td>@currency($invoice->total)</td>
-                                    </tr>
-                                @endforeach
-    
-                            </tbody>
-                        </table>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
+                <h4>Activity tab</h4>
+                <div>Ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed</div>
+            </div>
+            <div class="tab-pane" id="tabs-notes" role="tabpanel">
+                <form action="{{ route('workspace.projects.update.notes', ['id' => $project->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <textarea rows="5" class="form-control" name="notes" placeholder="Add Notes...">{{ $project->notes }}</textarea>
+                    <button class="btn btn-primary mt-3">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    {{-- Modal Hapus --}}
+    <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-status bg-danger"></div>
+                <div class="modal-body text-center py-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24"
+                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 9v4"></path>
+                        <path
+                            d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
+                        </path>
+                        <path d="M12 16h.01"></path>
+                    </svg>
+                    <h3>Are you sure?</h3>
+                    <div class="text-secondary">Do you really want to remove project
+                        {{ $project->project_name }}? What you've done cannot be undone.</div>
+                </div>
+                <div class="modal-footer">
+                    <div class="w-100">
+                        <div class="row">
+                            <form action="{{ route('workspace.projects.delete', ['id' => $project->id]) }}"
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <div class="col">
+                                    <a href="#" class="btn w-100 mb-2" data-bs-dismiss="modal">Cancel</a>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-danger w-100" data-bs-dismiss="modal">Delete</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    </div>
-                    <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
-                        <h4>Activity tab</h4>
-                        <div>Ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed</div>
-                    </div>
-                    <div class="tab-pane" id="tabs-notes" role="tabpanel">
-                        <form action="{{ route('workspace.projects.update.notes', ['id' => $project->id]) }}" method="POST">
-                          @csrf
-                          @method('PUT')
-                          <textarea rows="5" class="form-control" name="notes" placeholder="Add Notes...">{{ $project->notes }}</textarea>
-                          <button class="btn btn-primary mt-3">Save</button>
-                        </form>
-                      </div>
                 </div>
             </div>
         </div>
     </div>
-                {{-- Modal Hapus --}}
-                <div class="modal modal-blur fade" id="modalDelete-{{ $project->id }}"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                        <div class="modal-content">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                            <div class="modal-status bg-danger"></div>
-                            <div class="modal-body text-center py-4">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon mb-2 text-danger icon-lg" width="24" height="24"
-                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M12 9v4"></path>
-                                    <path
-                                        d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z">
-                                    </path>
-                                    <path d="M12 16h.01"></path>
-                                </svg>
-                                <h3>Are you sure?</h3>
-                                <div class="text-secondary">Do you really want to remove project
-                                    {{ $project->project_name }}? What you've done cannot be undone.</div>
-                            </div>
-                            <div class="modal-footer">
-                                <div class="w-100">
-                                    <div class="row">
-                                        <form
-                                            action="{{ route('workspace.projects.delete', ['id' => $project->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <div class="col">
-                                                <a href="#" class="btn w-100 mb-2"
-                                                    data-bs-dismiss="modal">Cancel</a>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-danger w-100"
-                                                    data-bs-dismiss="modal">Delete</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 @endsection

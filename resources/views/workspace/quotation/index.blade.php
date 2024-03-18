@@ -1,7 +1,8 @@
 @extends('template')
 
 @php
-  $title= "Quotation";
+    $title = "Quotation";
+    $pretitle = "quotation/list";
 @endphp
 
 @section('body')

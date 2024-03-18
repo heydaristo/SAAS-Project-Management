@@ -1,7 +1,8 @@
 @extends('template')
 
 @php
-    $title = 'Invoice/show';
+    $title = "Invoice";
+    $pretitle = "invoice/show";
 @endphp
 
 @section('body')

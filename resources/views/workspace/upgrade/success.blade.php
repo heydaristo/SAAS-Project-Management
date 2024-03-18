@@ -1,3 +1,9 @@
+@php
+    $title = "Upgrade";
+    $pretitle = "upgrade/success";
+@endphp
+
+
 @extends('template')
 
 @section('body')

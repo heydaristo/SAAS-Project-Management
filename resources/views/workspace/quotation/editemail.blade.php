@@ -1,3 +1,8 @@
+@php
+    $title = "Quotation";
+    $pretitle = "quotation/editemail";
+@endphp
+
 @extends('template')
 
 @section('body')

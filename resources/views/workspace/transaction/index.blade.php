@@ -1,7 +1,9 @@
+
 @extends('template')
 
 @php
-    $title = 'Transaction';
+    $title = "Transaction";
+    $pretitle = "transaction/list";
 @endphp
 
 @section('body')

@@ -1,5 +1,9 @@
-@extends('template')
+@php
+    $title = "Quotation";
+    $pretitle = "quotation/editquotation";
+@endphp
 
+@extends('template')
 @section('body')
     <div class="container">
         <div class="row">

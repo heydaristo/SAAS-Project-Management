@@ -1,7 +1,11 @@
 <!-- resources/views/workspace/quotation/review.blade.php -->
 
-@extends('template')
+@php
+    $title = "Quotation";
+    $pretitle = "quotation/review";
+@endphp
 
+@extends('template')
 @section('body')
 <div class="container">   
     <div class="row mb-3">
