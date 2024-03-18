@@ -137,16 +137,23 @@
                             </thead>
                             <tbody>
                               @php
-                              $i = 1 + ($tasks->currentPage() - 1) * $tasks->perPage();
+                              // $i = 1 + ($tasks->currentPage() - 1) * $tasks->perPage();
+                              $i = 1;
                           @endphp
                                 @foreach ($tasks as $task)
                                 <tr>
                                     <td></td>
                                     <td class="text-start fs-3">{{ $task->tasks }}</td>
                                     <td>
-                                      <a href="#" class="text-warning dropdown-toggle">On Progress</a>
-                                      
-                                    </td>
+                                      {{-- <a href="#" class="text-warning dropdown-toggle">On Progress</a> --}}
+                                      <select id="statusDropdown" class="form-control" required name="status">
+                                        <option value="">Select Status</option>
+                                        <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
+                                        <option value="on progress" {{ $task->status == 'on progress' ? 'selected' : '' }}>On Progress</option>
+                                        <option value="off" {{ $task->status == 'off' ? 'selected' : '' }}>Off</option>
+                                      </form>
+                                    </select>
+                                    
                                     <td>
                                       <form action="{{ route('workspace.dashboard.destroyTasks', $task->id) }}" method="POST">
                                         @csrf
@@ -169,7 +176,7 @@
                             </tbody>
                         </table>
                         <div class="card-footer d-flex align-items-center ms-auto">
-                          {!! $tasks->appends(Request::except('page'))->links('pagination::bootstrap-5') !!}
+                          {{-- {!! $tasks->appends(Request::except('page'))->links('pagination::bootstrap-5') !!} --}}
                       </div>
                       </div>
                     </div>
@@ -228,5 +235,29 @@
         });
     </script>
 @endif
+<script>
+     $(document).ready(function() {
+        $('#statusDropdown').change(function() {
+            var selectedStatus = $(this).val();
+            var token = "{{ csrf_token() }}"; // CSRF token
+            var url = "{{ route('workspace.dashboard.storeTasksStatus', ['id' => Auth()->user()->id]) }}"; // Your Laravel route for updating task status
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    status: selectedStatus,
+                    _token: token
+                },
+                success: function(response) {
+                    // Handle success response if needed
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response if needed
+                }
+            });
+        });
+    });
+</script>
 
 @endsection
