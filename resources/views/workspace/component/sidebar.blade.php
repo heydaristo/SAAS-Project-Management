@@ -11,7 +11,7 @@
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
             <a href="{{ route('workspace.dashboard') }}" class="text-center" style="text-decoration: none;">
-                <img src="{{ asset('images/polalogo.png') }}" alt="pola logo" style="width: 50%;">
+                <img src="{{ asset('images/polalogo.png') }}" alt="pola logo" class="navbar-brand-image d-none-navbar-horizontal"/>
             </a>
         </h1>
         <div class="navbar-nav flex-row d-lg-none">

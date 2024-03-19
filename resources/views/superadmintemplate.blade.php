@@ -20,6 +20,8 @@
     <link href="{{ asset('dist/css/tabler-payments.min.css?1684106062')}}" rel="stylesheet"/>
     <link href="{{ asset('dist/css/tabler-vendors.min.css?1684106062')}}" rel="stylesheet"/>
     <link href="{{ asset('dist/css/demo.min.css?1684106062')}}" rel="stylesheet"/>
+	<link rel="shortcut icon" type="image/png" href="{{asset('assets/images/icon.png')}}"/>
+
 	{{-- Sweet Alert --}}
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>

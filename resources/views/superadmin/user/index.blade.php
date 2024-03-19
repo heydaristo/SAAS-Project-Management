@@ -1,3 +1,8 @@
+@php
+    $title = "admin";
+    $pretitle = "admin/list";
+@endphp
+
 @extends('superadmintemplate')
 
 @section('superadminbody')
@@ -10,32 +15,7 @@
           <h3 class="card-title">Search Filter</h3>
         </div>
         <div class="card-body border-bottom py-3">
-          <div class="d-flex">
-            <div class="text-muted">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Select Plan</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div class="text-muted ms-3">
-              <select class="form-select" aria-label="Default select example">
-                <option selected>Select Plan</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div class="ms-auto me-3">
-              <select class="form-select" id="select">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <!-- Tambahkan opsi lain sesuai kebutuhan -->
-            </select>
-          </div>
+          <div>
           <button type="button" class="btn btn-primary font-weight-bolder" data-bs-toggle="modal"
           data-bs-target="#tambah_admin">
           New Admin
