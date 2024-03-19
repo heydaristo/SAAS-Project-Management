@@ -22,6 +22,7 @@
     <link href="{{ asset('dist/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('dist/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet" />
     <link href="{{ asset('dist/css/demo.min.css?1684106062') }}" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/png" href="{{asset('assets/images/icon.png')}}"/>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.ckeditor.com/4.24.0-lts/standard/ckeditor.js"></script>
 

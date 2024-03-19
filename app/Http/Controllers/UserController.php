@@ -121,7 +121,7 @@ class UserController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:6|different:password', // Memastikan password baru berbeda dengan password saat ini
+            'password' => 'required|min:6', // Memastikan password baru berbeda dengan password saat ini
             'confirmPassword' => 'required|same:password',
         ]);
         

@@ -13,8 +13,7 @@ class AdminController extends Controller
 {
     public function index(){
         // get role id 1 or 2
-        $admins = User::where('id_role', 1)->orWhere('id_role', 2)->get();
-        $admins = User::paginate(5);
+        $admins = User::where('id_role', 1)->orWhere('id_role', 2)->paginate(5);
         return view('superadmin.user.index', compact('admins'));
     }
 
