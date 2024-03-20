@@ -17,29 +17,20 @@
                 <div class="card-body border-bottom py-3">
                     <div class="d-flex">
                         <div class="text-muted">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Select Plan</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="text-muted ms-3">
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Select Plan</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
+                            Search:
+                            <div class="ms-2 d-inline-block">
+                                <input type="text" id="search" class="form-control" aria-label="Search Project" placeholder="Cari client berdasarkan nama client..."> 
+                            </div>
                         </div>
                         <div class="ms-auto me-3">
-                            <select class="form-select" id="select">
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <!-- Tambahkan opsi lain sesuai kebutuhan -->
-                            </select>
+                            <div class="text-muted">
+                                Show
+                                <div class="mx-2 d-inline-block">
+                                    <input type="number" id="data_count_shows" class="form-control" value="5" size="3"
+                                    aria-label="Invoices count">
+                                </div>
+                                entries
+                            </div>
                         </div>
                         <form action="{{ route('workspace.clients.checklimit', ['id' => Auth::user()->id]) }}"
                             method="GET">
@@ -193,10 +184,48 @@
             </div>
         </div>
     </div>
-
     {{-- add ajax --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#data_count_shows').on('input',function() {
+                var count_shows = $(this).val();
+                // update the table and the pagination
+                $.ajax({
+                    url: "{{ route('workspace.clients') }}",
+                    type: 'GET',
+                    data: {
+                        data_count_shows: count_shows
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var newTable = $(response).find('.datatable');
+                        var newPagination = $(response).find('.pagination');
+                        $('.datatable').html(newTable.html());
+                        $('.pagination').html(newPagination.html());
+                    }
+                });
+            });
 
+            $('#search').on('input',function() {
+                var search = $(this).val();
+                // update only the table
+
+                $.ajax({
+                    url: "{{ route('workspace.clients') }}",
+                    type: 'GET',
+                    data: {
+                        search: search
+                    },
+                    success: function(response) {
+                        var newTable = $(response).find('.datatable');
+                        $('.datatable').html(newTable.html());
+                    }
+                });
+                
+            });
+        });
+    </script>
 
     @if (session('limit'))
         <script>

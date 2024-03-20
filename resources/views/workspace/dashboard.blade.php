@@ -131,7 +131,6 @@
                                 <tr>
                                     <th class="w-1">No.</th>
                                     <th class="text-start">Title</th>
-                                    <th>Status</th>
                                     <th class="w-1">Action</th>
                                 </tr>
                             </thead>
@@ -142,18 +141,8 @@
                           @endphp
                                 @foreach ($tasks as $task)
                                 <tr>
-                                    <td></td>
+                                    <td>{{ $i++ }}</td>
                                     <td class="text-start fs-3">{{ $task->tasks }}</td>
-                                    <td>
-                                      {{-- <a href="#" class="text-warning dropdown-toggle">On Progress</a> --}}
-                                      <select id="statusDropdown" class="form-control" required name="status">
-                                        <option value="">Select Status</option>
-                                        <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
-                                        <option value="on progress" {{ $task->status == 'on progress' ? 'selected' : '' }}>On Progress</option>
-                                        <option value="off" {{ $task->status == 'off' ? 'selected' : '' }}>Off</option>
-                                      </form>
-                                    </select>
-                                    
                                     <td>
                                       <form action="{{ route('workspace.dashboard.destroyTasks', $task->id) }}" method="POST">
                                         @csrf
@@ -235,29 +224,5 @@
         });
     </script>
 @endif
-<script>
-     $(document).ready(function() {
-        $('#statusDropdown').change(function() {
-            var selectedStatus = $(this).val();
-            var token = "{{ csrf_token() }}"; // CSRF token
-            var url = "{{ route('workspace.dashboard.storeTasksStatus', ['id' => Auth()->user()->id]) }}"; // Your Laravel route for updating task status
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    status: selectedStatus,
-                    _token: token
-                },
-                success: function(response) {
-                    // Handle success response if needed
-                },
-                error: function(xhr, status, error) {
-                    // Handle error response if needed
-                }
-            });
-        });
-    });
-</script>
 
 @endsection

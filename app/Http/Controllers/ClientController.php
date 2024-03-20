@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Hitung jumlah pengguna yang mendaftar dalam satu minggu terakhir
         $userCountLastWeek = User::whereBetween('created_at', [Carbon::now()->subWeek(), Carbon::now()])->count();
@@ -32,12 +32,38 @@ class ClientController extends Controller
 
         $userId = Auth::id();
 
+        // if the request has data_count_shows
+        if ($request->input('data_count_shows') != null) {
+        $dataCountShows = $request->input('data_count_shows');
+        $client = Client::where('user_id', $userId)->paginate($dataCountShows);
+        return view('workspace.clients.index', [
+            'userCountLastWeek' => $userCountLastWeek,
+            'userCount' => $userCount,
+            'clientCountLastWeek' => $clientCountLastWeek,
+            'clientCount' => $clientCount,
+            'client' => $client,
+            'only5' => Auth::user()->id_role == 3 ? true : false,
+        ]);
+        }
+
+           // if the request has search
+       if ($request->input('search') != null) {
+        $client = Client::where('user_id', Auth::id())->where('name', 'like', '%' . $request->search . '%')->paginate(5);
+        return view('workspace.clients.index', [
+            'userCountLastWeek' => $userCountLastWeek,
+            'userCount' => $userCount,
+            'clientCountLastWeek' => $clientCountLastWeek,
+            'clientCount' => $clientCount,
+            'client' => $client,
+            'only5' => Auth::user()->id_role == 3 ? true : false,
+        ]);
+    }
+
         if (Auth::user()->id_role == 3) {
             $client = Client::where('user_id', $userId)->limit(5)->get();
         } else {
             $client = Client::where('user_id', $userId)->paginate(5);
         }
-
         return view('workspace.clients.index', [
             'userCountLastWeek' => $userCountLastWeek,
             'userCount' => $userCount,

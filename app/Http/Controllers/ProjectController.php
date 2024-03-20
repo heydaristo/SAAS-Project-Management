@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Mendapatkan ID pengguna yang sedang login
         $userId = Auth::id();
@@ -34,6 +34,25 @@ class ProjectController extends Controller
 
         // Mengambil klien yang dimiliki oleh pengguna yang sedang login
         $clients = Client::where('user_id', $userId)->get();
+
+        // if the request has data_count_shows
+        if ($request->input('data_count_shows') != null) {
+            $dataCountShows = $request->input('data_count_shows');
+            $projectmodels = DB::table('project_models')
+            ->where('project_models.user_id', $userId) // Filter berdasarkan user_id
+            ->join('clients', 'project_models.id_client', '=', 'clients.id')
+            ->select('project_models.*', 'clients.name as name')
+            ->orderBy('project_models.created_at', 'desc')
+            ->paginate($dataCountShows);
+            return view('workspace.projects.index', compact('projectmodels', 'clients'));
+
+        }
+
+        // if the request has search
+       if ($request->input('search') != null) {
+           $projectmodels = ProjectModel::where('user_id', Auth::id())->where('project_name', 'like', '%' . $request->search . '%')->paginate(5);
+           return view('workspace.projects.index', compact('projectmodels', 'clients'));
+       }
 
         return view('workspace.projects.index', compact('projectmodels', 'clients'));
     }
