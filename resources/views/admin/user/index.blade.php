@@ -1,3 +1,8 @@
+@php
+    $title = "User";
+    $pretitle = "User/list";
+@endphp
+
 @extends('admintemplate')
 
 @section('adminbody')

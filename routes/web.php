@@ -169,8 +169,8 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     Route::get('/invoice/review/', [InvoiceController::class, 'review'])->name('invoices.review');
     
     // change password
-
     Route::get('/settings/changepassword', [UserController::class, 'changePasswordShow'])->name('settings.changepassword');
+    Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
 
     Route::get('/settings', [UserController::class, 'usersetting'])->name('settings');
     // change photo profile
@@ -179,8 +179,6 @@ Route::group(['prefix' => 'workspace', 'middleware' => ['auth'], 'as' => 'worksp
     // Delete profile
     Route::delete('/settings/delete', [UserController::class, 'deleteProfile'])->name('settings.deleteProfile');
 
-    // change password
-    Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
     // upgrade
     Route::get('/subscriptions/upgradeshow', [SubscriptionController::class, 'upgradeshow'])->name('subscriptions.upgradeshow');
     Route::get('/subscriptions/upgrade/{planid}', [SubscriptionController::class, 'upgrade'])->name('subscriptions.upgrade');
@@ -226,6 +224,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'as' => 'admin.'],
     Route::put('/transactions/update/{id}', [AdminTranscationController::class, 'update'])->name('transaction.update');
 
     Route::get('/transactions/listsubscriptions/{id}', [AdminTranscationController::class, 'listSubscriptions'])->name('transaction.listsubscriptions');
+
+    // change password
+    Route::get('/settings/changepassword', [UserController::class, 'changePasswordShowAdmin'])->name('settings.changepassword');
+    Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
 
 });
 
@@ -282,5 +284,9 @@ Route::group(
         Route::post('/admins/create', [AdminController::class, 'store'])->name('admin.create');
         Route::delete('/admins/delete/{id}', [AdminController::class, 'destroy'])->name('admin.delete');
         Route::put('/admins/update/{id}', [AdminController::class, 'update'])->name('admin.update');
+
+        // change password
+        Route::get('/settings/changepassword', [UserController::class, 'changePasswordShowSuperAdmin'])->name('settings.changepassword');
+        Route::post('/settings/password', [UserController::class, 'changePassword'])->name('settings.password');
     }
 );

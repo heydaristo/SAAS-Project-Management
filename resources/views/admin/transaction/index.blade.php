@@ -1,3 +1,8 @@
+@php
+    $title = "Transaction";
+    $pretitle = "Transactions/list";
+@endphp
+
 @extends('admintemplate')
 
 @section('adminbody')

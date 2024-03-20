@@ -23,7 +23,6 @@
                 <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
             </div>
             <div class="mb-3">
-                <button type="button" class="btn btn-secondary">Preview Email</button>
                 <button type="submit" class="btn btn-primary">Send Email</button>
             </div>
         </form>

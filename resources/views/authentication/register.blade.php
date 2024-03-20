@@ -13,7 +13,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="fullname" id="fullname" placeholder="Nama Kamu" required />
+                            <input type="text" name="fullname" id="fullname" placeholder="Your Name" required />
                             @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
                             <input class="@error('email')is-invalid @enderror" type="email" name="email" id="email"
-                                placeholder="Email Kamu" required />
+                                placeholder="Your Email" required />
                             @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
                             <input type="password" name="confirmPassword" id="confirmPassword"
-                                placeholder="Ulangi password kamu" required />
+                                placeholder="Repeat your password" required />
                         </div>
                         @if ($errors->any())
                             <div class="alert alert-danger">
@@ -53,16 +53,12 @@
                                 </ul>
                             </div>
                         @endif
-                        {{-- <div class="form-group">
-                  <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                  <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
-              </div> --}}
                         <div class="form-group form-button">
                             <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
                         </div>
                     </form>
                     <div class="text-secondary mt-3">
-                        Sudah punya akun? <a href="{{ route('login') }}" tabindex="-1">Sign in</a>
+                        Already have an account? <a href="{{ route('login') }}" tabindex="-1">Sign in</a>
                     </div>
                 </div>
                 <div class="signup-image">

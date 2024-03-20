@@ -163,8 +163,18 @@ class SubscriptionController extends Controller
 
     public function upgradeshow()
     {
-        $plans = Plan::where('id', '!=', 1)->get();
-        return view('workspace.upgrade.index', compact('plans'));
+        // $plans = Plan::where('id', '!=', 1)->get();
+        $plans = Plan::all();
+
+        $currentPlan = 0;
+
+        if (Auth::user()->id_role == 4) {
+            $currentPlan = 2;
+        } else if (Auth::user()->id_role == 3) {
+            $currentPlan = 1;
+        }
+
+        return view('workspace.upgrade.index', compact('plans', 'currentPlan'));
     }
 
     public function upgrade($planid)

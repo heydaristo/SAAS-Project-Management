@@ -49,9 +49,8 @@
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
           <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalStatus">Status</a>
-          <a href="{{ route('workspace.settings', ['#tabs-activity-7']) }}" class="dropdown-item">Profile</a>
           <div class="dropdown-divider"></div>
-          <a href="{{ route('workspace.settings') }}" class="dropdown-item">Settings</a>
+          <a href="{{ route('superadmin.settings.changepassword') }}" class="dropdown-item">Change Password</a>
           <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
           <div class="dropdown-divider"></div>
           {{-- upgrade to premium, make this button at button --}}

@@ -215,7 +215,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Klien
+                            Client
                         </span>
                     </a>
                 </li>
@@ -232,7 +232,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Proyek
+                            Project
                         </span>
                     </a>
                 </li>
@@ -253,7 +253,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Penawaran
+                            Quotation
                         </span>
                     </a>
                 </li>
@@ -274,7 +274,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Kontrak
+                            Contract
                         </span>
                     </a>
                 </li>
@@ -315,7 +315,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title fs-3">
-                            Transaksi
+                            Transaction
                         </span>
                     </a>
                 </li>

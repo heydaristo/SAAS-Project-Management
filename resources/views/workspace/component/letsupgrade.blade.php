@@ -2,20 +2,20 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">You’ve reached your limit of 5 clients</h5>
+                <h5 class="modal-title">Kamu telah mencapai batas maksimal 5 client</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Upgrade to Premium Workspace to manage additional clients and to access powerful features to grow
-                    your business.</p>
+                <p>Upgrade ke Premium Workspace untuk mengelola klien tambahan dan mengakses fitur-fitur canggih untuk
+                    mengembangkan bisnis Anda.</p>
                 {{-- explain features that will get if premium --}}
-                <p>Features:</p>
+                <p>Fitur:</p>
                 <ul>
-                    <li>Unlimited Clients</li>
-                    <li>Download Feature</li>
-                    <li>Custom Contract</li>
-                    <li>Remove Watermark</li>
-                </ul>  
+                    <li>No Pop Up Ads Premium</li>
+                    <li>Unlimited Client</li>
+                    <li>Editable Contract</li>
+
+                </ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>

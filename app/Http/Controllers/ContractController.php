@@ -28,6 +28,7 @@ class ContractController extends Controller
             ->where('contracts.id_user', $userId) // Filter berdasarkan user_id
             ->join('clients', 'contracts.id_client', '=', 'clients.id')
             ->select('contracts.*', 'clients.name as name')
+            ->orderBy('contracts.created_at', 'desc')
             ->paginate(5);
 
 
@@ -115,14 +116,14 @@ class ContractController extends Controller
         // create each subscription detail
         $serviceNames = $request->input('service_name');
         $servicePrices = $request->input('service_price');
-        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceFeeMethods = 'FIXED';
         $serviceDescriptions = $request->input('service_description');
         foreach ($serviceNames as $index => $serviceName) {
             $serviceDetail = new ServiceDetail();
             $serviceDetail->id_service = $service->id;
             $serviceDetail->service_name = $serviceName;
             $serviceDetail->price = $servicePrices[$index];
-            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods;
             $serviceDetail->description = $serviceDescriptions[$index];
             $serviceDetail->save();
         }
@@ -175,7 +176,6 @@ class ContractController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->all());
         // Validate the request data
         $validator = Validator::make($request->all(), [
             'project_name' => 'required|string',
@@ -249,14 +249,14 @@ class ContractController extends Controller
         // create each subscription detail
         $serviceNames = $request->input('service_name');
         $servicePrices = $request->input('service_price');
-        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceFeeMethods = 'FIXED';
         $serviceDescriptions = $request->input('service_description');
         foreach ($serviceNames as $index => $serviceName) {
             $serviceDetail = new ServiceDetail();
             $serviceDetail->id_service = $service->id;
             $serviceDetail->service_name = $serviceName;
             $serviceDetail->price = $servicePrices[$index];
-            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods;
             $serviceDetail->description = $serviceDescriptions[$index];
             $serviceDetail->save();
         }

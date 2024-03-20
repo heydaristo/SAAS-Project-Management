@@ -63,21 +63,6 @@
                     <h5 class="mt-3">Services</h5>
                     <p>Contractor agrees to perform services as described in Attachment A (the “Services”) and Client agrees
                         to pay Contractor as described in Attachment A.</p>
-                    {{-- <h5>Signatures</h5>
-                    <p>In witness whereof, the Parties, have executed this Agreement, inclusive of Attachment A and
-                        Attachment B, as of the later of the two dates below (the “Effective Date”).</p>
-                    <div class="row">
-                        <div class="col">
-                            <p><strong>Client</strong></p>
-                            <p>Signature: ___________________</p>
-                            <p>Date: _______________________</p>
-                        </div>
-                        <div class="col">
-                            <p><strong>Contractor (Attaf Riski)</strong></p>
-                            <p>Signature: ___________________</p>
-                            <p>Date: _______________________</p>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
 
@@ -112,7 +97,7 @@
                     <div class="form-group">
                         <label class="form-label">Attachment B: Terms and Conditions</label>
 
-                        {!! html_entity_decode($contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : '') !!}
+                        {!! html_entity_decode($contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : $contract->contract_pdf) !!}
                     </div>
                 </div>
             </div>

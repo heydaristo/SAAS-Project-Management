@@ -1,5 +1,9 @@
-@extends('admintemplate')
+@php
+    $title = "Home";
+    $pretitle = "Home";
+@endphp
 
+@extends('admintemplate')
 @section('adminbody')
     <div class="row row-deck row-cards">
         <div class="col-sm-6 col-lg-3">

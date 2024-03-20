@@ -199,14 +199,14 @@ class ProjectController extends Controller
         // create each subscription detail
         $serviceNames = $request->input('service_name');
         $servicePrices = $request->input('service_price');
-        $serviceFeeMethods = $request->input('service_fee_method');
+        $serviceFeeMethods = 'FIXED';
         $serviceDescriptions = $request->input('service_description');
         foreach ($serviceNames as $index => $serviceName) {
             $serviceDetail = new ServiceDetail();
             $serviceDetail->id_service = $service->id;
             $serviceDetail->service_name = $serviceName;
             $serviceDetail->price = $servicePrices[$index];
-            $serviceDetail->pay_method = $serviceFeeMethods[$index];
+            $serviceDetail->pay_method = $serviceFeeMethods;
             $serviceDetail->description = $serviceDescriptions[$index];
             $serviceDetail->save();
         }
