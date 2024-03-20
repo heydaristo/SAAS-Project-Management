@@ -1,3 +1,8 @@
+@php
+    $title = "Subscription";
+    $pretitle = "Subcription/list";
+@endphp
+
 @extends('admintemplate')
 
 @section('adminbody')

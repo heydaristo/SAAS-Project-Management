@@ -1,13 +1,13 @@
 @php
-    $title = "Contract";
-    $pretitle = "contract/reviewcontract";
+    $title = 'Contract';
+    $pretitle = 'contract/reviewcontract';
 @endphp
 
 @extends('template')
 
 @section('body')
     <script src="//cdn.ckeditor.com/4.24.0-lts/basic/ckeditor.js"></script>
-    <form action="{{ route('workspace.contract.sendemail',['id' => $contract->id]) }}">
+    <form action="{{ route('workspace.contract.sendemail', ['id' => $contract->id]) }}">
         @csrf
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -33,7 +33,7 @@
                         <p><strong>Require Deposit:</strong> {{ $contract->require_deposit ? 'Yes' : 'No' }}</p>
                         @if ($contract->require_deposit)
                             <p><strong>Deposit Percentage:</strong> {{ $contract->deposit_percentage }}%</p>
-                            <p><strong>Deposit Amount:</strong> ${{ $contract->deposit_amount }}</p>
+                            <p><strong>Deposit Amount:</strong> @currency($contract->deposit_amount)</p>
                             <p><strong>Client Agrees to Deposit:</strong>
                                 {{ $contract->client_agrees_deposit ? 'Yes' : 'No' }}
                             </p>
@@ -108,8 +108,7 @@
                     <div class="card-body mt-3">
                         <div class="form-group">
                             <label class="form-label">Attachment B: Terms and Conditions</label>
-                            <button class="btn mb-2">Edit</button>
-                            <textarea class="form-control" id="contract">
+                            <textarea class="form-control" id="contract" readonly>
                             {{ $contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : '' }}
                         </textarea>
                         </div>
@@ -119,11 +118,32 @@
         </div>
     </form>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#contract'))
-            .catch(error => {
-                console.error(error);
-            });
-    </script>
+    @if ($contract->contract_pdf != 'DEFAULT')
+        <script>
+            // make ClassicEditor read only
+            const myFeatureLockId = Symbol('contract');
+            ClassicEditor
+                .create(document.querySelector('#contract'), {})
+                .then(editor => {
+                    const toolbarElement = editor.ui.view.toolbar.element;
+                    toolbarElement.style.display = 'none';
+
+                    editor.enableReadOnlyMode(myFeatureLockId);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
+    @else
+        <script>
+            // make ClassicEditor read only
+            const myFeatureLockId = Symbol('contract');
+            ClassicEditor
+                .create(document.querySelector('#contract'), {})
+                .then(editor => {})
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
+    @endif
 @endsection

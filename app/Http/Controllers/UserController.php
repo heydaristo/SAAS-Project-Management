@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Password;
 use App\Models\Plan;
 use Carbon\Carbon;
 use App\Models\PasswordResetToken;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
-use Illuminate\Validation\Rule;
 use App\Models\User;
 
 
@@ -333,7 +331,10 @@ class UserController extends Controller
     }
 
     public function usersetting(){
-        return view('workspace.settings');
+        $subcription = Subscription::where('id_user', Auth::user()->id)->get()->last();
+        $timeRemaining = Carbon::parse($subcription->end_date)->diffInDays(Carbon::now());
+        $plan = Plan::find($subcription->id_plan);
+        return view('workspace.settings', compact('timeRemaining', 'plan'));
     }
 
     public function uploadProfile(Request $request){
@@ -424,7 +425,15 @@ class UserController extends Controller
     }
 
     public function changePasswordShow() {
-        return view('workspace.settings', ['#tabs-activity-7']);
+        return view('workspace.changepassword');
+    }
+
+    public function changePasswordShowSuperAdmin() {
+        return view('superadmin.changepassword');
+    }
+
+    public function changePasswordShowAdmin() {
+        return view('admin.changepassword');
     }
 
     public function changePassword(Request $request){
@@ -446,10 +455,28 @@ class UserController extends Controller
             $user->password = Hash::make($request->newPassword);
             $user->save();
             Alert::success('Success Message', 'You have successfully change password.');
-            return redirect()->route('workspace.settings.changepassword');
+            
+            if(Auth::user()->id_role == 1){
+                return redirect()->route('superadmin.settings.changepassword');
+            } else if(Auth::user()->id_role == 2){
+                return redirect()->route('admin.settings.changepassword');
+            } else if(Auth::user()->id_role == 3){
+                return redirect()->route('workspace.settings.changepassword');
+            } else if(Auth::user()->id_role == 4){
+                return redirect()->route('workspace.settings.changepassword');
+            }
+
         }else{
             Alert::error('Failed Message', 'You have failed change password.');
-            return redirect()->route('workspace.settings.changepassword');
+            if(Auth::user()->id_role == 1){
+                return redirect()->route('superadmin.settings.changepassword');
+            } else if(Auth::user()->id_role == 2){
+                return redirect()->route('admin.settings.changepassword');
+            } else if(Auth::user()->id_role == 3){
+                return redirect()->route('workspace.settings.changepassword');
+            } else if(Auth::user()->id_role == 4){
+                return redirect()->route('workspace.settings.changepassword');
+            }
         }
     }
 

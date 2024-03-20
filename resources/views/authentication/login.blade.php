@@ -43,7 +43,7 @@
                             <label for="password"><i class="zmdi zmdi-lock mb-5"></i></label>
                             <input type="password" name="password" id="password" placeholder="Password" />
                             <span class="form-label-description">
-                                <a href="{{ route('forgot-password') }}">Lupa Password</a>
+                                <a href="{{ route('forgot-password') }}">Forget Password?</a>
                             </span>
                         </div>
 
@@ -62,7 +62,7 @@
                     </form>
 
                     <div class="text-secondary mt-3">
-                        Belum punya akun? <a href="{{ route('register') }}" tabindex="-1">Sign up</a>
+                        Doesn't have account? <a href="{{ route('register') }}" tabindex="-1">Sign up</a>
                     </div>
                 </div>
             </div>

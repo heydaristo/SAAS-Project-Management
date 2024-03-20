@@ -1,3 +1,8 @@
+@php
+    $title = "Plan";
+    $pretitle = "Plan/list";
+@endphp
+
 @extends('admintemplate')
 
 @section('adminbody')

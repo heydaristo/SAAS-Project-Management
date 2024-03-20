@@ -71,10 +71,6 @@
                                         placeholder="Service Name" required>
                                     <input type="number" class="form-control service-price mt-2" name="service_price[]"
                                         placeholder="Price" required>
-                                    <select class="form-control service-fee-method mt-2" name="service_fee_method[]" required>
-                                        <option value="fixed">Fixed</option>
-                                        <option value="percentage">Percentage</option>
-                                    </select>
                                     <input type="text" class="form-control service-description mt-2"
                                         name="service_description[]" placeholder="Description" required>
                                 </div>

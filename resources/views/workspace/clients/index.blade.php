@@ -1,7 +1,7 @@
 @extends('template')
 
 @php
-    $title = "Daftar Klien";
+    $title = "Client List";
     $pretitle = "klien/list";
 @endphp
 

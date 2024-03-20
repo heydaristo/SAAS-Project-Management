@@ -32,8 +32,10 @@
                     <div class="text-center">
                       <div class="mb-2">
                         <span class="badge bg-blue-lt">{{ $plan->plan_name }}</span>
+                        {{-- active plan show label --}}
+                        <span class="badge bg-green-lt">{{ $plan->id == $currentPlan ? 'Active Plan' : '' }}</span>
                       </div>
-                      <div class="h1 mb-3">@currency($plan->price)</div>
+                      <div class="h1 mb-3">@currency($plan->price)/tahun</div>
                     </div>
                     <ul class="list-unstyled leading-loose">
                       <li>
@@ -47,7 +49,9 @@
                       </li>
                     </ul>
                     <div class="text-center mt-6">
+                      @if($plan->id != $currentPlan && $plan->id != 1)
                       <a href="{{ route('workspace.subscriptions.upgrade', ['planid' => $plan->id]) }}" class="btn btn-primary">Upgrade</a>
+                      @endif
                     </div>
                   </div>
                 </div>

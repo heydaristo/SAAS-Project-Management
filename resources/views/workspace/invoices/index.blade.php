@@ -48,7 +48,7 @@
         </button> --}}
                     </div>
                 </div>
-                <div class="table-responsive">
+                <div >
                     <table class="table card-table table-vcenter text-nowrap datatable table-hover">
                         <thead>
                             <tr>

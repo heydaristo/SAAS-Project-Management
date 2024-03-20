@@ -42,7 +42,7 @@ class AllSeeder extends Seeder
             'invoice_pdf' => 'NOTSET',
             'user_id' => 1,
         ]);
-        
+
         // contract
         \App\Models\Contract::create([
             'id_user' => 1,
@@ -73,17 +73,18 @@ class AllSeeder extends Seeder
             [
                 'plan_name' => 'Free',
                 'price' => 0,
-                'benefits' => 
-                '1 Client
+                'benefits' => '
+                5 Clients
                 Standart Tools
                 Standart Contract',
             ],
             [
                 'plan_name' => 'Premium',
                 'price' => 100000,
-                'benefits' => 'Unlimited Client
-                Premium Tools
-                Premium Contract',
+                'benefits' =>
+                    'No Pop Up Ads Premium
+                Unlimited Client
+                Editable Contract',
             ],
         ];
 
@@ -94,6 +95,6 @@ class AllSeeder extends Seeder
 
 
 
-        
+
     }
 }

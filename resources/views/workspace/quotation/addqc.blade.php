@@ -71,10 +71,6 @@
                                         placeholder="Service Name">
                                     <input type="number" class="form-control service-price mb-2" name="service_price[]"
                                         placeholder="Price">
-                                    <select class="form-control service-fee-method mb-2" name="service_fee_method[]">
-                                        <option value="fixed">Fixed</option>
-                                        <option value="percentage">Percentage</option>
-                                    </select>
                                     <input type="text" class="form-control service-description"
                                         name="service_description[]" placeholder="Description">
                                 </div>

@@ -1,6 +1,6 @@
 @php
-    $title = "Setting";
-    $pretitle = "Setting";
+    $title = 'Setting';
+    $pretitle = 'Setting';
 @endphp
 
 @extends('template')
@@ -11,7 +11,18 @@
             <div class="card-header">
                 <ul class="nav nav-tabs card-header-tabs nav-fill" data-bs-toggle="tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a href="#tabs-activity-7" class="nav-link active" data-bs-toggle="tab" aria-selected="false"
+                        <a href="#plan" class="nav-link active" data-bs-toggle="tab" aria-selected="false" role="tab"
+                            tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M3 12h4l3 8l4 -16l3 8h4"></path>
+                            </svg>
+                            Plan</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a href="#tabs-activity-7" class="nav-link" data-bs-toggle="tab" aria-selected="false"
                             role="tab" tabindex="-1"><!-- Download SVG icon from http://tabler-icons.io/i/activity -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
@@ -25,7 +36,50 @@
             </div>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane active show" id="tabs-activity-7" role="tabpanel">
+                    <div class="tab-pane active show" id="plan" role="tabpanel">
+                        <div class="card-body">
+                            <h2 class="mb-4">My Plan</h2>
+                            <div class="row row-cards justify-content-center ">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <div class="mb-2">
+                                                    <span class="badge bg-blue-lt">{{ $plan->plan_name }}</span>
+                                                </div>
+                                                <div class="h1 mb-3">@currency($plan->price)/tahun</div>
+                                            </div>
+                                            <ul class="list-unstyled leading-loose">
+                                                <li>
+                                                    {{-- make the benefits text center --}}
+                                                    <div class="text-center">
+                                                        <span class="text-muted">
+                                                            {{-- make an enter for automatic --}}
+                                                            {!! nl2br($plan->benefits) !!}
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <div class="mb-2">
+                                                    <span class="badge bg-blue-lt">Time Remaining</span>
+                                                </div>
+                                                <div class="h2 mb-3">{{ $timeRemaining }} Day(s)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tabs-activity-7" role="tabpanel">
                         <div class="card-body">
                             <h2 class="mb-4">My Account</h2>
                             <div class="row align-items-center">
@@ -46,8 +100,7 @@
                                     <form enctype="multipart/form-data" id="profileForm"
                                         action="{{ route('workspace.settings.upload') }}" method="post">
                                         @csrf
-                                        <input name="photo_profile" type="file" id="actual-btn" hidden
-                                            accept="image/*">
+                                        <input name="photo_profile" type="file" id="actual-btn" hidden accept="image/*">
                                         <label for="actual-btn" class="btn btn-primary">Change</label>
                                     </form>
                                 </div>
@@ -79,21 +132,25 @@
                                         </div>
                                         <div class="col-md mt-3">
                                             <div class="form-label">State</div>
-                                            <input class="form-control" name="state" placeholder="State..." value="{{ Auth::user()->state }}">
+                                            <input class="form-control" name="state" placeholder="State..."
+                                                value="{{ Auth::user()->state }}">
                                         </div>
                                         <div class="col-md mt-3">
                                             <div class="form-label">Province</div>
-                                            <input class="form-control" name="region" placeholder="Province..." value="{{ Auth::user()->region }}">
+                                            <input class="form-control" name="region" placeholder="Province..."
+                                                value="{{ Auth::user()->region }}">
                                         </div>
                                         <div class="col-md mt-3">
                                             <div class="form-label">City</div>
-                                            <input class="form-control" name="city" placeholder="City..." value="{{ Auth::user()->city }}">
+                                            <input class="form-control" name="city" placeholder="City..."
+                                                value="{{ Auth::user()->city }}">
                                         </div>
                                         <div class="col-md mt-3">
                                             <div class="form-label">Zip Code</div>
-                                            <input type="number" class="form-control" name="postal_code" placeholder="Zip Code..." value="{{ Auth::user()->postal_code }}">
+                                            <input type="number" class="form-control" name="postal_code"
+                                                placeholder="Zip Code..." value="{{ Auth::user()->postal_code }}">
                                         </div>
-                                        
+
                                         <div class="col-md mt-3">
                                             <div class="form-label">Profession</div>
                                             <select class="form-select" name="profession" required>
@@ -130,12 +187,14 @@
                                             <div class="form-label">Organization</div>
                                             <div class="mb-3">
                                                 <label class="form-check">
-                                                    <input class="form-check-input" type="radio" name="organization" value="I work solo" 
+                                                    <input class="form-check-input" type="radio" name="organization"
+                                                        value="I work solo"
                                                         {{ Auth::user()->organization == 'I work solo' ? 'checked' : '' }}>
                                                     <span class="form-check-label">I work solo</span>
                                                 </label>
                                                 <label class="form-check">
-                                                    <input class="form-check-input" type="radio" name="organization" value="I work team"
+                                                    <input class="form-check-input" type="radio" name="organization"
+                                                        value="I work team"
                                                         {{ Auth::user()->organization == 'I work team' ? 'checked' : '' }}>
                                                     <span class="form-check-label">I work on team</span>
                                                 </label>

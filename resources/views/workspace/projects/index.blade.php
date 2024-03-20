@@ -1,7 +1,7 @@
 @extends('template')
 
 @php
-    $title = "Daftar Proyek";
+    $title = "Project List";
     $pretitle = "proyek/list";
 @endphp
 

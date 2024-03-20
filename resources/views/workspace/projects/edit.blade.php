@@ -66,13 +66,6 @@
                                             placeholder="Service Name" value="{{ $service->service_name }}">
                                         <input type="number" class="form-control service-price" name="service_price[]"
                                             placeholder="Price" value="{{ $service->price }}">
-                                        <select class="form-control service-fee-method" name="service_fee_method[]">
-                                            <option value="fixed" {{ $service->pay_method == 'fixed' ? 'selected' : '' }}>
-                                                Fixed</option>
-                                            <option value="percentage"
-                                                {{ $service->pay_method == 'percentage' ? 'selected' : '' }}>Percentage
-                                            </option>
-                                        </select>
                                         <input type="text" class="form-control service-description"
                                             name="service_description[]" placeholder="Description"
                                             value="{{ $service->description }}">
