@@ -19,7 +19,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ContractController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Mendapatkan ID pengguna yang sedang login
         $userId = Auth::id();
@@ -34,6 +34,33 @@ class ContractController extends Controller
 
         // Mengambil klien yang dimiliki oleh pengguna yang sedang login
         $clients = Client::where('user_id', $userId)->get();
+
+         // if the request has data_count_shows
+         if ($request->input('data_count_shows') != null) {
+            $dataCountShows = $request->input('data_count_shows');
+            $contracts = DB::table('contracts')
+            ->where('contracts.id_user', $userId) // Filter berdasarkan user_id
+            ->join('clients', 'contracts.id_client', '=', 'clients.id')
+            ->select('contracts.*', 'clients.name as name')
+            ->orderBy('contracts.created_at', 'desc')
+            ->paginate($dataCountShows);   
+            return view('workspace.contracts.index', compact('contracts', 'clients'));
+        }
+               // if the request has search
+       if ($request->input('search') != null) {
+        $contracts = DB::table('contracts')
+            ->where('contracts.id_user', $userId) // Filter berdasarkan user_id
+            ->where('contracts.contract_name', 'like', '%' . $request->search . '%')
+            ->orWhere('contracts.status', 'like', '%' . $request->search . '%')
+            ->orWhere('clients.name', 'like', '%' . $request->search . '%')
+            ->join('clients', 'contracts.id_client', '=', 'clients.id')
+            ->select('contracts.*', 'clients.name as name')
+            ->orderBy('contracts.created_at', 'desc')
+            ->paginate(5);  
+        // $contracts = Contract::where('user_id', Auth::id())->where('contract_name', 'like', '%' . $request->search . '%')->paginate(5);
+        return view('workspace.contracts.index', compact('contracts', 'clients'));
+        }
+            
         return view('workspace.contracts.index', compact('contracts', 'clients'));
     }
 

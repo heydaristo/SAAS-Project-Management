@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="table-responsive"  style="overflow: inherit;">
-                    <table class="table card-table table-vcenter text-nowrap datatable table-hover datatable">
+                    <table class="table card-table table-vcenter text-nowrap table-hover datatable">
                         <thead>
                             <tr>
                                 <th class="w-1">No.
