@@ -14,7 +14,7 @@
                         <div class="text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input type="text" id="search" class="form-control" aria-label="Search Contract" placeholder="Cari Contract berdasarkan nama contract..."> 
+                                <input type="text" id="search" class="form-control" aria-label="Search Contract" placeholder="find Contract by contract name..."> 
                             </div>
                         </div>
                         <div class="ms-auto me-3">

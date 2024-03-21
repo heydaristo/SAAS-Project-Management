@@ -17,7 +17,7 @@
                         <div class="text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input type="text" id="search" class="form-control" aria-label="Search Project" placeholder="Cari penawaran berdasarkan nama penawaran..."> 
+                                <input type="text" id="search" class="form-control" aria-label="Search Project" placeholder="find quotation by quotation name..."> 
                             </div>
                         </div>
                         <div class="ms-auto me-3">

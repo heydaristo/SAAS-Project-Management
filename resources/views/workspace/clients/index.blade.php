@@ -19,7 +19,7 @@
                         <div class="text-muted">
                             Search:
                             <div class="ms-2 d-inline-block">
-                                <input type="text" id="search" class="form-control" aria-label="Search Project" placeholder="Cari client berdasarkan nama client..."> 
+                                <input type="text" id="search" class="form-control" aria-label="Search Project" placeholder="find client by client name..."> 
                             </div>
                         </div>
                         <div class="ms-auto me-3">
