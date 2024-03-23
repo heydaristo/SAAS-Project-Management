@@ -61,21 +61,7 @@
                         <p>Contractor agrees to perform services as described in Attachment A (the “Services”) and Client
                             agrees
                             to pay Contractor as described in Attachment A.</p>
-                        {{-- <h5>Signatures</h5>
-                    <p>In witness whereof, the Parties, have executed this Agreement, inclusive of Attachment A and
-                        Attachment B, as of the later of the two dates below (the “Effective Date”).</p>
-                    <div class="row">
-                        <div class="col">
-                            <p><strong>Client</strong></p>
-                            <p>Signature: ___________________</p>
-                            <p>Date: _______________________</p>
-                        </div>
-                        <div class="col">
-                            <p><strong>Contractor (Attaf Riski)</strong></p>
-                            <p>Signature: ___________________</p>
-                            <p>Date: _______________________</p>
-                        </div>
-                    </div> --}}
+
                     </div>
                 </div>
 
@@ -109,9 +95,13 @@
                     <div class="card-body mt-3">
                         <div class="form-group">
                             <label class="form-label">Attachment B: Terms and Conditions</label>
-                            <span>Please Upgrade to Premium to Edit Terms and Conditions</span>
+
+                            @if ($contract->contract_pdf == 'DEFAULT')
+                                <span>Please Upgrade to Premium to Edit Terms and Conditions</span>
+                            @endif
+
                             {{-- swith between edit mode and readonly for textarea --}}
-                            <textarea class="form-control" id="contract" name="contract">
+                            <textarea class="form-control" id="contract" name="term">
                             {{ $contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : $contract->contract_pdf }}
                         </textarea>
                         </div>
@@ -129,9 +119,19 @@
             ClassicEditor
                 .create(document.querySelector('#contract'), {})
                 .then(editor => {
-                    const toolbarElement = editor.ui.view.toolbar.element;
-                    toolbarElement.style.display = 'none';
-
+                    editor.disableReadOnlyMode(myFeatureLockId);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
+    @else
+        <script>
+            // make ClassicEditor read only
+            const myFeatureLockId = Symbol('contract');
+            ClassicEditor
+                .create(document.querySelector('#contract'), {})
+                .then(editor => {
                     editor.enableReadOnlyMode(myFeatureLockId);
                 })
                 .catch(error => {

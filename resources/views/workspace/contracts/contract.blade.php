@@ -109,7 +109,7 @@
                         <div class="form-group">
                             <label class="form-label">Attachment B: Terms and Conditions</label>
                             <textarea class="form-control" id="contract" readonly>
-                            {{ $contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : '' }}
+                            {{ $contract->contract_pdf == 'DEFAULT' ? env('DEFAULT_TERM') : $contract->contract_pdf }}
                         </textarea>
                         </div>
                     </div>
@@ -125,10 +125,7 @@
             ClassicEditor
                 .create(document.querySelector('#contract'), {})
                 .then(editor => {
-                    const toolbarElement = editor.ui.view.toolbar.element;
-                    toolbarElement.style.display = 'none';
-
-                    editor.enableReadOnlyMode(myFeatureLockId);
+                    editor.disableReadOnlyMode(myFeatureLockId);
                 })
                 .catch(error => {
                     console.error(error);
@@ -140,7 +137,9 @@
             const myFeatureLockId = Symbol('contract');
             ClassicEditor
                 .create(document.querySelector('#contract'), {})
-                .then(editor => {})
+                .then(editor => {
+                    editor.enableReadOnlyMode(myFeatureLockId);
+                })
                 .catch(error => {
                     console.error(error);
                 });
