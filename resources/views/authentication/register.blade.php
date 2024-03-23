@@ -13,7 +13,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="fullname" id="fullname" placeholder="Your Name" required />
+                            <input type="text" name="fullname" id="fullname" placeholder="Your Name" required  value="{{ old('fullname') }}"/> 
                             @error('name')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -23,7 +23,7 @@
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
                             <input class="@error('email')is-invalid @enderror" type="email" name="email" id="email"
-                                placeholder="Your Email" required />
+                                placeholder="Your Email" required value="{{ old('email') }}"/>
                             @error('email')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group">
                             <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="password" id="pass" placeholder="Password" required />
+                            <input type="password" name="password" id="pass" placeholder="Password" required value="{{ old('password') }}"/>
                             @error('password')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
                             <input type="password" name="confirmPassword" id="confirmPassword"
-                                placeholder="Repeat your password" required />
+                                placeholder="Repeat your password" required value="{{ old('confirmPassword') }}"/>
                         </div>
                         @if ($errors->any())
                             <div class="alert alert-danger">

@@ -94,7 +94,7 @@ class ContractController extends Controller
             $contract->end_date = null;
         }
 
-        $contract->status = 'SENT';
+        $contract->status = 'NOT SENT';
         $contract->contract_pdf = 'DEFAULT';
         $contract->id_client = $request->input('id_client');
         $contract->id_user = Auth::id();
@@ -182,6 +182,8 @@ class ContractController extends Controller
     {
 
         $contract = Contract::findOrFail($id);
+        $contract->status = "SENT";
+        $contract->save();
         $client = Client::find($contract->id_client);
         $user = User::find($contract->id_user);
         $services = Service::where('id_contract', $id)->get();

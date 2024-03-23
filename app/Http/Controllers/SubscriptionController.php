@@ -186,7 +186,7 @@ class SubscriptionController extends Controller
             'id_user' => Auth::user()->id,
             'id_plan' => $plan->id,
             'duration' => 12,
-            'status' => "PENDING",
+            'status' => "PENDING", // belum dibayar pending dulu yee
             'start_date' => now(),
             'end_date' => now()->addMonths(12),
         ]);
