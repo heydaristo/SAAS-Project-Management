@@ -84,8 +84,8 @@
                       <img src="{{ asset('images/paymentdashboard.svg') }}" width="64" height="64" class="card-img-top mt-4" alt="...">
                   </div>
                   <div class="card-body">
-                    <h5 class="card-title"><strong>Enable online payments</strong></h5>
-                    <p class="card-text">Get paid to faster</p>
+                    <h5 class="card-title"><strong>Get Best Experience</strong></h5>
+                    <p class="card-text">Let's Upgrade to Premium Plan For only IDR100k</p>
                   </div>
                 </a>
                 </div>
@@ -97,8 +97,8 @@
                       <img src="{{ asset('images/transactiondashboard.svg') }}" width="64" height="64" class="card-img-top mt-4" alt="...">
                   </div>
                   <div class="card-body">
-                    <h5 class="card-title"><strong>Add reccuring expenses</strong></h5>
-                    <p class="card-text">Set them up and we'll record recurring expenses automatically</p>
+                    <h5 class="card-title"><strong>Let's Write Expense & Income</strong></h5>
+                    <p class="card-text">Write your income and expense to manage your finance.</p>
                   </div>
                 </div>
               </a>

@@ -15,8 +15,8 @@
             <div class="card-body p-0">
                 <div class="text-center mt-3">
                     <h4>Thank You For Accepting Project</h4>
-                    <p>You have successfully accepted the project, come back to check it</p>
-                    <a href="{{ route('workspace.contract') }}" class="btn btn-primary">Go Back!</a>
+                    <p>You have successfully accepted the project</p>
+                    <p>We will send contact you soon!</p>
                 </div>
             </div>
         </div>

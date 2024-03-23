@@ -405,6 +405,14 @@ class ContractController extends Controller
         return view('workspace.contracts.acceptpage');
     }
 
+    public function dismissed($id)
+    {
+        $contract = Contract::findOrFail($id);
+        $contract->status = "DISMISSED";
+        $contract->save();
+        return view('workspace.contracts.dismissedpage');
+    }
+
     public function deleteContract(Request $request, $id)
     {
         $contract = Contract::find($id);
