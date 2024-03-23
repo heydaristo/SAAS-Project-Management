@@ -214,9 +214,8 @@ class UserController extends Controller
     }
     public function index()
     {
-        // Mengambil data pengguna dengan ID role 3 terpaginasi
-        $users = User::where('id_role', 3)->paginate(5); // Menggunakan pagination dengan 10 item per halaman
-    
+        // Mengambil data pengguna dengan ID role 3 atau 4
+        $users = User::where('id_role', 3)->orWhere('id_role', 4)->paginate();
         return view('admin.user.index', compact('users'));
     }
 

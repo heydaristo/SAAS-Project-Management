@@ -70,7 +70,7 @@
                                             <span class="badge text-bg-success">{{ $transaction->status }}</span>
                                         @elseif($transaction->status == 'PENDING')
                                             <span class="badge text-bg-warning">{{ $transaction->status }}</span>
-                                        @elseif($transaction->status == 'FAILED')
+                                        @elseif($transaction->status == 'CANCEL')
                                             <span class="badge text-bg-danger">{{ $transaction->status }}</span>
                                         @endif
                                     </td>
