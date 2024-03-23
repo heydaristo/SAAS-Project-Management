@@ -17,6 +17,8 @@
             <div class="col d-flex justify-content-end">
                 {{-- place in the left --}}
                 <!-- Tombol Submit -->
+                <a href={{"http://127.0.0.1:8000/workspace/quotation/dismissed/".strVal($quotation->id)}} target="_blank" rel="noopener noreferrer">
+                    <button class="btn btn-danger">Reject Project</button></a>
                 <a href={{"http://127.0.0.1:8000/workspace/quotation/accepted/".strVal($quotation->id)}} target="_blank" rel="noopener noreferrer">
                     <button class="btn btn-primary">Accept Project</button></a>
                 

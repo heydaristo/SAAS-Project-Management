@@ -94,8 +94,14 @@ class ContractController extends Controller
             $contract->end_date = null;
         }
 
-        $contract->status = 'SENT';
-        $contract->contract_pdf = 'DEFAULT';
+        $contract->status = 'NOT SENT';
+
+        if(Auth::user()->id_role == 4){ // premium user
+            $contract->contract_pdf = env('DEFAULT_TERM');
+        }else{
+            $contract->contract_pdf = 'DEFAULT';
+        }
+        
         $contract->id_client = $request->input('id_client');
         $contract->id_user = Auth::id();
         $contract->id_project = 1;
@@ -182,6 +188,8 @@ class ContractController extends Controller
     {
 
         $contract = Contract::findOrFail($id);
+        $contract->status = "SENT";
+        $contract->save();
         $client = Client::find($contract->id_client);
         $user = User::find($contract->id_user);
         $services = Service::where('id_contract', $id)->get();
@@ -306,7 +314,11 @@ class ContractController extends Controller
     public function editterm(Request $request, $id)
     {
         $contract = Contract::findOrFail($id);
-        $contract->contract_pdf = $request->term;
+        if(Auth::user()->id_role == 4){ // premium user
+            $contract->contract_pdf = $request->term;
+        }else{
+            $contract->contract_pdf = 'DEFAULT';
+        }
         $contract->save();
         Alert::success('Success Message', 'You have successfully update contract.');
         // Redirect to the contract review page
@@ -401,6 +413,14 @@ class ContractController extends Controller
         $service->id_project = $contract->id_project;
         $service->save();
         return view('workspace.contracts.acceptpage');
+    }
+
+    public function dismissed($id)
+    {
+        $contract = Contract::findOrFail($id);
+        $contract->status = "DISMISSED";
+        $contract->save();
+        return view('workspace.contracts.dismissedpage');
     }
 
     public function deleteContract(Request $request, $id)

@@ -36,8 +36,12 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 // accept
 Route::get('workspace/contract/accepted/{id}', [ContractController::class,'accepted'])->name('workspace.contract.accepted');
 Route::get('workspace/contract/successpaiddpcontract/{id}', [ContractController::class,'successpaiddpcontract'])->name('workspace.contract.successpaiddpcontract');
+Route::get('workspace/contract/dismissed/{id}', [ContractController::class,'dismissed'])->name('workspace.contract.dismissed');
+
+Route::get('workspace/quotation/dismissed/{id}', [QuotationController::class,'dismissed'])->name('workspace.quotation.dismissed');
 Route::get('workspace/quotation/accepted/{id}', [QuotationController::class,'accepted'])->name('workspace.quotation.accepted');
 Route::get('workspace/quotation/successpaiddpcontract/{id}', [QuotationController::class,'successpaiddpcontract'])->name('workspace.quotation.successpaiddpcontract');
+
 Route::get('workspace/invoice/paynow/{id}', [InvoiceController::class,'paynow'])->name('workspace.invoice.successpaiddpcontract');
 Route::get('workspace/invoice/successpaid/{id}', [InvoiceController::class,'successpaid'])->name('workspace.invoice.succespaid');
 

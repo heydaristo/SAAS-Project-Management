@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use App\Models\TransactionAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -106,7 +107,16 @@ class SubscriptionController extends Controller
             return redirect()->route('admin.subscription.show');
         }
 
-        $subscription->delete();
+        try {
+            $subscription->delete();
+        } catch (\Throwable $th) {
+            if($th->getCode() == 23000){
+                Alert::error('Failed Message', 'You have failed delete subscription. Subscription is being used by transaction.');
+                return redirect()->route('admin.subscription.show');
+            }
+        }
+
+
         Alert::success('Success Message', 'You have successfully delete subscription.');
         return redirect()->route('admin.subscription.show');
     }
@@ -181,12 +191,21 @@ class SubscriptionController extends Controller
     {
         $plan = Plan::find($planid);
 
+        // cari subscription lama yang belum dibayar
+        $subscriptions = Subscription::where('id_user', Auth::user()->id)
+            ->where('status', 'PENDING')->get();
+
+        foreach ($subscriptions as $subscription) {
+            $subscription->status = "NOT PAID";
+            $subscription->save();
+        }
+
         // masukkan subscription table
         $subscription = Subscription::create([
             'id_user' => Auth::user()->id,
             'id_plan' => $plan->id,
             'duration' => 12,
-            'status' => "PENDING",
+            'status' => "PENDING", // belum dibayar pending dulu yee
             'start_date' => now(),
             'end_date' => now()->addMonths(12),
         ]);
@@ -224,6 +243,17 @@ class SubscriptionController extends Controller
             
             $snapToken = \Midtrans\Snap::getSnapToken($params);
             $dataTransaction['snap_token'] = $snapToken;
+
+            // cari payment lama yang belum dibayar dan pending
+            $transactionAdmins = TransactionAdmin::where('id_user', Auth::user()->id)
+                ->where('status', 'PENDING')->get();
+
+            foreach ($transactionAdmins as $transactionAdmin) {
+                $transactionAdmin->status = "CANCEL";
+                $transactionAdmin->save();
+            }
+
+
             $transactionAdmin = TransactionAdmin::create($dataTransaction);
 
             if ($transactionAdmin) {
@@ -272,6 +302,19 @@ class SubscriptionController extends Controller
         $subscription->start_date = now();
         $subscription->end_date = now()->addMonths($subscription->duration);
         $subscription->save();
+
+        // add transaction expense type
+        $expense = new Transaction();
+        $expense->id_project = 1;
+        // buatkan nota pembelian
+        $expense->id_user = Auth::user()->id;
+        $expense->created_date = now();
+        $expense->amount = $transactionadmin->amount;
+        $expense->is_income = 0;
+        $expense->description = "Upgrade to Premium";
+        $expense->category = "Subscription";
+        $expense->source = "Dana Pribadi";
+        $expense->save();
 
         return view('workspace.upgrade.success');
     }

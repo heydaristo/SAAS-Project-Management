@@ -73,6 +73,8 @@
                                             <span class="badge text-bg-warning">{{ $contract->status }}</span>
                                         @elseif($contract->status == 'DISMISSED')
                                             <span class="badge text-bg-danger">{{ $contract->status }}</span>
+                                        @elseif($contract->status == 'NOT SENT')
+                                            <span class="badge text-bg-info">{{ $contract->status }}</span>
                                         @endif
                                     </td>
                                     <td>{{ $contract->name }}</td>

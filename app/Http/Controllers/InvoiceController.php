@@ -297,7 +297,14 @@ class InvoiceController extends Controller
             Alert::error('Failed Message', 'You have failed to delete invoice.');
             return redirect()->route('workspace.invoice');
         } else {
-            $invoice->delete();
+            
+            try {
+                $invoice->delete();
+            } catch (\Throwable $th) {
+                Alert::error('Failed Message', 'You have failed to delete invoice. Invoice being used by transaction.');
+                return redirect()->route('workspace.invoice');
+            }
+
             Alert::success('Success Message', 'You have successfully deleted.');
             return redirect()->route('workspace.invoice');
         }

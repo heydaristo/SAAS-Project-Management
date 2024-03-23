@@ -8,6 +8,9 @@ use App\Models\Client;
 use App\Models\User;
 use App\Models\Service;
 use App\Models\ServiceDetail;
+use App\Models\Contract;
+use App\Models\Quotation;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\Validator;
@@ -39,20 +42,20 @@ class ProjectController extends Controller
         if ($request->input('data_count_shows') != null) {
             $dataCountShows = $request->input('data_count_shows');
             $projectmodels = DB::table('project_models')
-            ->where('project_models.user_id', $userId) // Filter berdasarkan user_id
-            ->join('clients', 'project_models.id_client', '=', 'clients.id')
-            ->select('project_models.*', 'clients.name as name')
-            ->orderBy('project_models.created_at', 'desc')
-            ->paginate($dataCountShows);
+                ->where('project_models.user_id', $userId) // Filter berdasarkan user_id
+                ->join('clients', 'project_models.id_client', '=', 'clients.id')
+                ->select('project_models.*', 'clients.name as name')
+                ->orderBy('project_models.created_at', 'desc')
+                ->paginate($dataCountShows);
             return view('workspace.projects.index', compact('projectmodels', 'clients'));
 
         }
 
         // if the request has search
-       if ($request->input('search') != null) {
-           $projectmodels = ProjectModel::where('user_id', Auth::id())->where('project_name', 'like', '%' . $request->search . '%')->paginate(5);
-           return view('workspace.projects.index', compact('projectmodels', 'clients'));
-       }
+        if ($request->input('search') != null) {
+            $projectmodels = ProjectModel::where('user_id', Auth::id())->where('project_name', 'like', '%' . $request->search . '%')->paginate(5);
+            return view('workspace.projects.index', compact('projectmodels', 'clients'));
+        }
 
         return view('workspace.projects.index', compact('projectmodels', 'clients'));
     }
@@ -250,7 +253,7 @@ class ProjectController extends Controller
                     $serviceDetail->delete();
                 }
                 $service->delete();
-            }else{
+            } else {
                 $service->id_project = 1;
                 $service->save();
             }
@@ -261,6 +264,42 @@ class ProjectController extends Controller
         foreach ($invoices as $invoice) {
             $invoice->id_project = 1;
             $invoice->save();
+        }
+
+        // contract 
+        $contract = Contract::where('id_project', $id)->first();
+        if ($contract) {
+            // change id project that connected to contract to 1
+            $contract->id_project = 1;
+            $contract->save();
+        }
+
+        // quotation
+        $quotation = Quotation::where('id_project', $id)->first();
+        if ($quotation) {
+            // change id project that connected to quotation to 1
+            $quotation->id_project = 1;
+            $quotation->save();
+        }
+
+        // invoice
+        $invoices = Invoice::where('id_project', $id)->get();
+        if ($invoices) {
+            // change id project that connected to invoice to 1
+            foreach ($invoices as $invoice) {
+                $invoice->id_project = 1;
+                $invoice->save();
+            }
+        }
+
+        // transaction
+        $transactions = Transaction::where('id_project', $id)->get();
+        if ($transactions) {
+            foreach ($transactions as $transaction) {
+                // change id project that connected to transaction to 1
+                $transaction->id_project = 1;
+                $transaction->save();
+            }
         }
 
 

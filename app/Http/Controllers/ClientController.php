@@ -212,10 +212,19 @@ class ClientController extends Controller
         $client = Client::find($id);
         if ($client->id_role == 1) {
             Alert::error('Failed Message', 'You have failed delete Client.');
-            return redirect()->route('workspace.clients')->with('failed', 'Gagal menghapus Client!');
+            return redirect()->route('workspace.clients')->with('failed', 'failed delete');
         }
 
-        $client->delete();
+        
+        try {
+            $client->delete();
+        } catch (\Throwable $th) {
+            if($th->getCode() == 23000){
+                Alert::error('Failed Message', 'You have failed delete Client. This client is used by other service.');
+                return redirect()->route('workspace.clients');
+            }
+        }
+
         Alert::success('Success Message', 'You have successfully delete.');
         return redirect()->route('workspace.clients');
     }

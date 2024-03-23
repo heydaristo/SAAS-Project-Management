@@ -50,7 +50,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label required">End Date</label>
+                                <label class="form-label">End Date</label>
                                 <div>
                                     <input type="date" class="form-control" name="end_date">
                                     {{-- tambahakan small message --}}

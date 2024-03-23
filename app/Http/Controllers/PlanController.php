@@ -57,7 +57,17 @@ class PlanController extends Controller
             return redirect()->route('admin.plan.show');
         }
 
-        $plan->delete();
+        try {
+            $plan->delete();
+        } catch (\Exception $e) {
+            if($e->getCode() == 23000){
+                Alert::error('Failed Message', 'You have failed delete plan. This plan is used by subcription.');
+                return redirect()->route('admin.plan.show');
+            }
+            Alert::error('Failed Message', 'You have failed delete plan.');
+            return redirect()->route('admin.plan.show');
+        }
+        
         Alert::success('Success Message', 'You have successfully delete plan.');
         return redirect()->route('admin.plan.show');
     }

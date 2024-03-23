@@ -413,6 +413,14 @@ class QuotationController extends Controller
         return view('workspace.quotation.acceptpage');
     }
 
+    public function dismissed($id)
+    {
+        $quotation = Quotation::findOrFail($id);
+        $quotation->status = "DISMISSED";
+        $quotation->save();
+        return view('workspace.quotation.dismissedpage');
+    }
+
     public function deleteQuotation(Request $request, $id)
     {
         $quotation = Quotation::find($id);
